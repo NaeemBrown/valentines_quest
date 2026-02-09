@@ -1,0 +1,325 @@
+/* --- BOOT & LOGIN --- */
+#boot-screen { 
+    background: #000; 
+    color: var(--accent); 
+    padding: 20px; 
+    font-size: 1.5rem; 
+    height: 100%; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: flex-end;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Animated Grid Background */
+#boot-screen::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(0deg, transparent 24%, rgba(255, 77, 109, 0.05) 25%, rgba(255, 77, 109, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 77, 109, 0.05) 75%, rgba(255, 77, 109, 0.05) 76%, transparent 77%, transparent),
+        linear-gradient(90deg, transparent 24%, rgba(255, 77, 109, 0.05) 25%, rgba(255, 77, 109, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 77, 109, 0.05) 75%, rgba(255, 77, 109, 0.05) 76%, transparent 77%, transparent);
+    background-size: 50px 50px;
+    background-position: center bottom;
+    animation: gridMove 20s linear infinite;
+    transform: perspective(500px) rotateX(60deg);
+    transform-origin: bottom;
+    opacity: 0.4;
+}
+
+@keyframes gridMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 50px 50px; }
+}
+
+/* Glowing Title */
+#boot-screen::after {
+    content: " SYSTEM BOOTING... ";
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--accent);
+    text-shadow: 
+        0 0 10px var(--accent),
+        0 0 20px var(--accent),
+        0 0 30px var(--accent),
+        0 0 40px rgba(255, 77, 109, 0.5);
+    animation: pulse 2s ease-in-out infinite;
+    letter-spacing: 4px;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; text-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent); }
+    50% { opacity: 0.8; text-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent), 0 0 60px var(--accent); }
+}
+
+#boot-text {
+    position: relative;
+    z-index: 10;
+    margin-bottom: 50px;
+}
+
+#boot-text p {
+    margin: 5px 0;
+    animation: slideIn 0.3s ease-out forwards;
+    opacity: 0;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.cursor-blink { 
+    animation: blink 1s infinite;
+    font-size: 2rem;
+    color: var(--accent);
+}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+#login-screen { 
+    background: var(--bg-color); 
+    background-image: radial-gradient(var(--accent) 1px, transparent 1px); 
+    background-size: 20px 20px; 
+    height: 100%; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    animation: fadeIn 1s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Floating Hearts Background */
+#login-screen::after {
+    content: "♥";
+    position: absolute;
+    font-size: 2rem;
+    color: rgba(255, 77, 109, 0.15);
+    animation: floatHearts 15s infinite linear;
+    pointer-events: none;
+}
+
+@keyframes floatHearts {
+    0% { 
+        transform: translateY(100vh) translateX(0) rotate(0deg);
+        opacity: 0;
+    }
+    10% { opacity: 0.3; }
+    90% { opacity: 0.3; }
+    100% { 
+        transform: translateY(-100vh) translateX(100px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* RETRO GRID (The "Floor") */
+#login-screen::before {
+    content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 35vh;
+    background-image: linear-gradient(var(--accent) 1px, transparent 1px), linear-gradient(90deg, var(--accent) 1px, transparent 1px);
+    background-size: 40px 40px; background-position: center bottom;
+    mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+    -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+    opacity: 0.3; pointer-events: none;
+    animation: gridPerspective 3s ease-in-out infinite alternate;
+}
+
+@keyframes gridPerspective {
+    0% { transform: perspective(300px) rotateX(50deg) scale(1); }
+    100% { transform: perspective(300px) rotateX(55deg) scale(1.05); }
+}
+
+/* --- WINDOW CONTAINERS --- */
+.os-window-box {
+    background: var(--win-bg);
+    border: 3px solid #590d22; /* Chunkier Border */
+    box-shadow: 8px 8px 0 rgba(89, 13, 34, 0.2); /* Deep Shadow */
+    display: flex; flex-direction: column;
+    animation: windowAppear 0.3s ease-out;
+}
+
+@keyframes windowAppear {
+    0% { 
+        opacity: 0; 
+        transform: scale(0.9) translateY(20px);
+    }
+    100% { 
+        opacity: 1; 
+        transform: scale(1) translateY(0);
+    }
+}
+
+.center-box { 
+    width: 320px;
+    box-shadow: 
+        8px 8px 0 rgba(89, 13, 34, 0.2),
+        0 0 30px rgba(255, 77, 109, 0.3);
+}
+
+.app-window { width: 600px; height: 400px; position: absolute; }
+
+.window-bar { 
+    background: linear-gradient(90deg, var(--accent), #ff8fa3); 
+    color: white; padding: 4px; font-weight: bold; 
+    display: flex; justify-content: space-between; cursor: grab; font-size: 1.3rem;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.window-bar:active {
+    cursor: grabbing;
+}
+
+/* Perfect Centering for Login */
+.window-content { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    padding: 30px 40px; /* More side padding to prevent overlap */
+    background: #fff;
+}
+
+.window-content-scroll { 
+    flex: 1; overflow-y: auto; background: #fff; padding: 15px; height: 100%; 
+}
+
+/* --- CUTE PROFILE PICTURE --- */
+.user-avatar-img {
+    width: 110px; height: 110px; object-fit: cover; border-radius: 50%;
+    border: 4px solid #fff; outline: 3px dashed var(--accent);
+    box-shadow: 0 5px 15px rgba(255, 77, 109, 0.3);
+    margin-bottom: 25px; margin-top: 5px; display: block;
+    animation: avatarPulse 3s ease-in-out infinite;
+}
+
+@keyframes avatarPulse {
+    0%, 100% { 
+        transform: scale(1);
+        box-shadow: 0 5px 15px rgba(255, 77, 109, 0.3);
+    }
+    50% { 
+        transform: scale(1.05);
+        box-shadow: 0 8px 25px rgba(255, 77, 109, 0.5), 0 0 20px rgba(255, 77, 109, 0.3);
+    }
+}
+
+/* --- INPUTS --- */
+.os-input-group { margin-bottom: 15px; text-align: left; width: 100%; }
+
+label { 
+    font-weight: bold; text-transform: uppercase; color: var(--accent); 
+    display: block; margin-bottom: 5px; text-shadow: 1px 1px 0px #fff; 
+}
+
+input { 
+    width: 100%; background: #fff0f3; border: 2px solid #fb6f92; 
+    box-shadow: inset 2px 2px 4px rgba(0,0,0,0.1); padding: 8px; 
+    font-family: 'VT323', monospace; font-size: 1.5rem; outline: none; 
+    transition: all 0.2s;
+}
+input:focus {
+    background: #fff;
+    box-shadow: inset 2px 2px 4px rgba(0,0,0,0.05), 0 0 12px rgba(255, 77, 109, 0.6);
+    border-color: var(--accent);
+    transform: scale(1.02);
+}
+
+/* --- LOGIN BUTTON --- */
+.os-btn { 
+    width: 100%; max-width: 250px;
+    background: var(--accent); color: white; 
+    border: 2px solid #590d22; box-shadow: 4px 4px 0 #590d22;
+    font-family: 'VT323', monospace; font-size: 1.5rem; padding: 10px 0; 
+    margin-top: 20px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+    transition: all 0.1s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.os-btn::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.os-btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.os-btn:hover { 
+    transform: translate(2px, 2px); 
+    box-shadow: 2px 2px 0px #590d22; 
+}
+.os-btn:active { 
+    transform: translate(4px, 4px); 
+    box-shadow: none; 
+}
+
+/* --- DESKTOP --- */
+#desktop-screen {
+    background-color: var(--bg-color);
+    background-image: linear-gradient(45deg, #ffb3c1 25%, transparent 25%, transparent 75%, #ffb3c1 75%, #ffb3c1), linear-gradient(45deg, #ffb3c1 25%, transparent 25%, transparent 75%, #ffb3c1 75%, #ffb3c1);
+    background-size: 20px 20px; background-position: 0 0, 10px 10px;
+    height: 100%; width: 100%; position: relative;
+}
+
+/* --- TASKBAR & 3D START BUTTON --- */
+#taskbar { position: absolute; bottom: 0; width: 100%; height: 40px; background: #c0c0c0; border-top: 2px solid #fff; display: flex; align-items: center; padding: 0 5px; justify-content: space-between; z-index: 999; }
+
+.start-btn {
+    display: flex; align-items: center; gap: 8px;
+    background: linear-gradient(180deg, #fff 0%, #c0c0c0 100%);
+    border-top: 2px solid #fff; border-left: 2px solid #fff;
+    border-right: 2px solid #404040; border-bottom: 2px solid #404040;
+    padding: 4px 12px; font-weight: bold; font-size: 1.4rem; cursor: pointer; height: 34px; color: #000;
+}
+.start-btn:active { border-top: 2px solid #404040; border-left: 2px solid #404040; border-right: 2px solid #fff; border-bottom: 2px solid #fff; background: #c0c0c0; transform: translateY(2px); }
+
+#start-menu { position: absolute; bottom: 45px; left: 5px; width: 150px; background: var(--win-bg); z-index: 1000; padding: 5px; border: 2px solid; border-color: var(--win-border-light) var(--win-border-dark) var(--win-border-dark) var(--win-border-light); }
+.start-item { padding: 5px; cursor: pointer; } .start-item:hover { background: var(--accent); color: white; }
+
+/* --- ICONS & WIDGETS --- */
+#icon-grid { padding: 20px; display: flex; flex-direction: column; gap: 20px; flex-wrap: wrap; height: 90%; }
+.desktop-icon { width: 90px; text-align: center; cursor: pointer; } .desktop-icon:hover { background: rgba(255,255,255,0.4); border: 1px dotted #fff; }
+.icon-img { font-size: 3rem; display: block; text-shadow: 2px 2px rgba(0,0,0,0.1); }
+.icon-label { background: var(--text-main); color: #fff; padding: 2px; font-size: 1rem; }
+
+#desktop-widget { position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.8); border: 2px solid #fff; padding: 10px; border-radius: 8px; box-shadow: 4px 4px 0 rgba(0,0,0,0.1); width: 200px; }
+.widget-row { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 5px; font-size: 1.2rem; }
+
+/* --- LIGHTBOX --- */
+#lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+#lightbox img { max-width: 90%; max-height: 80vh; border: 5px solid #fff; }
+#lightbox-caption { color: white; font-size: 2rem; margin-top: 10px; background: #000; padding: 5px; }
+
+/* --- ANIMATION --- */
+.shake { animation: shake 0.4s; } @keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } 100% { transform: translateX(0); } }
+
+@media (max-width: 768px) {
+    body { font-size: 14px; } 
+    .os-window-box.center-box { width: 90%; }
+    .app-window { width: 95% !important; height: 80% !important; top: 5% !important; left: 2.5% !important; pointer-events: auto; }
+    #icon-grid { flex-direction: row; align-content: flex-start; }
+    .desktop-icon { width: 70px; } .icon-img { font-size: 2rem; }
+    #start-menu { bottom: 50px; left: 5px; }
+    #desktop-widget { width: 150px; top: 10px; right: 10px; font-size: 0.8rem; }
+}

@@ -1,0 +1,663 @@
+# 💕 HEARTOS v3.0 - MEANINGFUL APPS ROADMAP
+
+## 🎯 PHILOSOPHY: Apps You'll Actually Use Daily/Weekly
+
+Not just novelty - these are apps that become part of your relationship routine.
+
+---
+
+## 📱 TIER 1: DAILY USE APPS
+
+### 1. 💌 MORNING/NIGHT RITUAL APP
+**Purpose:** Start and end each day connected  
+**Features:**
+- **Morning Check-in:**
+  - "How did you sleep?" mood selector
+  - "What's your goal today?" text field
+  - Send encouragement to each other
+  - Weather widget for both cities (Cape Town + Prague)
+  - "Thinking of you" button (sends notification)
+
+- **Night Routine:**
+  - "How was your day?" journal entry
+  - Share 3 things you're grateful for
+  - Rate your day (hearts 1-5)
+  - "Goodnight kiss" button (animated hearts)
+  - Sleep well message with timestamp
+
+- **Features:**
+  - Syncs between both users (needs backend)
+  - Notification if partner hasn't checked in
+  - Streak counter (days in a row)
+  - Monthly summary of moods/gratitude
+  - Can attach voice notes or photos
+
+**Why Meaningful:** Creates consistent connection points across time zones
+
+---
+
+### 2. 🗓️ SHARED CALENDAR / EVENT PLANNER
+**Purpose:** Never miss important dates or plans  
+**Features:**
+- **Calendar View:**
+  - Monthly/weekly grid
+  - Color coded events (anniversaries, visits, virtual dates)
+  - Countdown to next event
+  - Time zone converter built-in
+
+- **Event Types:**
+  - 💕 Anniversaries (auto-recurring)
+  - ✈️ Travel plans (flights, hotels)
+  - 📱 Scheduled calls/video dates
+  - 🎂 Birthdays/special occasions
+  - 🎯 Goals/milestones to achieve together
+
+- **Smart Features:**
+  - Reminder notifications (1 week, 1 day, 1 hour before)
+  - Add Zoom/Google Meet links to events
+  - Attach photos/notes to past events
+  - "On this day" memories from past years
+  - Export to Google Calendar
+
+**Why Meaningful:** Long distance needs coordination. This keeps you aligned.
+
+---
+
+### 3. 📝 CONVERSATION STARTERS / QUESTION OF THE DAY
+**Purpose:** Deep conversations and continuous discovery  
+**Features:**
+- **Daily Question:**
+  - New question every day (deeper than small talk)
+  - Categories: Dreams, Past, Future, Hypotheticals, Values
+  - Examples:
+    - "What's a childhood memory that shaped who you are?"
+    - "If we could live anywhere for a year, where?"
+    - "What's something you want to learn together?"
+    - "Describe your perfect day, hour by hour"
+
+- **Question Bank:**
+  - 365+ questions pre-loaded
+  - Mark favorites
+  - See each other's answers
+  - Comment/react to answers
+  - Track which questions you've done
+
+- **Custom Questions:**
+  - Add your own questions
+  - "Question roulette" for random pick
+  - Save particularly good conversations
+
+**Why Meaningful:** Keeps conversations fresh. Prevents "how was your day" loop.
+
+---
+
+### 4. 🎯 COUPLE GOALS TRACKER
+**Purpose:** Work toward shared dreams together  
+**Features:**
+- **Goal Categories:**
+  - 💰 Financial (save for trip, etc.)
+  - 🏃 Health/Fitness (workout together)
+  - 📚 Learning (language, skill)
+  - 🌍 Travel (visit X countries)
+  - 🏠 Future planning (moving in, etc.)
+
+- **For Each Goal:**
+  - Progress bar (visual motivation)
+  - Sub-tasks/milestones
+  - Both can update progress
+  - Attach evidence (photos, receipts)
+  - Celebration animation when completed
+  - Goal journal (reflections along the way)
+
+- **Visualization:**
+  - Roadmap view (timeline of goals)
+  - Achievement board (completed goals)
+  - Monthly review (what we accomplished)
+  - Motivational quotes
+
+**Why Meaningful:** Tangible progress toward your future together
+
+---
+
+### 5. 💬 MESSAGE WALL / LOVE NOTES
+**Purpose:** Async communication beyond texting  
+**Features:**
+- **Digital Cork Board:**
+  - Post sticky notes to each other
+  - Different colors for different moods
+  - Pin important ones to top
+  - Can attach images/gifs
+  - Draw doodles on notes
+
+- **Note Types:**
+  - Quick "I love you"
+  - Funny memes/inside jokes
+  - Encouragement before big day
+  - Random thoughts
+  - Song recommendations
+  - Article/video links to share
+
+- **Organization:**
+  - Filter by date/person/tag
+  - Search old notes
+  - Archive vs active
+  - "Today's notes" widget on desktop
+
+**Why Meaningful:** Better than texts disappearing. Creates digital scrapbook.
+
+---
+
+## 📱 TIER 2: WEEKLY USE APPS
+
+### 6. 🍿 WATCH TOGETHER PLANNER
+**Purpose:** Virtual movie/series nights done right  
+**Features:**
+- **Watch List:**
+  - Movies/shows you both want to watch
+  - Upvote/downvote suggestions
+  - "Next up" priority queue
+  - Mark as watched (with date + your ratings)
+  - Comment section for each (your thoughts)
+
+- **Session Planning:**
+  - Schedule watch date
+  - Find time that works for both time zones
+  - Link to streaming platform
+  - Countdown to watch time
+  - Send notification when it's time
+
+- **Watch History:**
+  - All movies/shows watched together
+  - Your ratings vs their ratings
+  - Favorite quotes/moments
+  - "Rewatch counter" for favorites
+  - Stats (total hours, favorite genre)
+
+- **Sync Mode:**
+  - Real-time play/pause sync
+  - Chat sidebar during watching
+  - Emoji reactions
+
+**Why Meaningful:** Shared experiences despite distance. Quality time together.
+
+---
+
+### 7. 📸 PHOTO TIMELINE / LIVING SCRAPBOOK
+**Purpose:** Ongoing documentation of your story  
+**Features:**
+- **Upload Flow:**
+  - Drag-and-drop photos/videos
+  - Auto-organize by date taken
+  - Tag with location (auto-detects)
+  - Add caption/story
+  - Tag emotion (happy, funny, romantic, adventure)
+
+- **Smart Organization:**
+  - Chronological timeline
+  - Map view (where photos were taken)
+  - People detection (filter by who's in photo)
+  - Search by caption/date/location
+  - "Best of [month/year]" auto-collections
+
+- **Sharing:**
+  - Create albums for specific trips/events
+  - Generate slideshow with music
+  - Export as PDF photobook
+  - Print-ready layouts
+  - Share link with family
+
+- **Memories:**
+  - "On this day" notifications
+  - Random photo of the day
+  - Anniversary compilations
+  - Growth comparison (side-by-side old vs new)
+
+**Why Meaningful:** Visual history of relationship. Better than camera roll chaos.
+
+---
+
+### 8. 🎨 CREATIVE PROJECTS TOGETHER
+**Purpose:** Make things together remotely  
+**Features:**
+- **Project Types:**
+  - Shared story writing (take turns adding paragraphs)
+  - Collaborative playlist (add songs with reasons)
+  - Recipe book (meals you've cooked/want to cook)
+  - Travel guide (places to show each other)
+  - Dream home moodboard (Pinterest-style)
+
+- **Shared Canvas:**
+  - Draw/write together in real-time
+  - Comment on each other's additions
+  - Version history
+  - Export when done
+
+- **Project Gallery:**
+  - All completed projects
+  - In-progress projects
+  - Abandoned ideas (funny to look back)
+
+**Why Meaningful:** Creates together, not just consumes. Leaves artifacts.
+
+---
+
+### 9. 💰 FINANCE TRACKER / FUTURE FUND
+**Purpose:** Plan financial future together transparently  
+**Features:**
+- **Shared Savings Goals:**
+  - Next visit fund
+  - Future apartment deposit
+  - Dream vacation
+  - Wedding/moving costs
+  - Emergency fund
+
+- **For Each Goal:**
+  - Target amount
+  - Current amount (both contribute)
+  - Monthly contribution pledges
+  - Progress visualization
+  - Projected completion date
+  - Motivation (photo of goal)
+
+- **Transaction Log:**
+  - Record deposits
+  - Notes on where money came from
+  - Celebrate milestones (50%, 75%, 100%)
+
+- **Budget Planning:**
+  - Estimate future shared expenses
+  - Flight cost tracker (alerts when prices drop)
+  - Cost of living comparisons
+
+**Why Meaningful:** Real adults planning real future. Reduces money stress.
+
+---
+
+### 10. 🌍 TRIP PLANNER / TRAVEL JOURNAL
+**Purpose:** Plan visits and document adventures  
+**Features:**
+- **Planning Mode:**
+  - Upcoming trip countdown
+  - Shared itinerary
+  - Places to visit (with maps)
+  - Restaurants saved
+  - Packing lists (shared checklist)
+  - Flight/hotel confirmations
+  - Budget tracker for trip
+
+- **During Trip:**
+  - Daily journal (photos + notes)
+  - Check off itinerary items
+  - Spontaneous additions
+  - Expense tracking
+  - Rate places/activities
+
+- **After Trip:**
+  - Trip summary/highlights
+  - Photo album auto-generated
+  - "Would recommend" list
+  - Lessons learned
+  - "Next time" ideas
+
+- **Trip Archive:**
+  - All past trips
+  - Compare trips (stats, photos)
+  - "Places we've been" map
+  - Trip anniversaries
+
+**Why Meaningful:** Turns visits into documented adventures. Helps plan better trips.
+
+---
+
+## 📱 TIER 3: REGULAR USE APPS
+
+### 11. 🎓 LEARN TOGETHER APP
+**Purpose:** Shared growth and learning  
+**Features:**
+- **Learning Topics:**
+  - Each other's languages (Czech/English)
+  - Cooking (share recipes, video tutorials)
+  - Hobbies (photography, coding, art)
+  - New skills (guitar, investing, etc.)
+
+- **Study Tools:**
+  - Flashcard maker
+  - Quiz each other
+  - Resource library (videos, articles)
+  - Progress tracking
+  - Study session scheduler
+
+- **Accountability:**
+  - Weekly learning goals
+  - Check-in on progress
+  - Celebrate wins
+  - Teach each other sessions
+
+**Why Meaningful:** Grow together. Support each other's development.
+
+---
+
+### 12. 🏋️ COUPLE FITNESS / WELLNESS
+**Purpose:** Health goals together  
+**Features:**
+- **Workout Tracking:**
+  - Log workouts (virtual gym buddies)
+  - Share workout plans
+  - Progress photos
+  - Challenges (who can do more pushups)
+  - Rest day solidarity
+
+- **Wellness:**
+  - Water intake tracking
+  - Sleep quality logging
+  - Mood journaling
+  - Mental health check-ins
+  - Period tracker (for her comfort)
+
+- **Motivation:**
+  - Cheer each other on
+  - Accountability partner
+  - Rewards system
+  - Before/after comparisons
+
+**Why Meaningful:** Support health journeys. Care for each other's wellbeing.
+
+---
+
+### 13. 🍳 RECIPE BOX / MEAL PLANNER
+**Purpose:** Share food experiences across distance  
+**Features:**
+- **Recipe Collection:**
+  - Save recipes you both like
+  - Tag by cuisine/difficulty/time
+  - Note modifications
+  - Photos of attempts
+  - Rate recipes
+
+- **Cook Together:**
+  - Schedule "cook the same meal" dates
+  - Video call while cooking
+  - Compare results
+  - Share tips/disasters
+
+- **Meal Ideas:**
+  - "What should I make?" generator
+  - Based on ingredients you have
+  - Based on mood/weather
+  - Based on time available
+
+- **Food Diary:**
+  - Restaurants to try
+  - Food you've shared
+  - Recipes to recreate
+  - Grocery lists
+
+**Why Meaningful:** Food is love. Sharing meals matters even remotely.
+
+---
+
+### 14. 📚 BOOK/MEDIA CLUB
+**Purpose:** Experience and discuss content together  
+**Features:**
+- **Reading Together:**
+  - Currently reading
+  - Reading pace tracker
+  - Chapter-by-chapter discussions
+  - Quotes you loved
+  - Agree to read same books
+
+- **Discussion Notes:**
+  - What stood out
+  - Predictions
+  - Ratings
+  - Recommend to each other
+  - Compare interpretations
+
+- **Media Library:**
+  - Books read
+  - Podcasts listened to
+  - Articles shared
+  - Documentaries watched
+
+**Why Meaningful:** Intellectual connection. Understand how each other thinks.
+
+---
+
+### 15. 🎤 VOICE MESSAGE DIARY
+**Purpose:** Hear each other's voices anytime  
+**Features:**
+- **Voice Notes:**
+  - Record messages (1-10 min)
+  - Organized by date/topic
+  - Can attach to specific days
+  - Tag emotions/topics
+
+- **Use Cases:**
+  - Bedtime stories
+  - Rants about bad days
+  - Excitement about good news
+  - Song covers/singing
+  - Language practice
+  - Just rambling thoughts
+
+- **Playback:**
+  - Listen anytime
+  - Shuffle random message
+  - "Favorites" playlist
+  - Download to keep forever
+
+- **Special Collections:**
+  - "Messages when you're sad"
+  - "Funny stories"
+  - "I love you because..."
+  - "Future reminders"
+
+**Why Meaningful:** Voice > text. Async audio intimacy. Precious archive.
+
+---
+
+## 🛠️ TIER 4: UTILITY APPS (ACTUALLY USEFUL)
+
+### 16. 🌐 TIME ZONE HELPER
+**Purpose:** Eliminate "what time is it for you?" forever  
+**Features:**
+- **Dual Clocks:**
+  - Cape Town time
+  - Prague time
+  - Always visible on desktop
+
+- **Best Time Finder:**
+  - Enter your availability
+  - See overlap in both time zones
+  - Suggest optimal call times
+  - Account for sleep schedules
+
+- **Time Translator:**
+  - "6pm my time = ???"
+  - Quick converter
+  - Sunrise/sunset times
+  - Daylight savings alerts
+
+**Why Meaningful:** Removes friction from planning.
+
+---
+
+### 17. 🎁 GIFT IDEAS / WISH LIST
+**Purpose:** Never wonder what they want  
+**Features:**
+- **Personal Wish Lists:**
+  - Things you want
+  - Things they want
+  - Mark if bought/received
+  - Priority ranking
+
+- **Gift Ideas Bank:**
+  - Note when they mention wanting something
+  - Track sizes/preferences
+  - Save links
+  - Budget estimates
+
+- **Occasion Planning:**
+  - Birthday ideas
+  - Anniversary gifts
+  - "Just because" surprises
+  - Care package contents
+
+**Why Meaningful:** Thoughtful gifting. Shows you listen.
+
+---
+
+### 18. 🧳 VISIT COUNTDOWN + PLANNING HUB
+**Purpose:** Central place for all visit logistics  
+**Features:**
+- **Countdown:**
+  - Days/hours/minutes until next visit
+  - Percentage bar
+  - Motivational messages
+  - Photo of you together
+
+- **Planning Dashboard:**
+  - Flight details
+  - Accommodation
+  - Things to bring
+  - Activities planned
+  - Budget allocated
+  - Documents needed (visa, etc.)
+
+- **Preparation Checklist:**
+  - Tickets booked ✓
+  - Time off work ✓
+  - Packing done ✓
+  - Gifts ready ✓
+  - Picked outfit ✓
+
+**Why Meaningful:** Visit = biggest events. Deserves proper planning.
+
+---
+
+### 19. 💝 APPRECIATION LOG
+**Purpose:** Practice gratitude for each other  
+**Features:**
+- **Daily Appreciations:**
+  - "Today I appreciated that you..."
+  - Small things matter
+  - Build positive habit
+
+- **Big Wins:**
+  - Major things they did
+  - Ways they've grown
+  - Times they supported you
+
+- **Review:**
+  - Read past appreciations
+  - Monthly summaries
+  - During hard times, revisit
+  - Anniversary reading
+
+**Why Meaningful:** Combat taking each other for granted. Build gratitude.
+
+---
+
+### 20. 🗺️ FUTURE PLANNING BOARD
+**Purpose:** Visualize life together long-term  
+**Features:**
+- **Timeline Builder:**
+  - Next 1 year
+  - Next 5 years
+  - Next 10 years
+  - Drag-and-drop milestones
+
+- **Life Areas:**
+  - Career goals
+  - Living situation
+  - Travel plans
+  - Family planning
+  - Financial milestones
+
+- **Vision Board:**
+  - Photos of dream life
+  - Quotes that inspire
+  - Places to live
+  - Lifestyle goals
+
+- **Decision Making:**
+  - Pros/cons lists for big choices
+  - Vote on priorities
+  - Revisit and adjust
+
+**Why Meaningful:** Ensures you're building same future. Alignment on vision.
+
+---
+
+## 🎯 IMPLEMENTATION ROADMAP
+
+### Phase 1 (Month 1): Core Daily Apps
+1. Morning/Night Ritual
+2. Shared Calendar
+3. Message Wall
+4. Time Zone Helper
+
+### Phase 2 (Month 2): Connection Apps
+1. Question of the Day
+2. Watch Together Planner
+3. Photo Timeline
+4. Voice Message Diary
+
+### Phase 3 (Month 3): Planning Apps
+1. Couple Goals Tracker
+2. Trip Planner
+3. Visit Countdown
+4. Future Planning Board
+
+### Phase 4 (Month 4): Lifestyle Apps
+1. Recipe Box
+2. Learn Together
+3. Book Club
+4. Appreciation Log
+
+### Phase 5 (Ongoing): Polish & Extras
+1. Fitness Tracker
+2. Finance Tracker
+3. Gift Ideas
+4. Creative Projects
+
+---
+
+## 🔧 TECHNICAL REQUIREMENTS
+
+### Must Haves:
+- **Backend/Database:** Firebase or Supabase (real-time sync)
+- **Authentication:** Secure login for both users
+- **Notifications:** Push notifications for events/messages
+- **File Storage:** For photos/videos/voice notes
+- **Real-time Updates:** See changes immediately
+
+### Nice to Haves:
+- **Mobile App:** PWA or React Native
+- **Offline Mode:** Work without internet, sync later
+- **Export:** Backup all data
+- **API Integrations:** Spotify, Google Calendar, flight trackers
+
+---
+
+## 💡 QUICK WINS TO START
+
+**Weekend 1:** Message Wall + Time Zone Helper  
+**Weekend 2:** Shared Calendar + Visit Countdown  
+**Weekend 3:** Photo Timeline (basic version)  
+**Weekend 4:** Question of the Day  
+
+Then expand based on what you use most!
+
+---
+
+## ❤️ THE GOAL
+
+Create a **digital home** for your relationship where you:
+- ✅ Communicate daily (Morning/Night, Messages)
+- ✅ Plan together (Calendar, Goals, Trips)
+- ✅ Create together (Photos, Projects, Recipes)
+- ✅ Grow together (Learning, Fitness, Books)
+- ✅ Dream together (Future Board, Vision)
+
+Not just an OS. A relationship operating system.

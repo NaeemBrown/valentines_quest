@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HeartOS v3.0</title>
+    
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/os.css">
+    <link rel="stylesheet" href="css/app.css">
+    
+    <link rel="icon" type="image/png" href="assets/icons/heart.png">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="js/apps/browser.js"></script>
+</head>
+<body>
+
+    <audio id="startup-sound" src="assets/music/startup.mp3"></audio>
+    <audio id="error-sound" src="assets/music/error.mp3"></audio>
+    <audio id="click-sound" src="assets/music/click.mp3"></audio>
+    <audio id="bgm" loop src="assets/music/bgm.mp3"></audio>
+
+    <div id="boot-screen">
+        <div id="boot-text"></div>
+        <p class="cursor-blink">_</p>
+    </div>
+
+    <div id="login-screen" class="hidden">
+        <div class="os-window-box center-box">
+            <div class="window-bar"><span>SYSTEM LOGIN</span><span>X</span></div>
+            <div class="window-content">
+                <img src="assets/images/profile.jpg" class="user-avatar-img" alt="User">
+                <div class="os-input-group" style="width: 100%;">
+                    <label>User:</label>
+                    <input type="text" id="username" placeholder="Player 2" autocomplete="off">
+                </div>
+                <div class="os-input-group" style="width: 100%;">
+                    <label>Pass:</label>
+                    <input type="password" id="password" placeholder="****">
+                </div>
+                <button class="os-btn" onclick="SYSTEM.attemptLogin()">Log In</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="desktop-screen" class="hidden">
+        
+        <div id="desktop-widget">
+            <div class="widget-row"><span>CPT</span><span id="weather-cpt">28°C ☀️</span></div>
+            <div class="widget-row"><span>PRG</span><span id="weather-prg">-2°C ❄️</span></div>
+        </div>
+
+        <div id="icon-grid">
+            <div class="desktop-icon" onclick="SYSTEM.openApp('win-timeline')"><span class="icon-img">📜</span>History</div>
+            <div class="desktop-icon" onclick="SYSTEM.openApp('win-gallery')"><span class="icon-img">📂</span>Photos</div>
+            <div class="desktop-icon" onclick="SYSTEM.openApp('win-letters')"><span class="icon-img">💌</span>Secrets</div>
+            <div class="desktop-icon" onclick="SYSTEM.openApp('win-map')"><span class="icon-img">🌍</span>Map</div>
+            <div class="desktop-icon" onclick="SYSTEM.openApp('win-quiz')"><span class="icon-img">📟</span>Terminal</div>
+            <div class="desktop-icon" onclick="SYSTEM.openApp('win-amp')"><span class="icon-img">🎵</span>HeartAmp</div>
+            <div class="desktop-icon" onclick="SYSTEM.openApp('win-browser')">
+    <span class="icon-img">🌐</span>
+    Browser
+</div>
+        </div>
+
+        <div id="win-timeline" class="os-window-box app-window hidden" style="top: 5%; left: 5%;">
+            <div class="window-bar"><span>History.exe</span><div class="win-controls"><button onclick="SYSTEM.closeApp('win-timeline')">X</button></div></div>
+            <div class="window-content-scroll" id="timeline-content"></div>
+        </div>
+
+        <div id="win-gallery" class="os-window-box app-window hidden" style="top: 10%; left: 10%;">
+            <div class="window-bar"><span id="gallery-title">C:\Users\Naeem\Pictures\</span><div class="win-controls"><button onclick="SYSTEM.closeApp('win-gallery')">X</button></div></div>
+            <div class="window-content-scroll" id="gallery-content"></div>
+        </div>
+
+        <div id="win-letters" class="os-window-box app-window hidden" style="top: 15%; left: 15%;">
+            <div class="window-bar"><span>Secure_Logs</span><div class="win-controls"><button onclick="SYSTEM.closeApp('win-letters')">X</button></div></div>
+            <div class="window-content-scroll" id="letters-content"></div>
+        </div>
+
+        <div id="win-map" class="os-window-box app-window hidden" style="top: 20%; left: 20%;">
+            <div class="window-bar"><span>Mission: Prague</span><div class="win-controls"><button onclick="SYSTEM.closeApp('win-map')">X</button></div></div>
+            <div class="window-content-scroll" id="map-content"><div id="map-container-inner"></div></div>
+        </div>
+
+        <div id="win-browser" class="os-window-box app-window hidden" style="top: 5%; left: 5%; width: 900px; height: 600px;">
+    <div class="window-bar">
+        <span>🌐 HeartOS Browser</span>
+        <div class="win-controls">
+            <button onclick="SYSTEM.closeApp('win-browser')">X</button>
+        </div>
+    </div>
+    <div class="window-content" id="browser-content" style="padding: 0; overflow: hidden;"></div>
+</div>
+
+        <div id="win-quiz" class="os-window-box app-window hidden" style="top: 25%; left: 25%;">
+            <div class="window-bar"><span>ADMIN_TERMINAL</span><div class="win-controls"><button onclick="SYSTEM.closeApp('win-quiz')">X</button></div></div>
+            <div class="window-content-scroll" style="background:#000; color:#0f0;" id="quiz-wrapper"></div>
+        </div>
+
+        <div id="win-streamer" class="os-window-box app-window hidden" style="top: 5%; left: 5%; width: 800px; height: 600px; z-index: 9999;">
+            <div class="window-bar">
+                <span id="streamer-title-text">Stream_Connection</span>
+                <div class="win-controls">
+                    <button onclick="STREAMER.close()">X</button>
+                </div>
+            </div>
+            <div class="window-content" id="streamer-content" style="padding: 0; background: #000; height: 100%;"></div>
+        </div>
+
+        <div id="win-amp" class="os-window-box app-window hidden" style="top: 30%; left: 60%; width: 300px; height: auto;">
+            <div class="window-bar" style="background: #2b0a12; color: #ff4d6d;"><span>HeartAmp</span><div class="win-controls"><button onclick="SYSTEM.closeApp('win-amp')">X</button></div></div>
+            <div class="window-content" id="amp-interface" style="padding: 0; background: transparent;"></div>
+        </div>
+
+        <div id="start-menu" class="os-window-box hidden">
+            <div class="start-item" onclick="location.reload()">🔄 Restart</div>
+            <div class="start-item" onclick="SYSTEM.logout()">🚪 Log Off</div>
+        </div>
+
+        <div id="taskbar">
+            <button class="start-btn">♥ Start</button>
+            <div class="task-clock" id="taskbar-clock">00:00</div>
+        </div>
+
+        <div id="lightbox" class="hidden" onclick="SYSTEM.closeLightbox()">
+            <div id="lightbox-content-wrapper"></div>
+            <p id="lightbox-caption">...</p>
+        </div>
+    </div>
+
+    <script src="js/lore.js"></script>
+    <script src="js/system.js"></script>
+    <script src="js/apps/gallery.js"></script>
+    <script src="js/apps/music.js"></script>
+    <script src="js/apps/tools.js"></script>
+    <script src="js/apps/streamer.js"></script>
+    <script src="js/apps/map.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

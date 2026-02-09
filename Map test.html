@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map Test</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body { margin: 0; padding: 20px; background: #000; }
+        #map-container { 
+            width: 800px; 
+            height: 600px; 
+            background: #000; 
+            border: 3px solid #ff4d6d;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="color: #ff4d6d;">Map Test</h1>
+    <div id="map-container"></div>
+
+    <script>
+        // Simple LORE data
+        const LORE = {
+            mapPoints: [
+                { title: "Cape Town", lat: -33.92, lon: 18.42, color: 0x00ff00 },
+                { title: "Prague", lat: 50.07, lon: 14.41, color: 0xff4d6d }
+            ]
+        };
+
+        // Wait for THREE.js to load
+        window.addEventListener('load', function() {
+            console.log('Page loaded');
+            console.log('THREE available?', typeof THREE !== 'undefined');
+            
+            if (typeof THREE === 'undefined') {
+                alert('THREE.js not loaded!');
+                return;
+            }
+
+            const container = document.getElementById('map-container');
+            console.log('Container:', container);
+            console.log('Container size:', container.offsetWidth, 'x', container.offsetHeight);
+
+            // Create scene
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(45, container.offsetWidth / container.offsetHeight, 0.1, 1000);
+            camera.position.z = 16;
+
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(container.offsetWidth, container.offsetHeight);
+            renderer.setClearColor(0x000000, 1); // Solid black background
+            container.appendChild(renderer.domElement);
+
+            console.log('Renderer created');
+
+            // Create pivot group
+            const pivot = new THREE.Group();
+            scene.add(pivot);
+
+            // Wireframe sphere (PINK)
+            const geoWire = new THREE.SphereGeometry(5, 24, 24);
+            const matWire = new THREE.MeshBasicMaterial({
+                color: 0xff4d6d,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.8
+            });
+            const wireSphere = new THREE.Mesh(geoWire, matWire);
+            pivot.add(wireSphere);
+            console.log('Pink wireframe added');
+
+            // Core sphere (DARK)
+            const geoCore = new THREE.SphereGeometry(4.9, 24, 24);
+            const matCore = new THREE.MeshBasicMaterial({
+                color: 0x2b0a12
+            });
+            const coreSphere = new THREE.Mesh(geoCore, matCore);
+            pivot.add(coreSphere);
+            console.log('Dark core added');
+
+            // Add pins
+            LORE.mapPoints.forEach(pt => {
+                const phi = (90 - pt.lat) * (Math.PI / 180);
+                const theta = (pt.lon + 180) * (Math.PI / 180);
+                const radius = 5;
+
+                const x = -(radius * Math.sin(phi) * Math.cos(theta));
+                const z = (radius * Math.sin(phi) * Math.sin(theta));
+                const y = (radius * Math.cos(phi));
+
+                const geometry = new THREE.SphereGeometry(0.2, 8, 8);
+                const material = new THREE.MeshBasicMaterial({ color: pt.color });
+                const pin = new THREE.Mesh(geometry, material);
+                pin.position.set(x, y, z);
+                pivot.add(pin);
+                console.log(`Pin added: ${pt.title} at (${x.toFixed(2)}, ${y.toFixed(2)}, ${z.toFixed(2)})`);
+            });
+
+            // Animation loop
+            function animate() {
+                requestAnimationFrame(animate);
+                pivot.rotation.y += 0.003;
+                pivot.rotation.x += 0.001;
+                renderer.render(scene, camera);
+            }
+            animate();
+            console.log('Animation started');
+        });
+    </script>
+</body>
+</html>

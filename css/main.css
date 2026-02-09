@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+:root {
+    --bg-color: #ffc2d1;       
+    --win-bg: #ffe5ec;         
+    --win-border-light: #fff;  
+    --win-border-dark: #fb6f92;
+    --text-main: #590d22;      
+    --accent: #ff4d6d;         
+}
+
+* { box-sizing: border-box; cursor: default; user-select: none; }
+
+body {
+    margin: 0; padding: 0;
+    font-family: 'VT323', monospace;
+    background-color: #000;
+    height: 100vh; width: 100vw;
+    overflow: hidden;
+    color: var(--text-main);
+    /* The Glow Effect on Text */
+    text-shadow: 0 0 2px rgba(255, 77, 109, 0.4);
+}
+
+.hidden { display: none !important; }
+
+/* --- CRT SCANLINE FILTER (The Retro Look) --- */
+body::before {
+    content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+    z-index: 99999; background-size: 100% 2px, 3px 100%; pointer-events: none; opacity: 0.6;
+}
+/* Screen Vignette (Dark Corners) */
+body::after {
+    content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0;
+    background: radial-gradient(circle, transparent 60%, rgba(0,0,0,0.4) 100%);
+    z-index: 99999; pointer-events: none;
+}
