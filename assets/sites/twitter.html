@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HeartTweet - Social Feed</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'VT323', monospace;
+        }
+        
+        body {
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        /* Header */
+        .twitter-header {
+            background: rgba(29, 155, 240, 0.1);
+            border-bottom: 3px solid #1d9bf0;
+            padding: 15px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            color: #1d9bf0;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-tab {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            padding: 10px 20px;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .nav-tab.active {
+            color: #fff;
+            border-bottom-color: #1d9bf0;
+        }
+        
+        .nav-tab:hover {
+            color: #fff;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .tweet-btn {
+            background: #1d9bf0;
+            color: #fff;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            cursor: pointer;
+            border: 2px solid #1d9bf0;
+            transition: all 0.3s;
+        }
+        
+        .tweet-btn:hover {
+            background: #1a8cd8;
+            transform: scale(1.05);
+        }
+        
+        /* Main Layout */
+        .main-layout {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 300px 1fr 350px;
+            gap: 30px;
+            padding: 20px;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+        }
+        
+        .sidebar-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(29, 155, 240, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #1d9bf0;
+        }
+        
+        .trend-item {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+        }
+        
+        .trend-item:last-child {
+            border-bottom: none;
+        }
+        
+        .trend-category {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .trend-tag {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        
+        .trend-count {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Feed */
+        .feed {
+            border-left: 2px solid rgba(29, 155, 240, 0.3);
+            border-right: 2px solid rgba(29, 155, 240, 0.3);
+        }
+        
+        /* Tweet Composer */
+        .tweet-composer {
+            padding: 20px;
+            border-bottom: 2px solid rgba(29, 155, 240, 0.3);
+        }
+        
+        .composer-input {
+            width: 100%;
+            background: transparent;
+            border: 2px solid rgba(29, 155, 240, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            color: #fff;
+            font-size: 1.4rem;
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .composer-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .composer-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+        
+        .composer-icons {
+            display: flex;
+            gap: 15px;
+            font-size: 1.5rem;
+            color: #1d9bf0;
+        }
+        
+        .composer-icon {
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .composer-icon:hover {
+            transform: scale(1.2);
+        }
+        
+        /* Tweet Card */
+        .tweet {
+            padding: 20px;
+            border-bottom: 2px solid rgba(29, 155, 240, 0.3);
+            transition: all 0.3s;
+        }
+        
+        .tweet:hover {
+            background: rgba(29, 155, 240, 0.05);
+        }
+        
+        .tweet-header {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .tweet-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid #1d9bf0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+        
+        .tweet-author-info {
+            flex: 1;
+        }
+        
+        .tweet-author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .author-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .author-handle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .tweet-time {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .tweet-content {
+            font-size: 1.4rem;
+            line-height: 1.6;
+            margin: 15px 0;
+        }
+        
+        .tweet-hashtag {
+            color: #1d9bf0;
+            cursor: pointer;
+        }
+        
+        .tweet-actions {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .action {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            font-size: 1.3rem;
+            transition: all 0.3s;
+        }
+        
+        .action:hover {
+            color: #1d9bf0;
+        }
+        
+        .action.liked {
+            color: #f91880;
+        }
+        
+        .verified-badge {
+            color: #1d9bf0;
+            font-size: 1.2rem;
+        }
+        
+        /* Who to Follow */
+        .follow-card {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .follow-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #1d9bf0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+        
+        .follow-info {
+            flex: 1;
+        }
+        
+        .follow-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+        
+        .follow-handle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .follow-btn {
+            background: #1d9bf0;
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+        
+        .follow-btn:hover {
+            background: #1a8cd8;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="twitter-header">
+        <div class="header-left">
+            <div class="logo">🐦 HeartTweet</div>
+            <div class="nav-tabs">
+                <div class="nav-tab active">For You</div>
+                <div class="nav-tab">Following</div>
+                <div class="nav-tab">Explore</div>
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="tweet-btn">💕 Post</button>
+        </div>
+    </div>
+    
+    <!-- Main Layout -->
+    <div class="main-layout">
+        <!-- Left Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-section">
+                <div class="section-title">🔥 Trending Now</div>
+                
+                <div class="trend-item">
+                    <div class="trend-category">Travel • Trending</div>
+                    <div class="trend-tag">#LongDistanceLove</div>
+                    <div class="trend-count">12.5K posts</div>
+                </div>
+                
+                <div class="trend-item">
+                    <div class="trend-category">Relationships • Hot</div>
+                    <div class="trend-tag">#TogetherApart</div>
+                    <div class="trend-count">8.2K posts</div>
+                </div>
+                
+                <div class="trend-item">
+                    <div class="trend-category">Europe • Trending</div>
+                    <div class="trend-tag">#PragueLife</div>
+                    <div class="trend-count">15.7K posts</div>
+                </div>
+                
+                <div class="trend-item">
+                    <div class="trend-category">Africa • Popular</div>
+                    <div class="trend-tag">#CapeTownMagic</div>
+                    <div class="trend-count">9.1K posts</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Feed -->
+        <div class="feed">
+            <!-- Tweet Composer -->
+            <div class="tweet-composer">
+                <textarea class="composer-input" placeholder="What's happening in your journey?"></textarea>
+                <div class="composer-actions">
+                    <div class="composer-icons">
+                        <span class="composer-icon">📷</span>
+                        <span class="composer-icon">🎬</span>
+                        <span class="composer-icon">📊</span>
+                        <span class="composer-icon">😊</span>
+                        <span class="composer-icon">📍</span>
+                    </div>
+                    <button class="tweet-btn">Post</button>
+                </div>
+            </div>
+            
+            <!-- Tweet 1 -->
+            <div class="tweet">
+                <div class="tweet-header">
+                    <div class="tweet-avatar" style="background: linear-gradient(135deg, #667eea, #764ba2);">🇨🇿</div>
+                    <div class="tweet-author-info">
+                        <div class="tweet-author">
+                            <span class="author-name">Prague Wanderer</span>
+                            <span class="verified-badge">✓</span>
+                            <span class="author-handle">@prague_dreams</span>
+                            <span class="tweet-time">• 2h</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tweet-content">
+                    Nothing beats walking through Prague's old town at sunset 🌇 The cobblestone streets, the castle views, and having someone special by your side makes it all perfect. Sometimes home isn't a place, it's a person. 💕
+                    <br><br>
+                    <span class="tweet-hashtag">#Prague</span> <span class="tweet-hashtag">#TravelLove</span> <span class="tweet-hashtag">#HeartOS</span>
+                </div>
+                <div class="tweet-actions">
+                    <div class="action">💬 42</div>
+                    <div class="action">🔁 18</div>
+                    <div class="action liked">❤️ 234</div>
+                    <div class="action">📊 1.2K</div>
+                    <div class="action">↗️</div>
+                </div>
+            </div>
+            
+            <!-- Tweet 2 -->
+            <div class="tweet">
+                <div class="tweet-header">
+                    <div class="tweet-avatar" style="background: linear-gradient(135deg, #f093fb, #f5576c);">🇿🇦</div>
+                    <div class="tweet-author-info">
+                        <div class="tweet-author">
+                            <span class="author-name">Cape Town Adventures</span>
+                            <span class="verified-badge">✓</span>
+                            <span class="author-handle">@ct_explorer</span>
+                            <span class="tweet-time">• 5h</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tweet-content">
+                    Just witnessed the most incredible sunset from Signal Hill! 🌅 Cape Town really knows how to put on a show. Missing my person who's 9,500km away but feeling connected through shared sunsets (even if they're 2 hours apart) 💫
+                    <br><br>
+                    <span class="tweet-hashtag">#CapeTown</span> <span class="tweet-hashtag">#LongDistance</span> <span class="tweet-hashtag">#SunsetViews</span>
+                </div>
+                <div class="tweet-actions">
+                    <div class="action">💬 67</div>
+                    <div class="action">🔁 89</div>
+                    <div class="action liked">❤️ 456</div>
+                    <div class="action">📊 2.1K</div>
+                    <div class="action">↗️</div>
+                </div>
+            </div>
+            
+            <!-- Tweet 3 -->
+            <div class="tweet">
+                <div class="tweet-header">
+                    <div class="tweet-avatar" style="background: linear-gradient(135deg, #fa709a, #fee140);">✈️</div>
+                    <div class="tweet-author-info">
+                        <div class="tweet-author">
+                            <span class="author-name">Distance Doesn't Matter</span>
+                            <span class="verified-badge">✓</span>
+                            <span class="author-handle">@love_unlimited</span>
+                            <span class="tweet-time">• 1d</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tweet-content">
+                    Hot take: Long distance relationships aren't harder, they just require different strengths. 💪 You learn patience, trust, and how to make every moment count. Plus, airport reunions hit different. 🛫💕
+                    <br><br>
+                    Who else is in the timezone struggle gang? 🙋
+                    <br><br>
+                    <span class="tweet-hashtag">#LDR</span> <span class="tweet-hashtag">#RelationshipGoals</span> <span class="tweet-hashtag">#WorthIt</span>
+                </div>
+                <div class="tweet-actions">
+                    <div class="action">💬 128</div>
+                    <div class="action">🔁 234</div>
+                    <div class="action liked">❤️ 892</div>
+                    <div class="action">📊 4.5K</div>
+                    <div class="action">↗️</div>
+                </div>
+            </div>
+            
+            <!-- Tweet 4 -->
+            <div class="tweet">
+                <div class="tweet-header">
+                    <div class="tweet-avatar" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">🐧</div>
+                    <div class="tweet-author-info">
+                        <div class="tweet-author">
+                            <span class="author-name">Boulders Beach Penguins</span>
+                            <span class="verified-badge">✓</span>
+                            <span class="author-handle">@penguin_waddle</span>
+                            <span class="tweet-time">• 2d</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tweet-content">
+                    PSA: If you haven't visited Boulders Beach to see us waddle around, are you even living? 🐧 We're basically the cutest residents of Cape Town (don't @ us, seals). Come say hi! 
+                    <br><br>
+                    <span class="tweet-hashtag">#BouldersBeach</span> <span class="tweet-hashtag">#Penguins</span> <span class="tweet-hashtag">#CapeTown</span>
+                </div>
+                <div class="tweet-actions">
+                    <div class="action">💬 95</div>
+                    <div class="action">🔁 156</div>
+                    <div class="action liked">❤️ 678</div>
+                    <div class="action">📊 3.2K</div>
+                    <div class="action">↗️</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-section">
+                <div class="section-title">💕 Who to Follow</div>
+                
+                <div class="follow-card">
+                    <div class="follow-avatar" style="background: #667eea;">🏰</div>
+                    <div class="follow-info">
+                        <div class="follow-name">Prague Castle</div>
+                        <div class="follow-handle">@official_castle</div>
+                    </div>
+                    <button class="follow-btn">Follow</button>
+                </div>
+                
+                <div class="follow-card">
+                    <div class="follow-avatar" style="background: #f093fb;">🏔️</div>
+                    <div class="follow-info">
+                        <div class="follow-name">Table Mountain</div>
+                        <div class="follow-handle">@tablemtn</div>
+                    </div>
+                    <button class="follow-btn">Follow</button>
+                </div>
+                
+                <div class="follow-card">
+                    <div class="follow-avatar" style="background: #43e97b;">💑</div>
+                    <div class="follow-info">
+                        <div class="follow-name">Couple Goals Daily</div>
+                        <div class="follow-handle">@couplegoals</div>
+                    </div>
+                    <button class="follow-btn">Follow</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

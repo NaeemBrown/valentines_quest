@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>YouTube</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: Roboto, Arial, sans-serif;
+            background: #0f0f0f;
+            color: #fff;
+        }
+
+        /* HEADER */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: #0f0f0f;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .menu-icon {
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: #fff;
+        }
+
+        .logo-icon {
+            background: #ff0000;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .header-center {
+            flex: 1;
+            max-width: 640px;
+            margin: 0 40px;
+        }
+
+        .search-container {
+            display: flex;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px;
+            background: #121212;
+            border: 1px solid #303030;
+            border-right: none;
+            border-radius: 40px 0 0 40px;
+            color: #fff;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: #1c62b9;
+        }
+
+        .search-btn {
+            padding: 0 20px;
+            background: #222;
+            border: 1px solid #303030;
+            border-radius: 0 40px 40px 0;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-icon {
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .profile-pic {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 56px;
+            width: 240px;
+            height: calc(100vh - 56px);
+            background: #0f0f0f;
+            overflow-y: auto;
+            padding: 12px 0;
+            border-right: 1px solid #3f3f3f;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 10px 24px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .sidebar-item:hover,
+        .sidebar-item.active {
+            background: #272727;
+        }
+
+        .sidebar-item.active {
+            font-weight: 500;
+        }
+
+        .sidebar-icon {
+            font-size: 1.5rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar-divider {
+            height: 1px;
+            background: #3f3f3f;
+            margin: 12px 0;
+        }
+
+        .sidebar-title {
+            padding: 8px 24px;
+            font-size: 0.875rem;
+            color: #aaa;
+            text-transform: uppercase;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .subscription-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 8px 24px;
+            cursor: pointer;
+        }
+
+        .subscription-item:hover {
+            background: #272727;
+        }
+
+        .sub-pic {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            margin-left: 240px;
+            padding: 24px;
+        }
+
+        .chips {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .chip {
+            padding: 8px 16px;
+            background: #272727;
+            border-radius: 8px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 0.875rem;
+        }
+
+        .chip:hover,
+        .chip.active {
+            background: #f1f1f1;
+            color: #0f0f0f;
+        }
+
+        /* VIDEO GRID */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 16px;
+        }
+
+        .video-card {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .video-card:hover {
+            transform: scale(1.02);
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            position: relative;
+            margin-bottom: 12px;
+        }
+
+        .video-duration {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: rgba(0,0,0,0.8);
+            padding: 2px 4px;
+            border-radius: 2px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .video-info {
+            display: flex;
+            gap: 12px;
+        }
+
+        .channel-pic {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .video-details {
+            flex: 1;
+        }
+
+        .video-title {
+            font-size: 0.95rem;
+            font-weight: 500;
+            line-height: 1.4;
+            margin-bottom: 4px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .video-channel {
+            font-size: 0.875rem;
+            color: #aaa;
+        }
+
+        .video-meta {
+            font-size: 0.875rem;
+            color: #aaa;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0f0f0f;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #3f3f3f;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-left">
+            <div class="menu-icon">☰</div>
+            <div class="logo">
+                <span class="logo-icon">▶</span>
+                YouTube
+            </div>
+        </div>
+        <div class="header-center">
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search">
+                <button class="search-btn">🔍</button>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="header-icon">📹</div>
+            <div class="header-icon">🔔</div>
+            <div class="profile-pic">A</div>
+        </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="sidebar-item active">
+            <span class="sidebar-icon">🏠</span>
+            <span>Home</span>
+        </div>
+        <div class="sidebar-item">
+            <span class="sidebar-icon">🎬</span>
+            <span>Shorts</span>
+        </div>
+        <div class="sidebar-item">
+            <span class="sidebar-icon">📺</span>
+            <span>Subscriptions</span>
+        </div>
+        
+        <div class="sidebar-divider"></div>
+        
+        <div class="sidebar-item">
+            <span class="sidebar-icon">🎵</span>
+            <span>YouTube Music</span>
+        </div>
+        <div class="sidebar-item">
+            <span class="sidebar-icon">📚</span>
+            <span>Library</span>
+        </div>
+        <div class="sidebar-item">
+            <span class="sidebar-icon">🕒</span>
+            <span>History</span>
+        </div>
+        
+        <div class="sidebar-divider"></div>
+        
+        <div class="sidebar-title">Subscriptions</div>
+        
+        <div class="subscription-item">
+            <div class="sub-pic" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);">D</div>
+            <span>The Daily Glow</span>
+        </div>
+        <div class="subscription-item">
+            <div class="sub-pic" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">V</div>
+            <span>Viky Fitness</span>
+        </div>
+        <div class="subscription-item">
+            <div class="sub-pic" style="background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);">B</div>
+            <span>BookTube</span>
+        </div>
+        <div class="subscription-item">
+            <div class="sub-pic" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">C</div>
+            <span>Czech for Beginners</span>
+        </div>
+        <div class="subscription-item">
+            <div class="sub-pic" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">T</div>
+            <span>Travel Prague</span>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <div class="chips">
+            <div class="chip active">All</div>
+            <div class="chip">Skincare</div>
+            <div class="chip">Books</div>
+            <div class="chip">Fitness</div>
+            <div class="chip">Czech Language</div>
+            <div class="chip">Red Pandas</div>
+            <div class="chip">Travel</div>
+            <div class="chip">Whippets</div>
+            <div class="chip">Minimalism</div>
+        </div>
+
+        <div class="video-grid" id="video-grid">
+        </div>
+    </div>
+
+    <script>
+        function createVideo(data) {
+            return `
+                <div class="video-card">
+                    <div class="video-thumbnail" style="background: ${data.thumbBg};">
+                        ${data.thumbEmoji}
+                        <div class="video-duration">${data.duration}</div>
+                    </div>
+                    <div class="video-info">
+                        <div class="channel-pic" style="background: ${data.channelBg};">
+                            ${data.channelEmoji}
+                        </div>
+                        <div class="video-details">
+                            <div class="video-title">${data.title}</div>
+                            <div class="video-channel">${data.channel}</div>
+                            <div class="video-meta">${data.views} views • ${data.time}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        window.addEventListener('DOMContentLoaded', function() {
+            const videos = [
+                createVideo({
+                    title: 'My Low-Buy Year: 2 Month Update | Saved $400!',
+                    channel: 'The Daily Glow',
+                    channelEmoji: '✨',
+                    channelBg: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)',
+                    views: '127K',
+                    time: '2 days ago',
+                    duration: '12:45',
+                    thumbEmoji: '💄',
+                    thumbBg: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)'
+                }),
+                createVideo({
+                    title: 'Fourth Wing Book Review (NO SPOILERS!) 🐉',
+                    channel: 'BookTube Reviews',
+                    channelEmoji: '📚',
+                    channelBg: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)',
+                    views: '89K',
+                    time: '1 week ago',
+                    duration: '15:22',
+                    thumbEmoji: '🐉',
+                    thumbBg: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)'
+                }),
+                createVideo({
+                    title: 'Full Body Workout at Home | 30 Minutes',
+                    channel: 'Viky Fitness',
+                    channelEmoji: '💪',
+                    channelBg: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+                    views: '234K',
+                    time: '3 days ago',
+                    duration: '30:12',
+                    thumbEmoji: '🏋️',
+                    thumbBg: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
+                }),
+                createVideo({
+                    title: 'Learn Czech in 10 Minutes - Basic Phrases 🇨🇿',
+                    channel: 'Czech for Beginners',
+                    channelEmoji: '🇨🇿',
+                    channelBg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    views: '456K',
+                    time: '2 weeks ago',
+                    duration: '10:34',
+                    thumbEmoji: '🗣️',
+                    thumbBg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+                }),
+                createVideo({
+                    title: 'Red Panda Compilation - Cutest Moments! 🐼',
+                    channel: 'Wildlife Wonders',
+                    channelEmoji: '🐾',
+                    channelBg: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+                    views: '2.3M',
+                    time: '1 month ago',
+                    duration: '8:45',
+                    thumbEmoji: '🐼',
+                    thumbBg: 'linear-gradient(135deg, #ff6b6b 0%, #feca57 100%)'
+                }),
+                createVideo({
+                    title: 'Prague Travel Guide 2025 | Hidden Gems',
+                    channel: 'Travel Prague',
+                    channelEmoji: '🏰',
+                    channelBg: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                    views: '567K',
+                    time: '3 weeks ago',
+                    duration: '18:30',
+                    thumbEmoji: '🌉',
+                    thumbBg: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
+                }),
+                createVideo({
+                    title: 'Whippet Puppy Training | First 8 Weeks',
+                    channel: 'Dog Training Basics',
+                    channelEmoji: '🐕',
+                    channelBg: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)',
+                    views: '178K',
+                    time: '1 week ago',
+                    duration: '14:20',
+                    thumbEmoji: '🦌',
+                    thumbBg: 'linear-gradient(135deg, #d4a5a5 0%, #e9defa 100%)'
+                }),
+                createVideo({
+                    title: '10 Step Korean Skincare Routine Explained',
+                    channel: 'The Daily Glow',
+                    channelEmoji: '✨',
+                    channelBg: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)',
+                    views: '892K',
+                    time: '2 months ago',
+                    duration: '16:45',
+                    thumbEmoji: '🧴',
+                    thumbBg: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)'
+                }),
+                createVideo({
+                    title: 'Floorball Tips & Tricks for Beginners',
+                    channel: 'Sport Skills',
+                    channelEmoji: '🏑',
+                    channelBg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    views: '45K',
+                    time: '2 weeks ago',
+                    duration: '11:20',
+                    thumbEmoji: '🏑',
+                    thumbBg: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
+                }),
+                createVideo({
+                    title: 'Book Haul February 2025 | Fantasy Romance',
+                    channel: 'BookTube Reviews',
+                    channelEmoji: '📚',
+                    channelBg: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)',
+                    views: '123K',
+                    time: '1 week ago',
+                    duration: '9:15',
+                    thumbEmoji: '📖',
+                    thumbBg: 'linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%)'
+                }),
+                createVideo({
+                    title: 'Minimalist Home Tour 2025 | Less is More',
+                    channel: 'Simple Living',
+                    channelEmoji: '🏡',
+                    channelBg: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
+                    views: '678K',
+                    time: '3 weeks ago',
+                    duration: '13:50',
+                    thumbEmoji: '🌿',
+                    thumbBg: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)'
+                }),
+                createVideo({
+                    title: 'That Girl Morning Routine | Productive & Healthy',
+                    channel: 'Aesthetic Life',
+                    channelEmoji: '☀️',
+                    channelBg: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)',
+                    views: '1.2M',
+                    time: '1 month ago',
+                    duration: '10:30',
+                    thumbEmoji: '🌅',
+                    thumbBg: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
+                })
+            ];
+            
+            document.getElementById('video-grid').innerHTML = videos.join('');
+        });
+    </script>
+</body>
+</html>

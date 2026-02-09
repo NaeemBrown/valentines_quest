@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HeartedIn - Professional Network</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'VT323', monospace;
+        }
+        
+        body {
+            background: #0a66c2;
+            color: #000;
+            overflow-x: hidden;
+        }
+        
+        /* Header */
+        .linkedin-header {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 3px solid #0a66c2;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            color: #0a66c2;
+            font-weight: bold;
+        }
+        
+        .search-bar {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 20px;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 1.3rem;
+            width: 300px;
+        }
+        
+        .search-bar::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-item {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .nav-item:hover {
+            color: #fff;
+            transform: translateY(-2px);
+        }
+        
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 250px 1fr 300px;
+            gap: 20px;
+        }
+        
+        /* Profile Card */
+        .profile-card {
+            background: #fff;
+            border: 3px solid #000;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.3);
+        }
+        
+        .profile-banner {
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            margin: -50px auto 10px;
+            display: block;
+            background: #ff4d6d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+        
+        .profile-info {
+            padding: 10px 20px 20px;
+            text-align: center;
+        }
+        
+        .profile-name {
+            font-size: 1.6rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .profile-title {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .profile-stats {
+            border-top: 2px solid #eee;
+            padding-top: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .stat-item {
+            margin: 8px 0;
+            color: #0a66c2;
+            cursor: pointer;
+        }
+        
+        /* Feed */
+        .feed-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .post-card {
+            background: #fff;
+            border: 3px solid #000;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.2);
+        }
+        
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .post-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid #0a66c2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .post-author {
+            flex: 1;
+        }
+        
+        .author-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .author-info {
+            font-size: 1.1rem;
+            color: #666;
+        }
+        
+        .post-content {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .post-actions {
+            display: flex;
+            gap: 20px;
+            padding-top: 15px;
+            border-top: 2px solid #eee;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 10px;
+            background: transparent;
+            border: 2px solid #0a66c2;
+            border-radius: 4px;
+            color: #0a66c2;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .action-btn:hover {
+            background: #0a66c2;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+        
+        /* Sidebar */
+        .sidebar-card {
+            background: #fff;
+            border: 3px solid #000;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+        
+        .sidebar-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .connection-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .connection-item:hover {
+            background: rgba(10, 102, 194, 0.1);
+        }
+        
+        .connection-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #0a66c2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .connection-name {
+            font-size: 1.2rem;
+        }
+        
+        /* Retro effects */
+        @keyframes pixelPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .premium-badge {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #000;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 1rem;
+            display: inline-block;
+            animation: pixelPulse 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="linkedin-header">
+        <div class="header-left">
+            <div class="logo">💼 HeartedIn</div>
+            <input type="text" class="search-bar" placeholder="Search connections...">
+        </div>
+        <div class="nav-menu">
+            <div class="nav-item">🏠 Home</div>
+            <div class="nav-item">👥 Network</div>
+            <div class="nav-item">💼 Jobs</div>
+            <div class="nav-item">💬 Messages</div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Left Sidebar - Profile -->
+        <div>
+            <div class="profile-card">
+                <div class="profile-banner"></div>
+                <div class="profile-avatar">💕</div>
+                <div class="profile-info">
+                    <div class="profile-name">Our Journey</div>
+                    <div class="profile-title">Professional Adventurers</div>
+                    <div class="profile-stats">
+                        <div class="stat-item">💼 Connections: ∞</div>
+                        <div class="stat-item">🌍 Locations: 2</div>
+                        <div class="stat-item">⭐ Endorsements: Unlimited</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Feed -->
+        <div class="feed-container">
+            <!-- Create Post -->
+            <div class="post-card">
+                <textarea style="width: 100%; padding: 15px; font-size: 1.3rem; font-family: 'VT323', monospace; border: 2px solid #eee; border-radius: 4px; resize: vertical;" rows="3" placeholder="Share an update about your journey..."></textarea>
+                <div style="margin-top: 10px;">
+                    <button class="action-btn" style="flex: none; width: auto; padding: 10px 30px;">Post Update</button>
+                </div>
+            </div>
+            
+            <!-- Post 1 -->
+            <div class="post-card">
+                <div class="post-header">
+                    <div class="post-avatar">🇨🇿</div>
+                    <div class="post-author">
+                        <div class="author-name">Prague Adventures <span class="premium-badge">✨ PRO</span></div>
+                        <div class="author-info">Current Location • 2h ago</div>
+                    </div>
+                </div>
+                <div class="post-content">
+                    Excited to share that I'm currently exploring the beautiful streets of Prague! The architecture, the culture, the food - everything is amazing. Special shoutout to my travel companion who makes every moment memorable. 🏰❤️
+                    <br><br>
+                    #TravelGoals #PragueLife #AdventureTogether
+                </div>
+                <div class="post-actions">
+                    <button class="action-btn">👍 Like</button>
+                    <button class="action-btn">💬 Comment</button>
+                    <button class="action-btn">↗️ Share</button>
+                </div>
+            </div>
+            
+            <!-- Post 2 -->
+            <div class="post-card">
+                <div class="post-header">
+                    <div class="post-avatar" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">🇿🇦</div>
+                    <div class="post-author">
+                        <div class="author-name">Cape Town Memories</div>
+                        <div class="author-info">Travel Highlights • 1 week ago</div>
+                    </div>
+                </div>
+                <div class="post-content">
+                    Just wrapped up an incredible adventure in Cape Town! From penguin encounters at Boulders Beach to breathtaking views at Table Mountain, every day was filled with wonder. Can't wait for the next chapter! 🐧🌊
+                    <br><br>
+                    #CapeTown #SouthAfrica #TravelDiaries
+                </div>
+                <div class="post-actions">
+                    <button class="action-btn">👍 Like</button>
+                    <button class="action-btn">💬 Comment</button>
+                    <button class="action-btn">↗️ Share</button>
+                </div>
+            </div>
+            
+            <!-- Post 3 -->
+            <div class="post-card">
+                <div class="post-header">
+                    <div class="post-avatar" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">✈️</div>
+                    <div class="post-author">
+                        <div class="author-name">Long Distance Love</div>
+                        <div class="author-info">Relationship Goals • 3 days ago</div>
+                    </div>
+                </div>
+                <div class="post-content">
+                    9,500 kilometers apart but never closer at heart. Celebrating another milestone in our journey together. Distance is just a number when you've found the one. 💕✨
+                    <br><br>
+                    #LongDistance #LoveWins #TogetherApart
+                </div>
+                <div class="post-actions">
+                    <button class="action-btn">👍 Like (127)</button>
+                    <button class="action-btn">💬 Comment (43)</button>
+                    <button class="action-btn">↗️ Share</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Sidebar -->
+        <div>
+            <div class="sidebar-card">
+                <div class="sidebar-title">🌟 Suggested Connections</div>
+                
+                <div class="connection-item">
+                    <div class="connection-avatar" style="background: #667eea;">🏔️</div>
+                    <div class="connection-name">Tarzánie Adventures</div>
+                </div>
+                
+                <div class="connection-item">
+                    <div class="connection-avatar" style="background: #f093fb;">🎨</div>
+                    <div class="connection-name">Brno Culture</div>
+                </div>
+                
+                <div class="connection-item">
+                    <div class="connection-avatar" style="background: #4facfe;">🌊</div>
+                    <div class="connection-name">Kalk Bay Vibes</div>
+                </div>
+            </div>
+            
+            <div class="sidebar-card">
+                <div class="sidebar-title">📰 Trending Topics</div>
+                <div style="font-size: 1.2rem; line-height: 2;">
+                    <div style="margin: 10px 0; color: #0a66c2; cursor: pointer;">#TravelCouples</div>
+                    <div style="margin: 10px 0; color: #0a66c2; cursor: pointer;">#DigitalNomads</div>
+                    <div style="margin: 10px 0; color: #0a66c2; cursor: pointer;">#EuropeTravels</div>
+                    <div style="margin: 10px 0; color: #0a66c2; cursor: pointer;">#AfricaAdventure</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

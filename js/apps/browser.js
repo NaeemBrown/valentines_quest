@@ -1,36 +1,63 @@
+// @ts-nocheck
 /* js/apps/browser.js - RETRO INTERNET EXPLORER */
 const BROWSER = {
     currentTab: 0,
     tabs: [],
     history: [],
     searchHistory: [],
+    zoomLevel: 100,
 
     init: function() {
         console.log('🌐 BROWSER.init() called');
         
-        // Define default tabs
+        // Define default tabs - ONLY HOME TAB
         this.tabs = [
             {
                 title: "💕 Home",
                 type: "custom",
                 content: this.renderHomepage()
-            },
-            {
-                title: "📧 Gmail",
-                type: "iframe",
-                url: "https://mail.google.com"
-            },
-            {
-                title: "💬 WhatsApp",
-                type: "iframe",
-                url: "https://web.whatsapp.com"
             }
         ];
 
-        // Load search history from localStorage
-        const saved = localStorage.getItem('browserSearchHistory');
-        if (saved) {
-            this.searchHistory = JSON.parse(saved);
+        // Load search history from localStorage (with error handling)
+        try {
+            const saved = localStorage.getItem('browserSearchHistory');
+            if (saved) {
+                this.searchHistory = JSON.parse(saved);
+            }
+        } catch(e) {
+            console.log('Could not load search history');
+            this.searchHistory = [];
+        }
+
+        // Setup keyboard shortcuts for zoom
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                if (e.key === '=' || e.key === '+') {
+                    e.preventDefault();
+                    this.zoomIn();
+                } else if (e.key === '-') {
+                    e.preventDefault();
+                    this.zoomOut();
+                } else if (e.key === '0') {
+                    e.preventDefault();
+                    this.resetZoom();
+                }
+            }
+        });
+
+        // Don't render yet - wait for window to open
+        console.log('Browser initialized, waiting for window open');
+    },
+
+    // NEW: Render when window opens
+    renderOnOpen: function() {
+        console.log('🌐 Rendering browser interface');
+        const container = document.getElementById('browser-content');
+        
+        if (!container) {
+            console.error('Browser container not found!');
+            return;
         }
 
         this.renderBrowser();
@@ -56,6 +83,12 @@ const BROWSER = {
                                onkeypress="if(event.key==='Enter') BROWSER.search()">
                         <button class="browser-btn go-btn" onclick="BROWSER.search()">GO</button>
                     </div>
+                    <div class="browser-zoom-controls">
+                        <button class="browser-btn" onclick="BROWSER.zoomOut()" title="Zoom Out (Ctrl -)">🔍−</button>
+                        <span class="zoom-level" id="zoom-level">100%</span>
+                        <button class="browser-btn" onclick="BROWSER.zoomIn()" title="Zoom In (Ctrl +)">🔍+</button>
+                        <button class="browser-btn" onclick="BROWSER.resetZoom()" title="Reset Zoom (Ctrl 0)">⟲</button>
+                    </div>
                 </div>
 
                 <!-- Tab Bar -->
@@ -71,6 +104,8 @@ const BROWSER = {
 
     renderTabs: function() {
         const tabBar = document.getElementById('browser-tabs');
+        if (!tabBar) return;
+        
         tabBar.innerHTML = '';
 
         this.tabs.forEach((tab, index) => {
@@ -100,14 +135,18 @@ const BROWSER = {
         
         // Update address bar
         const urlInput = document.getElementById('browser-url');
-        if (tab.type === 'iframe') {
-            urlInput.value = tab.url.replace('https://', '');
-        } else {
-            urlInput.value = 'heartos.love';
+        if (urlInput) {
+            if (tab.type === 'iframe') {
+                urlInput.value = tab.url.replace('https://', '');
+            } else {
+                urlInput.value = 'heartos.love';
+            }
         }
 
         // Render content
         const viewport = document.getElementById('browser-viewport');
+        if (!viewport) return;
+        
         if (tab.type === 'iframe') {
             viewport.innerHTML = `
                 <iframe 
@@ -116,6 +155,8 @@ const BROWSER = {
                     sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
                 ></iframe>
             `;
+            // Apply zoom after a short delay to ensure iframe is loaded
+            setTimeout(() => this.applyZoom(), 100);
         } else if (tab.type === 'search') {
             viewport.innerHTML = this.renderSearchResults(tab.query);
         } else {
@@ -147,83 +188,67 @@ const BROWSER = {
             type: "custom",
             content: this.renderHomepage()
         });
+        
         this.switchTab(this.tabs.length - 1);
     },
 
     back: function() {
-        SYSTEM.playAudio('click-sound');
-        if (this.currentTab > 0) {
-            this.switchTab(this.currentTab - 1);
-        }
+        alert('Back button - history coming soon!');
     },
 
     forward: function() {
-        SYSTEM.playAudio('click-sound');
-        if (this.currentTab < this.tabs.length - 1) {
-            this.switchTab(this.currentTab + 1);
-        }
+        alert('Forward button - history coming soon!');
     },
 
     refresh: function() {
-        SYSTEM.playAudio('click-sound');
         this.switchTab(this.currentTab);
     },
 
     home: function() {
-        this.switchTab(0);
+        this.tabs[this.currentTab] = {
+            title: "💕 Home",
+            type: "custom",
+            content: this.renderHomepage()
+        };
+        this.switchTab(this.currentTab);
     },
 
     search: function() {
-        const query = document.getElementById('browser-url').value.trim();
+        const input = document.getElementById('browser-url');
+        const query = input.value.trim();
+        
         if (!query) return;
 
-        // Add to search history
+        // Save to search history
         if (!this.searchHistory.includes(query)) {
             this.searchHistory.unshift(query);
             if (this.searchHistory.length > 10) {
-                this.searchHistory.pop();
+                this.searchHistory = this.searchHistory.slice(0, 10);
             }
-            localStorage.setItem('browserSearchHistory', JSON.stringify(this.searchHistory));
+            try {
+                localStorage.setItem('browserSearchHistory', JSON.stringify(this.searchHistory));
+            } catch(e) {
+                console.log('Could not save search history');
+            }
         }
 
-        // Check if it's a URL
-        if (query.includes('.') && !query.includes(' ')) {
-            // Open as new tab
-            const url = query.startsWith('http') ? query : 'https://' + query;
-            this.tabs[this.currentTab] = {
-                title: query.split('.')[0],
-                type: 'iframe',
-                url: url
-            };
-        } else {
-            // Search query
-            this.tabs[this.currentTab] = {
-                title: "🔍 " + query.substring(0, 20),
-                type: 'search',
-                query: query
-            };
-        }
-
+        this.tabs[this.currentTab] = {
+            title: `🔍 ${query}`,
+            type: "search",
+            query: query
+        };
+        
         this.switchTab(this.currentTab);
-        SYSTEM.playAudio('click-sound');
     },
 
     quickLink: function(title, url) {
-        // Check if tab already exists
-        const existingIndex = this.tabs.findIndex(t => t.url === url);
-        if (existingIndex >= 0) {
-            this.switchTab(existingIndex);
-        } else {
-            this.tabs.push({
-                title: title,
-                type: 'iframe',
-                url: url
-            });
-            this.switchTab(this.tabs.length - 1);
-        }
+        this.tabs[this.currentTab] = {
+            title: title,
+            type: "iframe",
+            url: url
+        };
+        this.switchTab(this.currentTab);
     },
-
-    // ==================== CUSTOM PAGES ====================
 
     renderHomepage: function() {
         const recentSearches = this.searchHistory.slice(0, 5);
@@ -231,14 +256,15 @@ const BROWSER = {
         return `
             <div class="browser-page homepage">
                 <div class="homepage-header">
-                    <h1>💕 Welcome to HeartOS Browser 💕</h1>
-                    <p class="homepage-tagline">Your personal corner of the internet</p>
+                    <h1>💕 Welcome to HeartOS Browser</h1>
+                    <p>Your personalized internet experience</p>
                 </div>
 
-                <div class="search-box-large">
-                    <input type="text" class="large-search" placeholder="Search the web or type a URL..." 
-                           id="homepage-search" onkeypress="if(event.key==='Enter') BROWSER.homeSearch()">
-                    <button class="large-search-btn" onclick="BROWSER.homeSearch()">🔍 Search</button>
+                <div class="homepage-search">
+                    <input type="text" id="homepage-search" class="homepage-search-input" 
+                           placeholder="Search the web or enter URL..." 
+                           onkeypress="if(event.key==='Enter') BROWSER.homeSearch()">
+                    <button class="homepage-search-btn" onclick="BROWSER.homeSearch()">🔍 Search</button>
                 </div>
 
                 ${recentSearches.length > 0 ? `
@@ -255,69 +281,69 @@ const BROWSER = {
                 ` : ''}
 
                 <div class="homepage-grid">
-                    <div class="homepage-card" onclick="BROWSER.quickLink('📧 Gmail', 'https://mail.google.com')">
+                    <div class="homepage-card" onclick="BROWSER.quickLink('📧 Gmail', 'assets/sites/email.html')">
                         <div class="card-icon">📧</div>
                         <h3>Gmail</h3>
                         <p>Check emails</p>
                     </div>
 
-                    <div class="homepage-card" onclick="BROWSER.quickLink('📸 Instagram', 'https://www.instagram.com')">
+                    <div class="homepage-card" onclick="BROWSER.quickLink('📸 Instagram', 'assets/sites/instagram.html')">
                         <div class="card-icon">📸</div>
                         <h3>Instagram</h3>
                         <p>Share moments</p>
                     </div>
 
-                    <div class="homepage-card" onclick="BROWSER.quickLink('🎵 Spotify', 'https://open.spotify.com')">
+                    <div class="homepage-card" onclick="BROWSER.quickLink('🎵 Spotify', 'assets/sites/spotify.html')">
                         <div class="card-icon">🎵</div>
                         <h3>Spotify</h3>
                         <p>Our music</p>
                     </div>
 
-                    <div class="homepage-card" onclick="BROWSER.quickLink('💬 WhatsApp', 'https://web.whatsapp.com')">
+                    <div class="homepage-card" onclick="BROWSER.quickLink('💬 WhatsApp', 'assets/sites/whatsapp.html')">
                         <div class="card-icon">💬</div>
                         <h3>WhatsApp</h3>
                         <p>Stay connected</p>
                     </div>
 
-                    <div class="homepage-card" onclick="BROWSER.quickLink('📺 YouTube', 'https://www.youtube.com')">
+                    <div class="homepage-card" onclick="BROWSER.quickLink('📺 YouTube', 'assets/sites/youtube.html')">
                         <div class="card-icon">📺</div>
                         <h3>YouTube</h3>
                         <p>Watch together</p>
                     </div>
 
-                    <div class="homepage-card" onclick="BROWSER.quickLink('🗺️ Maps', 'https://www.google.com/maps')">
+                    <div class="homepage-card" onclick="BROWSER.quickLink('🗺️ Maps', 'assets/sites/maps.html')">
                         <div class="card-icon">🗺️</div>
-                        <h3>Google Maps</h3>
+                        <h3>HeartMaps</h3>
                         <p>Plan trips</p>
                     </div>
 
-                    <div class="homepage-card" onclick="BROWSER.quickLink('🛒 Amazon', 'https://www.amazon.com')">
+                    <div class="homepage-card" onclick="BROWSER.quickLink('🛒 Amazon', 'assets/sites/amazon.html')">
                         <div class="card-icon">🛒</div>
                         <h3>Amazon</h3>
                         <p>Shop online</p>
                     </div>
 
-                    <div class="homepage-card" onclick="BROWSER.quickLink('🎬 Netflix', 'https://www.netflix.com')">
+                    <div class="homepage-card" onclick="BROWSER.quickLink('🎬 Netflix', 'assets/sites/netflix.html')">
                         <div class="card-icon">🎬</div>
                         <h3>Netflix</h3>
                         <p>Movie night</p>
                     </div>
 
-                    <div class="homepage-card" onclick="BROWSER.quickLink('💼 LinkedIn', 'https://www.linkedin.com')">
+                    <div class="homepage-card" onclick="BROWSER.quickLink('💼 LinkedIn', 'assets/sites/linkedin.html')">
                         <div class="card-icon">💼</div>
-                        <h3>LinkedIn</h3>
+                        <h3>HeartedIn</h3>
                         <p>Professional</p>
                     </div>
 
-                    <div class="homepage-card" onclick="BROWSER.quickLink('🐦 Twitter/X', 'https://twitter.com')">
+                    <div class="homepage-card" onclick="BROWSER.quickLink('🐦 Twitter/X', 'assets/sites/twitter.html')">
                         <div class="card-icon">🐦</div>
-                        <h3>Twitter</h3>
+                        <h3>HeartTweet</h3>
                         <p>Social feed</p>
                     </div>
 
-                    <div class="homepage-card" onclick="BROWSER.quickLink('📚 Reddit', 'https://www.reddit.com')">
+                    <div class="homepage-card" onclick="BROWSER.quickLink('📚 Reddit', 'assets/sites/reddit.html')">
                         <div class="card-icon">📚</div>
-                        <h3>Reddit</h3>
+                        <h3>HeartReddit</h3>
                         <p>Communities</p>
                     </div>
 
@@ -438,5 +464,44 @@ const BROWSER = {
             `
         };
         this.switchTab(this.currentTab);
+    },
+
+    // Zoom controls
+    zoomIn: function() {
+        if (this.zoomLevel < 200) {
+            this.zoomLevel += 10;
+            this.applyZoom();
+        }
+    },
+
+    zoomOut: function() {
+        if (this.zoomLevel > 50) {
+            this.zoomLevel -= 10;
+            this.applyZoom();
+        }
+    },
+
+    resetZoom: function() {
+        this.zoomLevel = 100;
+        this.applyZoom();
+    },
+
+    applyZoom: function() {
+        const viewport = document.getElementById('browser-viewport');
+        const zoomDisplay = document.getElementById('zoom-level');
+        
+        if (viewport) {
+            const iframe = viewport.querySelector('iframe');
+            if (iframe) {
+                iframe.style.transform = `scale(${this.zoomLevel / 100})`;
+                iframe.style.transformOrigin = 'top left';
+                iframe.style.width = `${100 / (this.zoomLevel / 100)}%`;
+                iframe.style.height = `${100 / (this.zoomLevel / 100)}%`;
+            }
+        }
+        
+        if (zoomDisplay) {
+            zoomDisplay.textContent = `${this.zoomLevel}%`;
+        }
     }
 };

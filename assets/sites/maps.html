@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HeartMaps - Navigate Together</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'VT323', monospace;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            overflow: hidden;
+        }
+        
+        .maps-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header */
+        .maps-header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px 20px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .maps-logo {
+            font-size: 2rem;
+        }
+        
+        .maps-title {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .search-box {
+            flex: 1;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #fff;
+            padding: 10px 15px;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .search-box input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 1.3rem;
+            color: #333;
+            outline: none;
+        }
+        
+        .search-box input::placeholder {
+            color: #999;
+        }
+        
+        /* Main Content */
+        .maps-main {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        /* Sidebar */
+        .maps-sidebar {
+            width: 300px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .sidebar-section {
+            margin-bottom: 30px;
+        }
+        
+        .sidebar-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        
+        .location-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .location-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
+        }
+        
+        .location-card h4 {
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+        }
+        
+        .location-card p {
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+        
+        .distance-badge {
+            background: rgba(255, 77, 109, 0.8);
+            padding: 5px 10px;
+            border-radius: 12px;
+            font-size: 1rem;
+            display: inline-block;
+            margin-top: 5px;
+        }
+        
+        /* Map Area */
+        .map-view {
+            flex: 1;
+            position: relative;
+            background: #1a1a2e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .pixel-map {
+            width: 80%;
+            height: 80%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Animated grid background */
+        .pixel-map::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 200%;
+            background-image: 
+                linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.05) 26%, transparent 27%),
+                linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.05) 26%, transparent 27%);
+            background-size: 50px 50px;
+            animation: gridScroll 20s linear infinite;
+        }
+        
+        @keyframes gridScroll {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+        
+        .map-pin {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            font-size: 2rem;
+            animation: pinBounce 2s ease-in-out infinite;
+            cursor: pointer;
+            filter: drop-shadow(0 0 10px rgba(255, 77, 109, 0.8));
+        }
+        
+        @keyframes pinBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .pin-prague {
+            top: 30%;
+            left: 55%;
+        }
+        
+        .pin-capetown {
+            top: 70%;
+            left: 48%;
+        }
+        
+        .route-line {
+            position: absolute;
+            top: 30%;
+            left: 48%;
+            width: 10%;
+            height: 40%;
+            border-left: 3px dashed rgba(255, 77, 109, 0.6);
+            animation: dashMove 2s linear infinite;
+        }
+        
+        @keyframes dashMove {
+            0% { border-left-color: rgba(255, 77, 109, 0.3); }
+            50% { border-left-color: rgba(255, 77, 109, 0.9); }
+            100% { border-left-color: rgba(255, 77, 109, 0.3); }
+        }
+        
+        .map-overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px 20px;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .map-overlay h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .map-overlay p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        /* Floating info box */
+        .info-box {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 77, 109, 0.9);
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #fff;
+            max-width: 300px;
+        }
+        
+        .info-box h4 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+        
+        .info-box p {
+            font-size: 1.1rem;
+            line-height: 1.4;
+        }
+        
+        /* Controls */
+        .map-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .control-btn:hover {
+            background: rgba(255, 77, 109, 0.8);
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="maps-container">
+        <!-- Header -->
+        <div class="maps-header">
+            <div class="maps-logo">🗺️</div>
+            <div class="maps-title">HEARTMAPS</div>
+            <div class="search-box">
+                <span>🔍</span>
+                <input type="text" placeholder="Search places we've been..." id="mapSearch">
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="maps-main">
+            <!-- Sidebar -->
+            <div class="maps-sidebar">
+                <div class="sidebar-section">
+                    <h3>💕 Our Places</h3>
+                    
+                    <div class="location-card" onclick="focusLocation('prague')">
+                        <h4>🇨🇿 Prague, Czechia</h4>
+                        <p>Your home, my heart</p>
+                        <span class="distance-badge">Current Location</span>
+                    </div>
+                    
+                    <div class="location-card" onclick="focusLocation('capetown')">
+                        <h4>🇿🇦 Cape Town, SA</h4>
+                        <p>Where adventure begins</p>
+                        <span class="distance-badge">9,500 km away</span>
+                    </div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3>📍 Recent Visits</h3>
+                    
+                    <div class="location-card">
+                        <h4>🏔️ Tarzánie</h4>
+                        <p>Swinging through trees</p>
+                    </div>
+                    
+                    <div class="location-card">
+                        <h4>🏛️ Brno</h4>
+                        <p>City of culture</p>
+                    </div>
+                    
+                    <div class="location-card">
+                        <h4>🐧 Boulders Beach</h4>
+                        <p>Penguin paradise</p>
+                    </div>
+                    
+                    <div class="location-card">
+                        <h4>🌊 Kalk Bay</h4>
+                        <p>Fish & chips by the sea</p>
+                    </div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3>🌍 Bucket List</h3>
+                    
+                    <div class="location-card">
+                        <h4>✨ Future Adventures</h4>
+                        <p>Places to explore together</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Map View -->
+            <div class="map-view">
+                <div class="pixel-map">
+                    <div class="map-overlay">
+                        <h3>🌍 WORLD MAP</h3>
+                        <p>Distance: 9,500 km</p>
+                        <p>Flight Time: ~12 hours</p>
+                    </div>
+                    
+                    <div class="map-pin pin-prague" title="Prague, Czechia">📍</div>
+                    <div class="map-pin pin-capetown" title="Cape Town, SA">📍</div>
+                    <div class="route-line"></div>
+                    
+                    <div class="info-box">
+                        <h4>💕 Connected Across Continents</h4>
+                        <p>No distance too far when hearts are close.</p>
+                        <p style="margin-top: 10px;">From the streets of Prague to the beaches of Cape Town, every mile brings us closer.</p>
+                    </div>
+                    
+                    <div class="map-controls">
+                        <button class="control-btn" title="Zoom In">+</button>
+                        <button class="control-btn" title="Zoom Out">−</button>
+                        <button class="control-btn" title="Reset View">⟲</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function focusLocation(location) {
+            const pins = document.querySelectorAll('.map-pin');
+            pins.forEach(pin => {
+                pin.style.animation = 'pinBounce 0.5s ease-in-out 3';
+            });
+            
+            const infoBox = document.querySelector('.info-box');
+            
+            if (location === 'prague') {
+                infoBox.innerHTML = `
+                    <h4>🇨🇿 Prague, Czechia</h4>
+                    <p>The city that holds your heart. Historic streets, cozy cafes, and endless memories waiting to be made.</p>
+                `;
+            } else if (location === 'capetown') {
+                infoBox.innerHTML = `
+                    <h4>🇿🇦 Cape Town, South Africa</h4>
+                    <p>Where mountains meet the ocean. Adventures, penguins, and sunsets that take your breath away.</p>
+                `;
+            }
+        }
+        
+        // Search functionality
+        document.getElementById('mapSearch').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const query = this.value.toLowerCase();
+                if (query.includes('prague') || query.includes('czechia')) {
+                    focusLocation('prague');
+                } else if (query.includes('cape town') || query.includes('south africa')) {
+                    focusLocation('capetown');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

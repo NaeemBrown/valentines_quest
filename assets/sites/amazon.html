@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Amazon</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Amazon Ember', Arial, sans-serif;
+            background: #eaeded;
+        }
+
+        /* HEADER */
+        .header {
+            background: #131921;
+            color: #fff;
+            padding: 8px 16px;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+        .logo span {
+            font-size: 0.7rem;
+            vertical-align: super;
+        }
+
+        .deliver-to {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-radius: 2px;
+        }
+
+        .deliver-to:hover {
+            border-color: #fff;
+        }
+
+        .deliver-text {
+            font-size: 0.75rem;
+            color: #ccc;
+        }
+
+        .location {
+            font-weight: bold;
+        }
+
+        .search-bar {
+            flex: 1;
+            display: flex;
+            max-width: 800px;
+        }
+
+        .search-select {
+            padding: 8px;
+            background: #f3f3f3;
+            border: none;
+            border-radius: 4px 0 0 4px;
+            color: #333;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            outline: none;
+        }
+
+        .search-btn {
+            padding: 0 20px;
+            background: #febd69;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-item {
+            padding: 8px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-radius: 2px;
+        }
+
+        .nav-item:hover {
+            border-color: #fff;
+        }
+
+        .nav-label {
+            font-size: 0.75rem;
+            color: #ccc;
+        }
+
+        .nav-value {
+            font-weight: bold;
+        }
+
+        .cart {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: 8px;
+            background: #ff9900;
+            color: #131921;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        /* SUB HEADER */
+        .sub-header {
+            background: #232f3e;
+            color: #fff;
+            padding: 8px 16px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .sub-nav-item {
+            padding: 4px 8px;
+            cursor: pointer;
+        }
+
+        .sub-nav-item:hover {
+            text-decoration: underline;
+        }
+
+        /* MAIN CONTENT */
+        .main {
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* HERO BANNER */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .hero-btn {
+            background: #ff9900;
+            color: #131921;
+            border: none;
+            padding: 12px 32px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* PRODUCT GRID */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 24px 0 16px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .product-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 16px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .product-title {
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            color: #0F1111;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 0.875rem;
+        }
+
+        .stars {
+            color: #ff9900;
+        }
+
+        .rating-count {
+            color: #007185;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #B12704;
+            margin-bottom: 4px;
+        }
+
+        .prime-badge {
+            display: inline-block;
+            background: #00a8e1;
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 2px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            background: #ffd814;
+            border: 1px solid #fcd200;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .add-to-cart:hover {
+            background: #f7ca00;
+        }
+
+        /* CATEGORY CARDS */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .category-card {
+            background: #fff;
+            padding: 24px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .category-card:hover {
+            transform: scale(1.05);
+        }
+
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+
+        .category-title {
+            font-weight: 600;
+            color: #0F1111;
+        }
+
+        .footer {
+            background: #232f3e;
+            color: #ddd;
+            padding: 40px 20px;
+            margin-top: 40px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-top">
+            <div class="logo">amazon<span>.za</span></div>
+            
+            <div class="deliver-to">
+                <div>📍</div>
+                <div>
+                    <div class="deliver-text">Deliver to</div>
+                    <div class="location">Cape Town</div>
+                </div>
+            </div>
+
+            <div class="search-bar">
+                <select class="search-select">
+                    <option>All</option>
+                    <option>Books</option>
+                    <option>Electronics</option>
+                    <option>Fashion</option>
+                </select>
+                <input type="text" class="search-input" placeholder="Search Amazon">
+                <button class="search-btn">🔍</button>
+            </div>
+
+            <div class="header-nav">
+                <div class="nav-item">
+                    <div class="nav-label">Hello, Valentine</div>
+                    <div class="nav-value">Account & Lists</div>
+                </div>
+
+                <div class="nav-item">
+                    <div class="nav-label">Returns</div>
+                    <div class="nav-value">& Orders</div>
+                </div>
+
+                <div class="nav-item cart">
+                    <div class="cart-count">0</div>
+                    <div>🛒</div>
+                    <div class="nav-value">Cart</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUB HEADER -->
+    <div class="sub-header">
+        <div class="sub-nav-item">☰ All</div>
+        <div class="sub-nav-item">Today's Deals</div>
+        <div class="sub-nav-item">Customer Service</div>
+        <div class="sub-nav-item">Registry</div>
+        <div class="sub-nav-item">Gift Cards</div>
+        <div class="sub-nav-item">Sell</div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+        <!-- HERO -->
+        <div class="hero">
+            <h1>Special Picks for You! 💕</h1>
+            <p>Curated with love - because you deserve the best</p>
+            <button class="hero-btn">Shop Your Favorites</button>
+        </div>
+
+        <!-- CATEGORIES -->
+        <h2 class="section-title">Shop by Category</h2>
+        <div class="category-grid">
+            <div class="category-card">
+                <div class="category-icon">📚</div>
+                <div class="category-title">Books & Fantasy</div>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">💄</div>
+                <div class="category-title">Beauty & Skincare</div>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">🏋️</div>
+                <div class="category-title">Sports & Fitness</div>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">🐕</div>
+                <div class="category-title">Pet Supplies</div>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">🏠</div>
+                <div class="category-title">Home & Living</div>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">✈️</div>
+                <div class="category-title">Travel Essentials</div>
+            </div>
+        </div>
+
+        <!-- PRODUCTS: LOW-BUY FRIENDLY -->
+        <h2 class="section-title">Recommended for You (Low-Buy Approved! ✨)</h2>
+        <div class="product-grid" id="recommended-products"></div>
+
+        <!-- BOOKS FOR YOU -->
+        <h2 class="section-title">Books You'll Love 📚</h2>
+        <div class="product-grid" id="book-products"></div>
+
+        <!-- FITNESS & WELLNESS -->
+        <h2 class="section-title">Fitness & Wellness 💪</h2>
+        <div class="product-grid" id="fitness-products"></div>
+
+        <!-- PET SUPPLIES -->
+        <h2 class="section-title">For Your Future Whippet 🐕</h2>
+        <div class="product-grid" id="pet-products"></div>
+
+        <!-- TRAVEL -->
+        <h2 class="section-title">Prague Adventures ✈️</h2>
+        <div class="product-grid" id="travel-products"></div>
+    </div>
+
+    <div class="footer">
+        <p>© 2025 Amazon.za - Made with 💕</p>
+    </div>
+
+    <script>
+        function createProduct(data) {
+            const starsHtml = '⭐'.repeat(Math.floor(data.rating));
+            
+            return `
+                <div class="product-card">
+                    <div class="product-image" style="background: ${data.bg};">
+                        ${data.emoji}
+                    </div>
+                    <div class="product-title">${data.title}</div>
+                    <div class="product-rating">
+                        <span class="stars">${starsHtml}</span>
+                        <span>${data.rating}</span>
+                        <span class="rating-count">(${data.reviews})</span>
+                    </div>
+                    <div class="product-price">${data.price}</div>
+                    ${data.prime ? '<div class="prime-badge">prime</div>' : ''}
+                    <button class="add-to-cart" onclick="addToCart('${data.title}')">Add to Cart</button>
+                </div>
+            `;
+        }
+
+        function addToCart(item) {
+            alert('Added to cart: ' + item + ' 🛒');
+            const cartCount = document.querySelector('.cart-count');
+            cartCount.innerText = parseInt(cartCount.innerText) + 1;
+        }
+
+        // Populate products when page loads
+        window.addEventListener('DOMContentLoaded', function() {
+            // Recommended Products
+            document.getElementById('recommended-products').innerHTML = [
+                createProduct({
+                    title: 'Fourth Wing by Rebecca Yarros - Hardcover',
+                    emoji: '📖',
+                    bg: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)',
+                    price: 'R 349',
+                    rating: 4.9,
+                    reviews: '12,458',
+                    prime: true
+                }),
+                createProduct({
+                    title: 'Iron Flame (Empyrean Series Book 2)',
+                    emoji: '🔥',
+                    bg: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+                    price: 'R 389',
+                    rating: 4.8,
+                    reviews: '8,234',
+                    prime: true
+                }),
+                createProduct({
+                    title: 'The Ordinary Niacinamide 10% + Zinc 1%',
+                    emoji: '🧴',
+                    bg: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
+                    price: 'R 120',
+                    rating: 4.7,
+                    reviews: '45,789',
+                    prime: true
+                }),
+                createProduct({
+                    title: 'Yoga Mat - Extra Thick Non-Slip',
+                    emoji: '🧘‍♀️',
+                    bg: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)',
+                    price: 'R 299',
+                    rating: 4.6,
+                    reviews: '3,456',
+                    prime: true
+                })
+            ].join('');
+
+            // Book Products
+            document.getElementById('book-products').innerHTML = [
+                createProduct({
+                    title: 'A Court of Thorns and Roses Series Box Set',
+                    emoji: '🌹',
+                    bg: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                    price: 'R 899',
+                    rating: 4.9,
+                    reviews: '23,456',
+                    prime: true
+                }),
+                createProduct({
+                    title: 'The Shadow and Bone Trilogy',
+                    emoji: '⚡',
+                    bg: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                    price: 'R 750',
+                    rating: 4.8,
+                    reviews: '18,234',
+                    prime: true
+                }),
+                createProduct({
+                    title: 'Legendborn by Tracy Deonn',
+                    emoji: '✨',
+                    bg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    price: 'R 329',
+                    rating: 4.7,
+                    reviews: '9,876',
+                    prime: true
+                }),
+                createProduct({
+                    title: 'Crescent City Series by Sarah J. Maas',
+                    emoji: '🌙',
+                    bg: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)',
+                    price: 'R 699',
+                    rating: 4.9,
+                    reviews: '15,678',
+                    prime: true
+                })
+            ].join('');
+
+            // Fitness Products
+            document.getElementById('fitness-products').innerHTML = [
+                createProduct({
+                    title: 'Floorball Stick - Professional Grade',
+                    emoji: '🏑',
+                    bg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    price: 'R 450',
+                    rating: 4.5,
+                    reviews: '234',
+                    prime: false
+                }),
+                createProduct({
+                    title: 'Resistance Bands Set - 5 Levels',
+                    emoji: '💪',
+                    bg: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+                    price: 'R 199',
+                    rating: 4.6,
+                    reviews: '5,678',
+                    prime: true
+                }),
+                createProduct({
+                    title: 'Foam Roller for Muscle Recovery',
+                    emoji: '🎯',
+                    bg: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                    price: 'R 249',
+                    rating: 4.7,
+                    reviews: '3,456',
+                    prime: true
+                }),
+                createProduct({
+                    title: 'Water Bottle - 1L Motivational',
+                    emoji: '💧',
+                    bg: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)',
+                    price: 'R 129',
+                    rating: 4.8,
+                    reviews: '12,345',
+                    prime: true
+                })
+            ].join('');
+
+            // Pet Products
+            document.getElementById('pet-products').innerHTML = [
+                createProduct({
+                    title: 'Whippet Training Guide Book',
+                    emoji: '📘',
+                    bg: 'linear-gradient(135deg, #d4a5a5 0%, #e9defa 100%)',
+                    price: 'R 279',
+                    rating: 4.9,
+                    reviews: '892',
+                    prime: true
+                }),
+                createProduct({
+                    title: 'Dog Bed - Orthopedic Memory Foam',
+                    emoji: '🛏️',
+                    bg: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
+                    price: 'R 799',
+                    rating: 4.8,
+                    reviews: '4,567',
+                    prime: true
+                }),
+                createProduct({
+                    title: 'Adjustable Dog Collar & Leash Set',
+                    emoji: '🦴',
+                    bg: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
+                    price: 'R 189',
+                    rating: 4.7,
+                    reviews: '8,901',
+                    prime: true
+                }),
+                createProduct({
+                    title: 'Puppy Chew Toys - 10 Pack',
+                    emoji: '🎾',
+                    bg: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)',
+                    price: 'R 159',
+                    rating: 4.6,
+                    reviews: '23,456',
+                    prime: true
+                })
+            ].join('');
+
+            // Travel Products
+            document.getElementById('travel-products').innerHTML = [
+                createProduct({
+                    title: 'Lonely Planet Prague Travel Guide',
+                    emoji: '🗺️',
+                    bg: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                    price: 'R 349',
+                    rating: 4.8,
+                    reviews: '2,345',
+                    prime: true
+                }),
+                createProduct({
+                    title: 'Travel Backpack - 40L Carry-On',
+                    emoji: '🎒',
+                    bg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    price: 'R 899',
+                    rating: 4.7,
+                    reviews: '12,678',
+                    prime: true
+                }),
+                createProduct({
+                    title: 'Czech Phrasebook & Dictionary',
+                    emoji: '📚',
+                    bg: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)',
+                    price: 'R 189',
+                    rating: 4.5,
+                    reviews: '567',
+                    prime: true
+                }),
+                createProduct({
+                    title: 'Travel Adapter - Universal European',
+                    emoji: '🔌',
+                    bg: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+                    price: 'R 149',
+                    rating: 4.9,
+                    reviews: '34,567',
+                    prime: true
+                })
+            ].join('');
+        });
+    </script>
+</body>
+</html>

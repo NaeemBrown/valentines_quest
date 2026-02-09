@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>HeartMail ✨</title>
+    <style>
+        /* --- ENHANCED AESTHETIC CSS --- */
+        * { box-sizing: border-box; }
+        
+        body { 
+            margin: 0; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: linear-gradient(135deg, #ffdee9 0%, #b5fffc 100%); 
+            display: flex; 
+            height: 100vh; 
+            color: #590d22;
+            overflow: hidden;
+        }
+
+        .app-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar { 
+            width: 260px; 
+            background: rgba(255, 255, 255, 0.6); 
+            border-right: 1px solid rgba(255, 255, 255, 0.8); 
+            padding: 20px; 
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(255, 154, 158, 0.3);
+        }
+
+        .compose-btn { 
+            background: linear-gradient(45deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            border: none; padding: 15px 25px; border-radius: 50px; 
+            font-weight: bold; color: #fff; cursor: pointer; 
+            display: flex; align-items: center; justify-content: center; gap: 10px; 
+            transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(255, 154, 158, 0.4);
+            font-size: 1.1rem; margin-bottom: 20px;
+        }
+        .compose-btn:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 20px rgba(255, 154, 158, 0.6); }
+
+        .nav-section {
+            margin-bottom: 25px;
+        }
+
+        .nav-section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #999;
+            font-weight: bold;
+            margin-bottom: 8px;
+            padding-left: 10px;
+            letter-spacing: 1px;
+        }
+
+        .nav-item { 
+            padding: 12px 20px; cursor: pointer; border-radius: 15px; 
+            transition: all 0.2s; font-weight: 500; color: #888; display: flex; justify-content: space-between; align-items: center;
+        }
+        .nav-item:hover { background: rgba(255, 255, 255, 0.5); color: #ff4d6d; }
+        .nav-item.active { background: #fff0f3; color: #ff4d6d; font-weight: bold; box-shadow: inset 0 0 0 2px #ffccd5; }
+
+        .badge {
+            background: #ff4d6d;
+            color: white;
+            border-radius: 10px;
+            padding: 2px 8px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .label-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.2s;
+            color: #666;
+            font-size: 0.95rem;
+        }
+        .label-item:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        .label-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        /* --- MAIN AREA --- */
+        .main { 
+            flex: 1; display: flex; flex-direction: column; 
+            background: rgba(255, 255, 255, 0.8); margin: 15px; border-radius: 25px; 
+            overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
+            border: 1px solid rgba(255, 255, 255, 0.9); position: relative;
+        }
+
+        /* --- TOOLBAR --- */
+        .toolbar {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 25px;
+            border-bottom: 1px solid #ffe5ec;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .search-box {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 40px 10px 40px;
+            border: 1px solid #ffe5ec;
+            border-radius: 25px;
+            outline: none;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        .search-box input:focus {
+            border-color: #ff9a9e;
+            box-shadow: 0 0 0 3px rgba(255, 154, 158, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+
+        .toolbar-btn {
+            background: transparent;
+            border: 1px solid #ffe5ec;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            color: #666;
+        }
+        .toolbar-btn:hover {
+            background: #fff0f3;
+            border-color: #ffccd5;
+            color: #ff4d6d;
+        }
+
+        .email-list { overflow-y: auto; flex: 1; padding: 10px; }
+
+        .email-item { 
+            display: flex; align-items: center; padding: 15px; 
+            border-bottom: 1px solid #ffe5ec; cursor: pointer; 
+            transition: all 0.2s; border-radius: 15px; margin-bottom: 5px;
+            position: relative;
+        }
+        .email-item:hover { background: #fff; transform: scale(0.99); box-shadow: 0 4px 10px rgba(255, 77, 109, 0.1); }
+        .email-item.unread { background: rgba(255, 255, 255, 0.5); font-weight: bold; }
+        .email-item.unread .subject { color: #ff4d6d; }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            cursor: pointer;
+            accent-color: #ff4d6d;
+        }
+
+        .star-btn {
+            font-size: 1.2rem; color: #ddd; margin-right: 15px; cursor: pointer; transition: 0.2s;
+        }
+        .star-btn:hover { color: #ffccd5; }
+        .star-btn.active { color: #ffbf00; text-shadow: 0 0 5px #ffea00; }
+
+        .sender { width: 180px; font-weight: bold; color: #590d22; }
+        .subject { flex: 1; color: #666; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .preview { color: #999; font-weight: normal; font-size: 0.9rem; }
+        .date { width: 120px; text-align: right; font-size: 0.8rem; color: #ff8fa3; font-weight: bold; }
+
+        .label-tag {
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            margin-left: 8px;
+            font-weight: bold;
+        }
+
+        /* --- READING PANE --- */
+        .email-view { display: none; padding: 40px; flex-direction: column; height: 100%; background: #fff; animation: fadeIn 0.3s; overflow-y: auto; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .view-header { border-bottom: 2px dashed #ffccd5; padding-bottom: 20px; margin-bottom: 25px; display: flex; align-items: center; justify-content: space-between; }
+        
+        .view-title {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+
+        .back-btn { 
+            background: #ffe5ec; border: none; width: 40px; height: 40px; border-radius: 50%;
+            font-size: 1.2rem; cursor: pointer; margin-right: 20px; color: #ff4d6d;
+            transition: 0.2s; display: flex; align-items: center; justify-content: center;
+        }
+        .back-btn:hover { background: #ff4d6d; color: #fff; }
+
+        .view-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            background: #fff0f3;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #ff4d6d;
+            font-family: inherit;
+            font-weight: 500;
+        }
+        .action-btn:hover {
+            background: #ff4d6d;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .avatar { 
+            width: 50px; height: 50px; 
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+            border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; 
+            font-size: 1.5rem; font-weight: bold; box-shadow: 0 4px 10px rgba(255, 154, 158, 0.5);
+        }
+
+        #e-body { 
+            line-height: 1.8; color: #555; font-size: 1.05rem; background: #fffafa; 
+            padding: 25px; border-radius: 15px; border: 1px solid #fff0f3; 
+        }
+
+        .reply-box {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 15px;
+            border: 2px dashed #ffccd5;
+        }
+
+        .reply-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            border: 1px solid #ffe5ec;
+            border-radius: 12px;
+            font-family: inherit;
+            outline: none;
+            resize: vertical;
+        }
+        .reply-textarea:focus {
+            border-color: #ff9a9e;
+            box-shadow: 0 0 0 3px rgba(255, 154, 158, 0.1);
+        }
+
+        .reply-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            justify-content: flex-end;
+        }
+
+        /* --- COMPOSE MODAL --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.6); backdrop-filter: blur(5px);
+            display: none; align-items: center; justify-content: center; z-index: 100;
+        }
+        .compose-box {
+            width: 650px; height: 550px; background: white; border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1); border: 1px solid #ffccd5;
+            display: flex; flex-direction: column; overflow: hidden; animation: popUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes popUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        .compose-header { background: #fff0f3; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; color: #ff4d6d; }
+        .compose-form { padding: 20px; display: flex; flex-direction: column; flex: 1; gap: 15px; }
+        .c-input { padding: 12px; border: 1px solid #eee; border-radius: 10px; outline: none; transition: 0.2s; font-family: inherit; }
+        .c-input:focus { border-color: #ff9a9e; box-shadow: 0 0 0 3px rgba(255,154,158,0.1); }
+        .c-body { flex: 1; resize: none; }
+        .c-footer { display: flex; justify-content: space-between; align-items: center; }
+        .c-footer-left {
+            display: flex;
+            gap: 10px;
+        }
+        .c-footer-right {
+            display: flex;
+            gap: 10px;
+        }
+        .icon-btn {
+            background: transparent;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.2s;
+            color: #999;
+        }
+        .icon-btn:hover {
+            background: #fff0f3;
+            color: #ff4d6d;
+        }
+        .btn-cancel { background: transparent; border: none; color: #888; cursor: pointer; padding: 10px 20px; }
+        .btn-send { background: #ff4d6d; color: white; border: none; padding: 10px 30px; border-radius: 30px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(255, 77, 109, 0.3); }
+        .btn-send:hover { transform: scale(1.05); }
+
+        /* Notification Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border-left: 4px solid #ff4d6d;
+            display: none;
+            align-items: center;
+            gap: 15px;
+            animation: slideIn 0.3s ease;
+            z-index: 1000;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(400px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #aaa;
+        }
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        /* Attachment preview */
+        .attachment {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #f0f0f0;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .attachment:hover {
+            background: #e5e5e5;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="logo">💌 HeartMail</div>
+            <button class="compose-btn" onclick="openCompose()">✨ Compose</button>
+            
+            <div class="nav-section">
+                <div class="nav-item active" onclick="switchFolder('inbox', this)">
+                    <span>💖 Inbox</span> <span id="count-inbox" class="badge" style="display:none;"></span>
+                </div>
+                <div class="nav-item" onclick="switchFolder('starred', this)">
+                    <span>⭐ Starred</span> <span id="count-starred"></span>
+                </div>
+                <div class="nav-item" onclick="switchFolder('sent', this)">
+                    <span>💅 Sent</span> <span id="count-sent"></span>
+                </div>
+                <div class="nav-item" onclick="switchFolder('drafts', this)">
+                    <span>📝 Drafts</span> <span id="count-drafts"></span>
+                </div>
+                <div class="nav-item" onclick="switchFolder('important', this)">
+                    <span>🔥 Important</span> <span id="count-important"></span>
+                </div>
+                <div class="nav-item" onclick="alert('Trash is empty! You are sustainable! ♻️')">
+                    <span>🗑️ Trash</span>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Labels</div>
+                <div class="label-item" onclick="filterByLabel('personal')">
+                    <div class="label-dot" style="background: #ff9a9e;"></div>
+                    <span>Personal</span>
+                </div>
+                <div class="label-item" onclick="filterByLabel('work')">
+                    <div class="label-dot" style="background: #a8dadc;"></div>
+                    <span>Work</span>
+                </div>
+                <div class="label-item" onclick="filterByLabel('hobby')">
+                    <div class="label-dot" style="background: #ffd166;"></div>
+                    <span>Hobby</span>
+                </div>
+                <div class="label-item" onclick="filterByLabel('shopping')">
+                    <div class="label-dot" style="background: #9d84b7;"></div>
+                    <span>Shopping</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="main">
+            <div class="toolbar">
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="search-input" placeholder="Search mail..." onkeyup="searchEmails()" />
+                </div>
+                <button class="toolbar-btn" onclick="toggleSelectAll()">Select All</button>
+                <button class="toolbar-btn" onclick="deleteSelected()">🗑️ Delete</button>
+                <button class="toolbar-btn" onclick="markAsRead()">✓ Mark Read</button>
+            </div>
+
+            <div id="list" class="email-list"></div>
+
+            <div id="view" class="email-view">
+                <div class="view-header">
+                    <div class="view-title">
+                        <button class="back-btn" onclick="closeEmail()">➜</button>
+                        <h2 id="e-subject" style="display:inline; margin:0; color: #ff4d6d;">Subject</h2>
+                    </div>
+                    <div class="view-actions">
+                        <button class="action-btn" onclick="starCurrentEmail()">⭐ Star</button>
+                        <button class="action-btn" onclick="deleteCurrentEmail()">🗑️ Delete</button>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 15px; margin-bottom: 20px; align-items: center;">
+                    <div class="avatar" id="e-avatar">A</div>
+                    <div>
+                        <div id="e-sender" style="font-weight: bold; font-size: 1.1rem;">Sender</div>
+                        <div style="color: #ff8fa3; font-size: 0.9rem;" id="e-date">Date</div>
+                    </div>
+                </div>
+                <div id="e-body"></div>
+                <div id="e-attachment"></div>
+                
+                <div class="reply-box" id="reply-box" style="display: none;">
+                    <textarea class="reply-textarea" id="reply-text" placeholder="Type your reply..."></textarea>
+                    <div class="reply-actions">
+                        <button class="btn-cancel" onclick="cancelReply()">Cancel</button>
+                        <button class="btn-send" onclick="sendReply()">Send Reply ✨</button>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <button class="action-btn" onclick="showReplyBox()">↩️ Reply</button>
+                    <button class="action-btn" onclick="forwardEmail()">➡️ Forward</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="compose-modal" class="modal-overlay">
+        <div class="compose-box">
+            <div class="compose-header">
+                <span>✨ New Message</span>
+                <span style="cursor:pointer; font-size: 1.5rem;" onclick="closeCompose()">×</span>
+            </div>
+            <div class="compose-form">
+                <input id="c-to" class="c-input" placeholder="To: (e.g., Babe, Mom, Coach)" />
+                <input id="c-sub" class="c-input" placeholder="Subject:" />
+                <textarea id="c-msg" class="c-input c-body" placeholder="Type your message here..."></textarea>
+                <div class="c-footer">
+                    <div class="c-footer-left">
+                        <button class="icon-btn" title="Attach file" onclick="showToast('Attachment feature coming soon! 📎')">📎</button>
+                        <button class="icon-btn" title="Add emoji" onclick="showToast('Emoji picker coming soon! 😊')">😊</button>
+                        <button class="icon-btn" title="Schedule send" onclick="showToast('Schedule send coming soon! ⏰')">⏰</button>
+                    </div>
+                    <div class="c-footer-right">
+                        <button class="btn-cancel" onclick="saveDraft()">Save Draft</button>
+                        <button class="btn-send" onclick="sendEmail()">Send ✨</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">
+        <span id="toast-icon" style="font-size: 1.5rem;">✨</span>
+        <span id="toast-message">Message sent!</span>
+    </div>
+
+    <script>
+        // --- ENHANCED DATA ---
+        let emailData = [
+            { id: 1, folder: 'inbox', starred: true, read: false, sender: "Naeem ❤️", subject: "Dinner tonight?", date: "10:42 AM", label: "personal", body: "Hey beautiful,<br><br>Thinking about getting some sushi tonight after you get back from the gym. Or we could make that pasta recipe you sent me on TikTok?<br><br>Let me know! Love you.<br>- N" },
+            { id: 2, folder: 'inbox', starred: false, read: false, sender: "Cape Floorball", subject: "🏑 Practice Moved!", date: "10:15 AM", label: "hobby", body: "Hi Agi!<br><br>Quick update: The hall is double-booked. Practice is moved to <b>7:30 PM</b> tonight.<br><br>Bring your stick and see you on the court! Let's get that cardio in! 💪<br><br>- Coach K", attachment: "practice_schedule.pdf" },
+            { id: 3, folder: 'inbox', starred: true, read: true, sender: "Paws & Noses", subject: "🐾 Whippet Litter Update", date: "Yesterday", label: "personal", body: "Hello Agi,<br><br>We saw you were on the waitlist for a Whippet! A beautiful litter was just born. There is one little girl who looks just like a tiny deer. 🦌<br><br>She is blue fawn. Do you want to come meet her next weekend?" },
+            { id: 4, folder: 'inbox', starred: false, read: true, sender: "The Daily Glow", subject: "✨ Stop buying skincare (Watch this)", date: "Feb 8", label: "hobby", body: "Hey girl,<br><br>New video is UP: <b>'My Low-Buy Year: How I saved money & cleared my skin.'</b><br><br>We discuss minimalism, semi-annual goals, and why you don't need that new serum. 🧴❌<br><br>Stay glowing,<br>Jess" },
+            { id: 5, folder: 'inbox', starred: false, read: true, sender: "Duolingo", subject: "🇨🇿 Time for Czech!", date: "Feb 8", label: "hobby", body: "Hi Agi! Don't lose your streak! 🦉<br><br>Naeem is waiting for you in Prague (figuratively). Learn the word for 'Red Panda' in Czech today!<br><br>Hint: It's 'Panda Červená'." },
+            { id: 6, folder: 'inbox', starred: false, read: true, sender: "Goodreads", subject: "Book Club: Fourth Wing 🐉", date: "Feb 7", label: "hobby", body: "Your weekly update!<br><br>Your friends are reading <b>Fourth Wing</b>. You marked this as 'Want to Read'.<br><br>Rating: ⭐⭐⭐⭐⭐ (5.0)<br>Reviews: 'Literally spicy hunger games with dragons.'" },
+            { id: 7, folder: 'inbox', starred: false, read: true, sender: "Pinterest", subject: "Pins: 'That Girl' Aesthetic", date: "Feb 6", label: "shopping", body: "We found some pins you might love based on your board 'Future Home':<br><br>- Minimalist beige living rooms<br>- Whippet puppy photography<br>- Vegan meal prep ideas" },
+            { id: 8, folder: 'inbox', starred: true, read: true, sender: "Zoo Cape Town", subject: "🐼 Red Panda Encounter", date: "Feb 5", label: "personal", body: "Dear Agi,<br><br>Thank you for your donation to the Red Panda conservation fund! We would love to invite you for a behind-the-scenes feeding session next month.<br><br>Please reply to confirm.", important: true },
+            { id: 9, folder: 'inbox', starred: false, read: true, sender: "Notion", subject: "New 2026 Templates", date: "Feb 4", label: "work", body: "Organize your life with our new 'Girl Boss' template pack.<br><br>- Gym Tracker<br>- Skincare Routine Log<br>- Reading List<br><br>Duplicate it now for free." },
+            { id: 10, folder: 'inbox', starred: false, read: true, sender: "GymShark", subject: "Sale Ends Soon", date: "Feb 2", label: "shopping", body: "20% off seamless leggings. But hey, if you're doing a low-buy year, just delete this! We support you either way. 💪" },
+            { id: 13, folder: 'inbox', starred: false, read: true, sender: "Spotify", subject: "Your 2026 Wrapped is here!", date: "Feb 1", label: "personal", body: "You listened to 12,458 minutes of music this month! 🎵<br><br>Top Artists:<br>1. Taylor Swift<br>2. Olivia Rodrigo<br>3. Sabrina Carpenter<br><br>Your vibe: Main Character Energy ✨" },
+            { id: 14, folder: 'inbox', starred: false, read: true, sender: "LinkedIn", subject: "New job opportunities", date: "Jan 31", label: "work", body: "Agi, based on your profile we found 3 new jobs that match your skills:<br><br>- Senior Product Manager @ Google<br>- UX Lead @ Figma<br>- Marketing Director @ Notion<br><br>Check them out!" },
+            { id: 15, folder: 'inbox', starred: false, read: true, sender: "Mom", subject: "Sunday Dinner?", date: "Jan 30", label: "personal", body: "Hi sweetheart,<br><br>Are you and Naeem free for dinner this Sunday? I'm making your favorite - bobotie! 🍽️<br><br>Love you lots,<br>Mom xx" },
+            
+            // Sent Items
+            { id: 11, folder: 'sent', starred: false, read: true, sender: "Me", subject: "Re: Dinner tonight?", date: "10:45 AM", label: "personal", body: "Sushi sounds perfect! 🍣<br><br>I'm starving after floorball practice. See you at 8? Love youuuu!" },
+            { id: 12, folder: 'sent', starred: false, read: true, sender: "Me", subject: "Re: Whippet Litter", date: "Yesterday", label: "personal", body: "OH MY GOSH! 😭<br><br>Yes please! I would love to meet her. Is Saturday morning okay? I am literally crying she sounds so cute." },
+            { id: 16, folder: 'sent', starred: false, read: true, sender: "Me", subject: "Re: Sunday Dinner", date: "Jan 30", label: "personal", body: "We would love to come! 💕<br><br>Should we bring anything? Maybe wine or dessert?<br><br>Can't wait! xx" }
+        ];
+
+        let currentFolder = 'inbox';
+        let currentEmailId = null;
+        let selectedEmails = new Set();
+        let currentLabelFilter = null;
+
+        // --- FUNCTIONS ---
+
+        function renderList() {
+            const listEl = document.getElementById('list');
+            listEl.innerHTML = "";
+            selectedEmails.clear();
+
+            // Get search term
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+
+            // Filter emails
+            let filtered = [];
+            if (currentFolder === 'starred') {
+                filtered = emailData.filter(e => e.starred);
+            } else if (currentFolder === 'important') {
+                filtered = emailData.filter(e => e.important);
+            } else {
+                filtered = emailData.filter(e => e.folder === currentFolder);
+            }
+
+            // Apply label filter
+            if (currentLabelFilter) {
+                filtered = filtered.filter(e => e.label === currentLabelFilter);
+            }
+
+            // Apply search filter
+            if (searchTerm) {
+                filtered = filtered.filter(e => 
+                    e.sender.toLowerCase().includes(searchTerm) ||
+                    e.subject.toLowerCase().includes(searchTerm) ||
+                    stripHtml(e.body).toLowerCase().includes(searchTerm)
+                );
+            }
+
+            // Update Counts
+            const unreadInbox = emailData.filter(e => e.folder === 'inbox' && !e.read).length;
+            const badgeEl = document.getElementById('count-inbox');
+            if (unreadInbox > 0) {
+                badgeEl.innerText = unreadInbox;
+                badgeEl.style.display = 'inline-block';
+            } else {
+                badgeEl.style.display = 'none';
+            }
+            
+            const starredCount = emailData.filter(e => e.starred).length;
+            document.getElementById('count-starred').innerText = starredCount || "";
+            
+            const sentCount = emailData.filter(e => e.folder === 'sent').length;
+            document.getElementById('count-sent').innerText = sentCount || "";
+            
+            const draftsCount = emailData.filter(e => e.folder === 'drafts').length;
+            document.getElementById('count-drafts').innerText = draftsCount || "";
+            
+            const importantCount = emailData.filter(e => e.important).length;
+            document.getElementById('count-important').innerText = importantCount || "";
+
+            // Render
+            filtered.forEach(email => {
+                const item = document.createElement('div');
+                item.className = `email-item ${email.read ? '' : 'unread'}`;
+                item.onclick = (e) => {
+                    if(!e.target.classList.contains('star-btn') && !e.target.classList.contains('checkbox')) {
+                        openEmail(email.id);
+                    }
+                };
+
+                const starClass = email.starred ? 'star-btn active' : 'star-btn';
+                const starIcon = email.starred ? '★' : '☆';
+
+                let labelTag = '';
+                if (email.label) {
+                    const labelColors = {
+                        personal: '#ff9a9e',
+                        work: '#a8dadc',
+                        hobby: '#ffd166',
+                        shopping: '#9d84b7'
+                    };
+                    labelTag = `<span class="label-tag" style="background: ${labelColors[email.label]}20; color: ${labelColors[email.label]};">${email.label}</span>`;
+                }
+
+                item.innerHTML = `
+                    <input type="checkbox" class="checkbox" onchange="toggleSelect(${email.id}, this.checked)" />
+                    <div class="${starClass}" onclick="toggleStar(${email.id}, this)">${starIcon}</div>
+                    <div class="sender">${email.sender}</div>
+                    <div class="subject">${email.subject} ${labelTag}<span class="preview"> - ${stripHtml(email.body).substring(0, 40)}...</span></div>
+                    <div class="date">${email.date}</div>
+                `;
+                listEl.appendChild(item);
+            });
+
+            if(filtered.length === 0) {
+                listEl.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📭</div>
+                        <div style="font-size: 1.2rem; margin-bottom: 10px;">Nothing here!</div>
+                        <div style="font-size: 0.9rem;">${searchTerm ? 'No emails match your search.' : 'Your folder is empty.'}</div>
+                    </div>
+                `;
+            }
+        }
+
+        function switchFolder(folder, btn) {
+            currentFolder = folder;
+            currentLabelFilter = null;
+            
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            btn.classList.add('active');
+
+            document.querySelectorAll('.label-item').forEach(el => el.style.background = 'transparent');
+
+            closeEmail();
+            renderList();
+        }
+
+        function filterByLabel(label) {
+            currentLabelFilter = label;
+            currentFolder = 'inbox';
+            
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.label-item').forEach(el => el.style.background = 'transparent');
+            
+            event.target.closest('.label-item').style.background = 'rgba(255, 255, 255, 0.5)';
+            
+            closeEmail();
+            renderList();
+        }
+
+        function toggleStar(id, btn) {
+            const email = emailData.find(e => e.id === id);
+            email.starred = !email.starred;
+            renderList();
+        }
+
+        function toggleSelect(id, checked) {
+            if (checked) {
+                selectedEmails.add(id);
+            } else {
+                selectedEmails.delete(id);
+            }
+        }
+
+        function toggleSelectAll() {
+            const checkboxes = document.querySelectorAll('.checkbox');
+            const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+            
+            checkboxes.forEach(cb => {
+                cb.checked = !allChecked;
+                const emailItem = cb.closest('.email-item');
+                const emailId = parseInt(emailItem.querySelector('.star-btn').getAttribute('onclick').match(/\d+/)[0]);
+                toggleSelect(emailId, cb.checked);
+            });
+        }
+
+        function deleteSelected() {
+            if (selectedEmails.size === 0) {
+                showToast('No emails selected! 💁‍♀️', '⚠️');
+                return;
+            }
+            
+            if (confirm(`Delete ${selectedEmails.size} email(s)?`)) {
+                emailData = emailData.filter(e => !selectedEmails.has(e.id));
+                selectedEmails.clear();
+                renderList();
+                showToast(`Deleted ${selectedEmails.size} email(s)! 🗑️`, '✓');
+            }
+        }
+
+        function markAsRead() {
+            if (selectedEmails.size === 0) {
+                showToast('No emails selected! 💁‍♀️', '⚠️');
+                return;
+            }
+            
+            selectedEmails.forEach(id => {
+                const email = emailData.find(e => e.id === id);
+                if (email) email.read = true;
+            });
+            
+            selectedEmails.clear();
+            renderList();
+            showToast('Marked as read! ✓', '✓');
+        }
+
+        function searchEmails() {
+            renderList();
+        }
+
+        function openEmail(id) {
+            const email = emailData.find(e => e.id === id);
+            currentEmailId = id;
+            
+            if (!email.read && email.folder === 'inbox') {
+                email.read = true;
+                renderList();
+            }
+
+            document.getElementById('list').style.display = 'none';
+            document.getElementById('view').style.display = 'flex';
+            
+            document.getElementById('e-subject').innerText = email.subject;
+            document.getElementById('e-sender').innerText = email.sender;
+            document.getElementById('e-date').innerText = email.date;
+            document.getElementById('e-body').innerHTML = email.body;
+            document.getElementById('e-avatar').innerText = email.sender[0];
+
+            // Show attachment if exists
+            const attachmentEl = document.getElementById('e-attachment');
+            if (email.attachment) {
+                attachmentEl.innerHTML = `<div class="attachment">📎 ${email.attachment}</div>`;
+            } else {
+                attachmentEl.innerHTML = '';
+            }
+
+            document.getElementById('reply-box').style.display = 'none';
+        }
+
+        function closeEmail() {
+            document.getElementById('view').style.display = 'none';
+            document.getElementById('list').style.display = 'block';
+            currentEmailId = null;
+        }
+
+        function starCurrentEmail() {
+            if (!currentEmailId) return;
+            const email = emailData.find(e => e.id === currentEmailId);
+            email.starred = !email.starred;
+            showToast(email.starred ? 'Added to starred! ⭐' : 'Removed from starred', email.starred ? '⭐' : 'ℹ️');
+        }
+
+        function deleteCurrentEmail() {
+            if (!currentEmailId) return;
+            if (confirm('Delete this email?')) {
+                emailData = emailData.filter(e => e.id !== currentEmailId);
+                closeEmail();
+                renderList();
+                showToast('Email deleted! 🗑️', '✓');
+            }
+        }
+
+        function showReplyBox() {
+            document.getElementById('reply-box').style.display = 'block';
+            document.getElementById('reply-text').focus();
+        }
+
+        function cancelReply() {
+            document.getElementById('reply-box').style.display = 'none';
+            document.getElementById('reply-text').value = '';
+        }
+
+        function sendReply() {
+            const replyText = document.getElementById('reply-text').value;
+            if (!replyText.trim()) {
+                showToast('Write something first! 💁‍♀️', '⚠️');
+                return;
+            }
+
+            const originalEmail = emailData.find(e => e.id === currentEmailId);
+            
+            const newEmail = {
+                id: Date.now(),
+                folder: 'sent',
+                starred: false,
+                read: true,
+                sender: "Me",
+                subject: `Re: ${originalEmail.subject}`,
+                date: "Just now",
+                label: originalEmail.label,
+                body: replyText.replace(/\n/g, "<br>")
+            };
+
+            emailData.unshift(newEmail);
+            
+            cancelReply();
+            showToast('Reply sent! ✨', '✓');
+        }
+
+        function forwardEmail() {
+            if (!currentEmailId) return;
+            const email = emailData.find(e => e.id === currentEmailId);
+            
+            document.getElementById('c-to').value = '';
+            document.getElementById('c-sub').value = `Fwd: ${email.subject}`;
+            document.getElementById('c-msg').value = `\n\n--- Forwarded message ---\nFrom: ${email.sender}\nSubject: ${email.subject}\n\n${stripHtml(email.body)}`;
+            
+            openCompose();
+        }
+
+        // --- COMPOSE LOGIC ---
+
+        function openCompose() {
+            document.getElementById('compose-modal').style.display = 'flex';
+        }
+
+        function closeCompose() {
+            document.getElementById('compose-modal').style.display = 'none';
+            document.getElementById('c-to').value = "";
+            document.getElementById('c-sub').value = "";
+            document.getElementById('c-msg').value = "";
+        }
+
+        function sendEmail() {
+            const to = document.getElementById('c-to').value;
+            const sub = document.getElementById('c-sub').value;
+            const body = document.getElementById('c-msg').value;
+
+            if (!to || !sub) {
+                showToast('Add a recipient and subject! 💅', '⚠️');
+                return;
+            }
+
+            const newEmail = {
+                id: Date.now(),
+                folder: 'sent',
+                starred: false,
+                read: true,
+                sender: "Me",
+                subject: `To: ${to} - ${sub}`,
+                date: "Just now",
+                label: "personal",
+                body: body.replace(/\n/g, "<br>")
+            };
+
+            emailData.unshift(newEmail);
+            
+            closeCompose();
+            showToast('Sent! ✨ Manifesting a reply.', '✓');
+            
+            if (currentFolder === 'sent') renderList();
+        }
+
+        function saveDraft() {
+            const to = document.getElementById('c-to').value;
+            const sub = document.getElementById('c-sub').value;
+            const body = document.getElementById('c-msg').value;
+
+            if (!to && !sub && !body) {
+                showToast('Nothing to save! 🤷‍♀️', '⚠️');
+                return;
+            }
+
+            const newEmail = {
+                id: Date.now(),
+                folder: 'drafts',
+                starred: false,
+                read: true,
+                sender: "Me (Draft)",
+                subject: sub || "(No subject)",
+                date: "Just now",
+                label: "personal",
+                body: body.replace(/\n/g, "<br>") || "(Empty draft)"
+            };
+
+            emailData.unshift(newEmail);
+            
+            closeCompose();
+            showToast('Draft saved! 📝', '✓');
+            renderList();
+        }
+
+        function showToast(message, icon = '✨') {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').innerText = message;
+            document.getElementById('toast-icon').innerText = icon;
+            
+            toast.style.display = 'flex';
+            
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+
+        function stripHtml(html) {
+           let tmp = document.createElement("DIV");
+           tmp.innerHTML = html;
+           return tmp.textContent || tmp.innerText || "";
+        }
+
+        // Init
+        renderList();
+
+    </script>
+</body>
+</html>

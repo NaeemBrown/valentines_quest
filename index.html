@@ -12,7 +12,6 @@
     <link rel="icon" type="image/png" href="assets/icons/heart.png">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="js/apps/browser.js"></script>
 </head>
 <body>
 
@@ -22,7 +21,15 @@
     <audio id="bgm" loop src="assets/music/bgm.mp3"></audio>
 
     <div id="boot-screen">
+        <div id="boot-logo">
+            <div id="pixel-heart-grid"></div>
+        </div>
+        <div id="boot-title">HEARTOS v3.0</div>
         <div id="boot-text"></div>
+        <div id="boot-progress-container">
+            <div id="boot-progress-bar"></div>
+            <div id="boot-progress-text">0%</div>
+        </div>
         <p class="cursor-blink">_</p>
     </div>
 
@@ -137,6 +144,7 @@
     <script src="js/apps/tools.js"></script>
     <script src="js/apps/streamer.js"></script>
     <script src="js/apps/map.js"></script>
+    <script src="js/apps/browser.js"></script> 
     <script src="js/main.js"></script>
 </body>
 </html>

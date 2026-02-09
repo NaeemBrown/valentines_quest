@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ChatApp</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { 
+            margin: 0; 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #111b21;
+            display: flex; 
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .app-container { 
+            display: flex; 
+            width: 100%; 
+            max-width: 1600px; 
+            margin: 0 auto; 
+            background: #fff; 
+            box-shadow: 0 2px 10px rgba(0,0,0,.15);
+            height: 100vh;
+        }
+        
+        /* SIDEBAR */
+        .sidebar { 
+            width: 35%; 
+            min-width: 340px;
+            border-right: 1px solid #e9edef; 
+            display: flex; 
+            flex-direction: column; 
+            background: #fff;
+        }
+        
+        .sidebar-header { 
+            height: 60px; 
+            background: #f0f2f5; 
+            padding: 10px 16px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between;
+        }
+        
+        .profile-pic { 
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%; 
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 1.1rem;
+        }
+        
+        .header-icons {
+            display: flex;
+            gap: 20px;
+            color: #54656f;
+            font-size: 1.3rem;
+            cursor: pointer;
+        }
+        
+        .search-box {
+            padding: 10px;
+            background: #f0f2f5;
+            border-bottom: 1px solid #e9edef;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 8px 32px 8px 50px;
+            border-radius: 8px;
+            border: none;
+            background: #fff;
+            outline: none;
+            font-size: 14px;
+        }
+        
+        .search-wrapper {
+            position: relative;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #54656f;
+        }
+        
+        .chat-list { 
+            flex: 1; 
+            overflow-y: auto;
+            background: #fff;
+        }
+        
+        .chat-item { 
+            display: flex; 
+            padding: 12px 16px; 
+            cursor: pointer; 
+            align-items: center; 
+            gap: 15px; 
+            border-bottom: 1px solid #f0f2f5;
+            transition: background 0.1s;
+        }
+        
+        .chat-item:hover { 
+            background: #f5f6f6; 
+        }
+        
+        .chat-item.active {
+            background: #f0f2f5;
+        }
+        
+        .chat-item-pic {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 1.3rem;
+        }
+        
+        .chat-info { 
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .chat-info-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 3px;
+        }
+        
+        .chat-info h4 { 
+            margin: 0;
+            font-weight: 500;
+            font-size: 1.05rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .chat-time {
+            font-size: 0.75rem;
+            color: #667781;
+        }
+        
+        .chat-info p { 
+            margin: 0; 
+            color: #667781; 
+            font-size: 0.875rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .unread-badge {
+            background: #25d366;
+            color: white;
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+
+        /* MAIN CHAT */
+        .main-chat { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            background: #efeae2; 
+            position: relative;
+        }
+        
+        .chat-bg { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            opacity: 0.06;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect fill="%23e4dcd4" width="100" height="100"/><path d="M0 0 L50 50 L0 100 L100 100 L50 50 L100 0 Z" fill="%23ffffff" opacity="0.1"/></svg>');
+            background-repeat: repeat;
+            z-index: 0;
+        }
+        
+        .chat-header {
+            height: 60px;
+            background: #f0f2f5;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1;
+            box-shadow: 0 1px 2px rgba(0,0,0,.06);
+        }
+        
+        .chat-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .chat-header-info h3 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .chat-header-info p {
+            margin: 0;
+            font-size: 0.8rem;
+            color: #667781;
+        }
+        
+        .messages-area { 
+            flex: 1; 
+            padding: 20px 8%; 
+            overflow-y: auto; 
+            z-index: 1; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 8px;
+        }
+        
+        .msg-wrapper {
+            display: flex;
+            margin-bottom: 4px;
+        }
+        
+        .msg-wrapper.in {
+            justify-content: flex-start;
+        }
+        
+        .msg-wrapper.out {
+            justify-content: flex-end;
+        }
+        
+        .msg { 
+            max-width: 65%; 
+            padding: 6px 7px 8px 9px; 
+            border-radius: 8px; 
+            font-size: 14.2px; 
+            line-height: 1.4; 
+            position: relative; 
+            box-shadow: 0 1px 0.5px rgba(0,0,0,.13);
+            word-wrap: break-word;
+        }
+        
+        .msg.in { 
+            background: #fff; 
+            border-radius: 0 8px 8px 8px;
+        }
+        
+        .msg.out { 
+            background: #d9fdd3; 
+            border-radius: 8px 0 8px 8px;
+        }
+        
+        .msg-time {
+            font-size: 11px;
+            color: #667781;
+            margin-top: 4px;
+            text-align: right;
+            user-select: none;
+        }
+        
+        .msg.out .msg-time {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 4px;
+        }
+        
+        .double-check {
+            color: #53bdeb;
+            font-size: 16px;
+            line-height: 1;
+        }
+        
+        .footer { 
+            padding: 10px 16px; 
+            background: #f0f2f5; 
+            z-index: 1; 
+            display: flex; 
+            gap: 12px; 
+            align-items: center;
+        }
+        
+        .footer-icon {
+            color: #54656f;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .footer-icon:hover {
+            color: #3b4a54;
+        }
+        
+        .input-box { 
+            flex: 1; 
+            padding: 9px 12px; 
+            border-radius: 8px; 
+            border: none;
+            background: #fff;
+            outline: none; 
+            font-size: 15px;
+            font-family: inherit;
+        }
+        
+        .send-btn {
+            background: none;
+            border: none;
+            color: #54656f;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            transition: color 0.2s;
+        }
+        
+        .send-btn:hover {
+            color: #3b4a54;
+        }
+
+        /* Empty state */
+        .empty-chat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #667781;
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .empty-chat-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+        
+        .empty-chat h2 {
+            margin: 0 0 10px 0;
+            font-weight: 300;
+            font-size: 2rem;
+            color: #41525d;
+        }
+        
+        .empty-chat p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.2);
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0,0,0,0.3);
+        }
+
+        /* Typing indicator */
+        .typing-indicator {
+            display: none;
+            align-items: center;
+            gap: 4px;
+            padding: 10px 12px;
+            background: #fff;
+            border-radius: 8px;
+            width: fit-content;
+            box-shadow: 0 1px 0.5px rgba(0,0,0,.13);
+        }
+        
+        .typing-indicator.show {
+            display: flex;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #90949c;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.7; }
+            30% { transform: translateY(-10px); opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="profile-pic" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">A</div>
+                <div class="header-icons">
+                    <span style="cursor: pointer;" title="Status">○</span>
+                    <span style="cursor: pointer;" title="New chat">💬</span>
+                    <span style="cursor: pointer;" title="Menu">⋮</span>
+                </div>
+            </div>
+            
+            <div class="search-box">
+                <div class="search-wrapper">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" placeholder="Search or start new chat" id="search" onkeyup="searchChats()">
+                </div>
+            </div>
+            
+            <div class="chat-list" id="chat-list"></div>
+        </div>
+
+        <!-- MAIN CHAT AREA -->
+        <div class="main-chat">
+            <div class="chat-bg"></div>
+            
+            <div id="empty-state" class="empty-chat">
+                <div class="empty-chat-icon">💬</div>
+                <h2>WhatsApp Web</h2>
+                <p>Select a chat to start messaging</p>
+            </div>
+            
+            <div id="active-chat" style="display: none; flex-direction: column; height: 100%;">
+                <div class="chat-header">
+                    <div class="chat-header-left">
+                        <div class="profile-pic" id="header-pic" style="background: #ccc;"></div>
+                        <div class="chat-header-info">
+                            <h3 id="header-name">Contact</h3>
+                            <p id="header-status">online</p>
+                        </div>
+                    </div>
+                    <div class="header-icons">
+                        <span style="cursor: pointer;">🔍</span>
+                        <span style="cursor: pointer;">⋮</span>
+                    </div>
+                </div>
+
+                <div class="messages-area" id="msg-area"></div>
+
+                <div class="footer">
+                    <span class="footer-icon">😊</span>
+                    <span class="footer-icon">📎</span>
+                    <input type="text" class="input-box" id="msg-input" placeholder="Type a message" onkeypress="if(event.key==='Enter') sendMsg()">
+                    <button class="send-btn" onclick="sendMsg()">
+                        <svg viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="currentColor" d="M1.101 21.757L23.8 12.028 1.101 2.3l.011 7.912 13.623 1.816-13.623 1.817-.011 7.912z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // CHAT DATA
+        const chatData = {
+            naeem: {
+                name: "Naeem ❤️",
+                status: "online",
+                pic: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                letter: "N",
+                lastMessage: "Love you! See you tonight 😘",
+                time: "14:23",
+                unread: 0,
+                messages: [
+                    { type: 'in', text: 'Morning beautiful! 🌅', time: '08:15' },
+                    { type: 'out', text: 'Good morning babe! ❤️', time: '08:17' },
+                    { type: 'in', text: 'Did you see the Red Panda reel I sent? It stands up like a little human! 🥺', time: '10:32' },
+                    { type: 'out', text: 'YES! It\'s so fluffy. I want one.', time: '10:34' },
+                    { type: 'out', text: 'Also, I\'m going to the gym later for floorball, so I\'ll be home a bit late.', time: '10:35' },
+                    { type: 'in', text: 'No stress. Get those gains! 💪', time: '10:40' },
+                    { type: 'in', text: 'Should we get sushi for dinner tonight?', time: '12:15' },
+                    { type: 'out', text: 'Perfect! I\'m craving salmon right now', time: '12:20' },
+                    { type: 'in', text: 'Love you! See you tonight 😘', time: '14:23' }
+                ]
+            },
+            mom: {
+                name: "Mom",
+                status: "last seen today at 13:45",
+                pic: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+                letter: "M",
+                lastMessage: "Don't forget to call Granny!",
+                time: "13:45",
+                unread: 1,
+                messages: [
+                    { type: 'in', text: 'Hi my darling! How are you?', time: '10:00' },
+                    { type: 'out', text: 'Hey Mom! I\'m good, just busy with work', time: '10:15' },
+                    { type: 'in', text: 'Are you and Naeem coming for Sunday lunch this week?', time: '10:16' },
+                    { type: 'out', text: 'Yes! We\'ll be there around 1pm', time: '10:20' },
+                    { type: 'in', text: 'Wonderful! Thomas is making his famous bobotie 🍽️', time: '10:22' },
+                    { type: 'out', text: 'Yesss! Can\'t wait 😍', time: '10:25' },
+                    { type: 'in', text: 'Also, Granny asked about you yesterday. She misses you!', time: '13:40' },
+                    { type: 'in', text: 'Don\'t forget to call Granny!', time: '13:45' }
+                ]
+            },
+            granny: {
+                name: "Granny 👵",
+                status: "last seen yesterday at 19:20",
+                pic: "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)",
+                letter: "G",
+                lastMessage: "You: I\'ll visit this weekend! ❤️",
+                time: "Yesterday",
+                unread: 0,
+                messages: [
+                    { type: 'in', text: 'Hello my precious! How is my favorite granddaughter? 💕', time: '11:30' },
+                    { type: 'out', text: 'Hi Granny! I\'m doing great! How are you?', time: '11:45' },
+                    { type: 'in', text: 'I\'m well, dear. Just finished my garden. The roses are blooming beautifully 🌹', time: '11:50' },
+                    { type: 'out', text: 'That sounds lovely! I\'d love to see them', time: '11:52' },
+                    { type: 'in', text: 'You should come visit soon! I made koeksisters yesterday', time: '11:55' },
+                    { type: 'out', text: 'Oh my goodness! I haven\'t had your koeksisters in ages!', time: '12:00' },
+                    { type: 'out', text: 'I\'ll visit this weekend! ❤️', time: '12:01' },
+                    { type: 'in', text: 'Wonderful! I\'ll make extra just for you 😊', time: '12:05' }
+                ]
+            },
+            tina: {
+                name: "Tina",
+                status: "last seen today at 07:30",
+                pic: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
+                letter: "T",
+                lastMessage: "Just finished night shift, exhausted 😴",
+                time: "07:30",
+                unread: 2,
+                messages: [
+                    { type: 'out', text: 'Hey! How was the night shift?', time: 'Yesterday 22:00' },
+                    { type: 'in', text: 'Crazy busy! Had to deal with a break-in attempt at the mall', time: 'Yesterday 23:45' },
+                    { type: 'out', text: 'Omg! Are you okay?', time: 'Yesterday 23:50' },
+                    { type: 'in', text: 'Yeah I\'m fine! Security footage caught everything', time: 'Yesterday 23:52' },
+                    { type: 'out', text: 'That\'s scary though! Stay safe ❤️', time: 'Yesterday 23:55' },
+                    { type: 'in', text: 'Always! Anyway, another shift tonight 😅', time: '07:15' },
+                    { type: 'in', text: 'Just finished night shift, exhausted 😴', time: '07:30' }
+                ]
+            },
+            viky: {
+                name: "Viky 🏃‍♀️",
+                status: "online",
+                pic: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
+                letter: "V",
+                lastMessage: "Lions Head hike tomorrow?",
+                time: "15:10",
+                unread: 3,
+                messages: [
+                    { type: 'in', text: 'Morning! Did 100 squats today 🍑💪', time: '06:45' },
+                    { type: 'out', text: 'You\'re insane! I can barely do 20 😂', time: '09:00' },
+                    { type: 'in', text: 'Haha you just need to build up to it!', time: '09:05' },
+                    { type: 'in', text: 'BTW, are you coming to floorball tonight?', time: '09:10' },
+                    { type: 'out', text: 'Yes! I\'ll be there at 7:30', time: '09:15' },
+                    { type: 'in', text: 'Perfect! I\'m bringing my new shoes', time: '09:20' },
+                    { type: 'in', text: 'Also thinking of doing Lions Head this weekend', time: '15:00' },
+                    { type: 'in', text: 'Lions Head hike tomorrow?', time: '15:10' }
+                ]
+            },
+            thomas: {
+                name: "Thomas",
+                status: "last seen today at 14:00",
+                pic: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+                letter: "T",
+                lastMessage: "You: Can\'t wait! 😊",
+                time: "14:05",
+                unread: 0,
+                messages: [
+                    { type: 'in', text: 'Hi Agi! Your mom told me you\'re coming for lunch Sunday', time: '12:00' },
+                    { type: 'out', text: 'Hi Thomas! Yes, we\'ll be there! 😊', time: '12:30' },
+                    { type: 'in', text: 'Great! I\'m making bobotie and malva pudding for dessert', time: '12:35' },
+                    { type: 'out', text: 'Wow, that sounds amazing!', time: '12:40' },
+                    { type: 'in', text: 'Your mom says it\'s your favorite, so I want to get it right 😄', time: '12:45' },
+                    { type: 'out', text: 'That\'s so sweet of you! Mom\'s lucky to have you ❤️', time: '13:00' },
+                    { type: 'in', text: 'I\'m the lucky one! See you Sunday', time: '14:00' },
+                    { type: 'out', text: 'Can\'t wait! 😊', time: '14:05' }
+                ]
+            },
+            nella: {
+                name: "Nella",
+                status: "last seen today at 11:20",
+                pic: "linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)",
+                letter: "N",
+                lastMessage: "Book club next week?",
+                time: "11:20",
+                unread: 0,
+                messages: [
+                    { type: 'in', text: 'Have you finished Fourth Wing yet?', time: '10:00' },
+                    { type: 'out', text: 'Almost done! I\'m on page 450', time: '10:15' },
+                    { type: 'in', text: 'NO SPOILERS but omg the ending!! 😱', time: '10:20' },
+                    { type: 'out', text: 'Stop! I\'ll finish it tonight 📖', time: '10:25' },
+                    { type: 'in', text: 'Haha okay okay! We need to discuss when you\'re done', time: '10:30' },
+                    { type: 'in', text: 'Book club next week?', time: '11:20' }
+                ]
+            },
+            gym_girlies: {
+                name: "Gym Girlies 💪",
+                status: "5 participants",
+                pic: "linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)",
+                letter: "GG",
+                lastMessage: "Viky: See you all at 7:30!",
+                time: "16:45",
+                unread: 5,
+                messages: [
+                    { type: 'in', text: 'Viky: Who\'s coming to floorball tonight?', time: '15:00', sender: 'Viky' },
+                    { type: 'out', text: 'I\'m in!', time: '15:05' },
+                    { type: 'in', text: 'Sarah: Me too!', time: '15:10', sender: 'Sarah' },
+                    { type: 'in', text: 'Emma: Count me in 🏑', time: '15:15', sender: 'Emma' },
+                    { type: 'in', text: 'Viky: Perfect! Practice starts at 7:30pm', time: '16:00', sender: 'Viky' },
+                    { type: 'in', text: 'Lisa: Can\'t make it tonight, have to work late 😢', time: '16:30', sender: 'Lisa' },
+                    { type: 'in', text: 'Viky: No worries! Next time', time: '16:40', sender: 'Viky' },
+                    { type: 'in', text: 'Viky: See you all at 7:30!', time: '16:45', sender: 'Viky' }
+                ]
+            }
+        };
+
+        let currentChat = null;
+        let allChats = Object.keys(chatData);
+
+        // Initialize
+        renderChatList();
+
+        function renderChatList(filter = '') {
+            const listEl = document.getElementById('chat-list');
+            listEl.innerHTML = '';
+
+            const chatsToShow = filter 
+                ? allChats.filter(id => chatData[id].name.toLowerCase().includes(filter.toLowerCase()))
+                : allChats;
+
+            chatsToShow.forEach(chatId => {
+                const chat = chatData[chatId];
+                const item = document.createElement('div');
+                item.className = `chat-item ${currentChat === chatId ? 'active' : ''}`;
+                item.onclick = () => openChat(chatId);
+
+                const unreadBadge = chat.unread > 0 
+                    ? `<span class="unread-badge">${chat.unread}</span>` 
+                    : '';
+
+                const isOut = chat.lastMessage.startsWith('You: ');
+                const displayMessage = isOut 
+                    ? chat.lastMessage 
+                    : chat.lastMessage;
+
+                item.innerHTML = `
+                    <div class="chat-item-pic" style="background: ${chat.pic}; ${chat.letter.length > 1 ? 'font-size: 0.9rem;' : ''}">${chat.letter}</div>
+                    <div class="chat-info">
+                        <div class="chat-info-top">
+                            <h4>${chat.name}</h4>
+                            <span class="chat-time">${chat.time}</span>
+                        </div>
+                        <p>${displayMessage} ${unreadBadge}</p>
+                    </div>
+                `;
+                listEl.appendChild(item);
+            });
+        }
+
+        function openChat(chatId) {
+            currentChat = chatId;
+            const chat = chatData[chatId];
+            
+            // Mark as read
+            chat.unread = 0;
+            
+            // Update UI
+            document.getElementById('empty-state').style.display = 'none';
+            document.getElementById('active-chat').style.display = 'flex';
+            
+            // Update header
+            document.getElementById('header-name').innerText = chat.name;
+            document.getElementById('header-status').innerText = chat.status;
+            document.getElementById('header-pic').style.background = chat.pic;
+            document.getElementById('header-pic').innerText = chat.letter;
+            
+            // Render messages
+            renderMessages();
+            
+            // Update chat list
+            renderChatList();
+        }
+
+        function renderMessages() {
+            const chat = chatData[currentChat];
+            const msgArea = document.getElementById('msg-area');
+            msgArea.innerHTML = '';
+
+            chat.messages.forEach(msg => {
+                const wrapper = document.createElement('div');
+                wrapper.className = `msg-wrapper ${msg.type}`;
+
+                const msgDiv = document.createElement('div');
+                msgDiv.className = `msg ${msg.type}`;
+                
+                let content = msg.text;
+                
+                // Add sender name for group chats
+                if (msg.sender && msg.type === 'in') {
+                    content = `<strong style="color: #06cf9c;">${msg.sender}</strong><br>${msg.text}`;
+                }
+                
+                // Add time
+                const timeHtml = msg.type === 'out' 
+                    ? `<div class="msg-time">${msg.time} <span class="double-check">✓✓</span></div>`
+                    : `<div class="msg-time">${msg.time}</div>`;
+                
+                msgDiv.innerHTML = content + timeHtml;
+                wrapper.appendChild(msgDiv);
+                msgArea.appendChild(wrapper);
+            });
+
+            msgArea.scrollTop = msgArea.scrollHeight;
+        }
+
+        function sendMsg() {
+            if (!currentChat) return;
+            
+            const input = document.getElementById('msg-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const chat = chatData[currentChat];
+            const now = new Date();
+            const time = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+
+            // Add message
+            chat.messages.push({
+                type: 'out',
+                text: text,
+                time: time
+            });
+
+            // Update last message
+            chat.lastMessage = text.length > 50 ? text.substring(0, 47) + '...' : text;
+            chat.time = time;
+
+            input.value = '';
+            renderMessages();
+            renderChatList();
+
+            // Simulate typing and response
+            setTimeout(() => {
+                showTyping();
+                setTimeout(() => {
+                    hideTyping();
+                    sendAutoReply();
+                }, 2000);
+            }, 1000);
+        }
+
+        function showTyping() {
+            const msgArea = document.getElementById('msg-area');
+            const wrapper = document.createElement('div');
+            wrapper.className = 'msg-wrapper in';
+            wrapper.id = 'typing-indicator-wrapper';
+            
+            const typing = document.createElement('div');
+            typing.className = 'typing-indicator show';
+            typing.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+            
+            wrapper.appendChild(typing);
+            msgArea.appendChild(wrapper);
+            msgArea.scrollTop = msgArea.scrollHeight;
+        }
+
+        function hideTyping() {
+            const typing = document.getElementById('typing-indicator-wrapper');
+            if (typing) typing.remove();
+        }
+
+        function sendAutoReply() {
+            const chat = chatData[currentChat];
+            const now = new Date();
+            const time = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+
+            const replies = {
+                naeem: [
+                    "Love you too! ❤️",
+                    "Can't wait to see you tonight 😘",
+                    "Miss you already!",
+                    "You're the best! 💕"
+                ],
+                mom: [
+                    "Love you darling! ❤️",
+                    "Call me when you're free",
+                    "Take care of yourself!",
+                    "Don't work too hard! 💕"
+                ],
+                granny: [
+                    "You're such a sweet girl! 💕",
+                    "Come visit soon, my dear",
+                    "I miss you so much!",
+                    "God bless you, precious! 🙏"
+                ],
+                tina: [
+                    "Haha yeah, night shifts are rough 😅",
+                    "Coffee is my best friend right now ☕",
+                    "Thanks babe! Miss hanging out",
+                    "We should catch up soon!"
+                ],
+                viky: [
+                    "Let's do it! 💪",
+                    "I'm so pumped for this!",
+                    "Bring it on! 🔥",
+                    "Yes! Can't wait!"
+                ],
+                thomas: [
+                    "Thanks Agi! See you Sunday",
+                    "You're very kind! 😊",
+                    "Looking forward to it!",
+                    "Your mom talks about you all the time 😄"
+                ],
+                nella: [
+                    "OMG yes! I need to talk about it!",
+                    "The book is SO good!",
+                    "I'm obsessed! 📚",
+                    "Can't wait to discuss!"
+                ],
+                gym_girlies: [
+                    "Viky: Awesome! 💪",
+                    "Sarah: Can't wait!",
+                    "Emma: See you there! 🏑",
+                    "Viky: Let's crush it!"
+                ]
+            };
+
+            const replyList = replies[currentChat] || ["Sounds good!", "Cool!", "Awesome!", "Nice!"];
+            const reply = replyList[Math.floor(Math.random() * replyList.length)];
+
+            let sender = null;
+            if (currentChat === 'gym_girlies' && reply.includes(':')) {
+                const parts = reply.split(': ');
+                sender = parts[0];
+                const replyText = parts[1];
+                
+                chat.messages.push({
+                    type: 'in',
+                    text: replyText,
+                    time: time,
+                    sender: sender
+                });
+                chat.lastMessage = `${sender}: ${replyText}`;
+            } else {
+                chat.messages.push({
+                    type: 'in',
+                    text: reply,
+                    time: time
+                });
+                chat.lastMessage = reply;
+            }
+
+            chat.time = time;
+
+            renderMessages();
+            renderChatList();
+        }
+
+        function searchChats() {
+            const search = document.getElementById('search').value;
+            renderChatList(search);
+        }
+
+    </script>
+</body>
+</html>

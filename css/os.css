@@ -1,4 +1,4 @@
-/* --- BOOT & LOGIN --- */
+/* --- RETRO PIXEL BOOT SCREEN --- */
 #boot-screen { 
     background: #000; 
     color: var(--accent); 
@@ -7,7 +7,8 @@
     height: 100%; 
     display: flex; 
     flex-direction: column; 
-    justify-content: flex-end;
+    justify-content: center;
+    align-items: center;
     position: relative;
     overflow: hidden;
 }
@@ -36,53 +37,195 @@
     100% { background-position: 50px 50px; }
 }
 
-/* Glowing Title */
-#boot-screen::after {
-    content: " SYSTEM BOOTING... ";
-    position: absolute;
-    top: 15%;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 3rem;
+/* Pixel Heart Container */
+#boot-logo {
+    position: relative;
+    z-index: 10;
+    margin-bottom: 40px;
+}
+
+#pixel-heart-grid {
+    display: grid;
+    grid-template-columns: repeat(15, 20px);
+    grid-template-rows: repeat(13, 20px);
+    gap: 3px;
+    padding: 10px;
+}
+
+.pixel {
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    border: 1px solid rgba(255, 77, 109, 0.1);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.pixel.active {
+    background: var(--accent);
+    opacity: 1;
+    box-shadow: 
+        0 0 10px var(--accent),
+        0 0 20px rgba(255, 77, 109, 0.5),
+        inset 0 0 5px rgba(255, 255, 255, 0.3);
+    border: 1px solid #ff8fa3;
+}
+
+.pixel.glow {
+    animation: pixelPulse 1s ease-in-out infinite;
+}
+
+@keyframes pixelPulse {
+    0%, 100% { 
+        box-shadow: 
+            0 0 10px var(--accent),
+            0 0 20px rgba(255, 77, 109, 0.5);
+    }
+    50% { 
+        box-shadow: 
+            0 0 20px var(--accent),
+            0 0 40px rgba(255, 77, 109, 0.8),
+            0 0 60px rgba(255, 77, 109, 0.4);
+    }
+}
+
+/* Boot Title - More Retro */
+#boot-title {
+    position: relative;
+    z-index: 10;
+    font-size: 2.5rem;
     font-weight: bold;
     color: var(--accent);
     text-shadow: 
-        0 0 10px var(--accent),
-        0 0 20px var(--accent),
-        0 0 30px var(--accent),
-        0 0 40px rgba(255, 77, 109, 0.5);
-    animation: pulse 2s ease-in-out infinite;
-    letter-spacing: 4px;
+        3px 3px 0px #590d22,
+        0 0 20px var(--accent);
+    letter-spacing: 8px;
+    margin-bottom: 40px;
+    animation: titleFlicker 3s ease-in-out infinite;
 }
 
-@keyframes pulse {
-    0%, 100% { opacity: 1; text-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent); }
-    50% { opacity: 0.8; text-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent), 0 0 60px var(--accent); }
+@keyframes titleFlicker {
+    0%, 100% { 
+        opacity: 1;
+    }
+    94%, 96% {
+        opacity: 0.8;
+    }
+    95% {
+        opacity: 1;
+    }
 }
 
+/* Boot Text - Slower typing effect */
 #boot-text {
     position: relative;
     z-index: 10;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
+    min-height: 250px;
+    width: 100%;
+    max-width: 700px;
+    text-align: left;
 }
 
 #boot-text p {
-    margin: 5px 0;
-    animation: slideIn 0.3s ease-out forwards;
+    margin: 10px 0;
+    animation: scanlineReveal 0.5s steps(20) forwards;
     opacity: 0;
+    font-size: 1.4rem;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
 }
 
-@keyframes slideIn {
-    from { opacity: 0; transform: translateX(-20px); }
-    to { opacity: 1; transform: translateX(0); }
+@keyframes scanlineReveal {
+    from { 
+        opacity: 0; 
+        transform: translateX(-30px);
+        filter: blur(2px);
+    }
+    to { 
+        opacity: 1; 
+        transform: translateX(0);
+        filter: blur(0);
+    }
+}
+
+/* Retro Progress Bar */
+#boot-progress-container {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 600px;
+    height: 40px;
+    background: #000;
+    border: 3px solid var(--accent);
+    box-shadow: 
+        0 0 0 3px #000,
+        0 0 0 6px var(--accent),
+        0 0 20px rgba(255, 77, 109, 0.5),
+        inset 0 0 20px rgba(0, 0, 0, 0.8);
+    margin-bottom: 20px;
+}
+
+#boot-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: repeating-linear-gradient(
+        90deg,
+        var(--accent) 0px,
+        var(--accent) 10px,
+        #ff8fa3 10px,
+        #ff8fa3 20px
+    );
+    transition: width 0.5s ease-out;
+    box-shadow: 
+        0 0 30px var(--accent),
+        inset 0 0 10px rgba(255, 255, 255, 0.2);
+    position: relative;
+}
+
+#boot-progress-bar::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.3);
+    animation: scannerMove 1s linear infinite;
+}
+
+@keyframes scannerMove {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+}
+
+#boot-progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.5rem;
+    text-shadow: 
+        2px 2px 0px #000,
+        0 0 10px var(--accent);
+    z-index: 1;
+    font-family: 'VT323', monospace;
 }
 
 .cursor-blink { 
-    animation: blink 1s infinite;
+    animation: blink 0.8s infinite;
     font-size: 2rem;
     color: var(--accent);
+    position: relative;
+    z-index: 10;
+    margin-top: 10px;
 }
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+@keyframes blink { 
+    0%, 49% { opacity: 1; } 
+    50%, 100% { opacity: 0; } 
+}
 
 #login-screen { 
     background: var(--bg-color); 

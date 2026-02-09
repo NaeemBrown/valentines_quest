@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Spotify - Agi's Music</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            margin: 0; 
+            background: #121212; 
+            color: #fff; 
+            font-family: 'Circular', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            height: 100vh; 
+            display: flex; 
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .main { 
+            flex: 1; 
+            display: flex; 
+            overflow: hidden;
+        }
+        
+        /* SIDEBAR */
+        .sidebar { 
+            width: 260px; 
+            background: #000; 
+            padding: 24px 12px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 8px;
+            overflow-y: auto;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            padding: 0 16px 20px 16px;
+            color: #fff;
+        }
+        
+        .nav-item { 
+            padding: 8px 16px; 
+            color: #b3b3b3; 
+            font-weight: 700; 
+            font-size: 0.875rem;
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            transition: color 0.2s;
+            border-radius: 4px;
+        }
+        
+        .nav-item:hover { 
+            color: #fff; 
+        }
+        
+        .nav-item.active { 
+            color: #fff; 
+            background: #282828;
+        }
+        
+        .nav-icon {
+            font-size: 1.5rem;
+            width: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .divider {
+            height: 1px;
+            background: #282828;
+            margin: 8px 0;
+        }
+        
+        .playlist-item {
+            padding: 8px 16px;
+            color: #b3b3b3;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: color 0.2s;
+            border-radius: 4px;
+        }
+        
+        .playlist-item:hover {
+            color: #fff;
+        }
+        
+        .playlist-item.active {
+            color: #fff;
+            background: #282828;
+        }
+        
+        /* CONTENT AREA */
+        .content { 
+            flex: 1; 
+            background: linear-gradient(180deg, #535353 0%, #121212 40%);
+            padding: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        
+        .content-header {
+            padding: 20px 32px;
+            background: transparent;
+        }
+        
+        .playlist-header { 
+            display: flex; 
+            align-items: flex-end; 
+            gap: 24px; 
+            padding: 24px 32px 24px 32px;
+            background: transparent;
+        }
+        
+        .cover-art { 
+            width: 232px; 
+            height: 232px; 
+            box-shadow: 0 4px 60px rgba(0,0,0,.5);
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 5rem;
+            flex-shrink: 0;
+            border-radius: 4px;
+        }
+        
+        .playlist-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+        
+        .playlist-type {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        
+        .playlist-title {
+            font-size: 6rem;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 16px;
+        }
+        
+        .playlist-meta {
+            font-size: 0.875rem;
+            color: #b3b3b3;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .playlist-actions {
+            padding: 24px 32px;
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+        
+        .play-btn {
+            width: 56px;
+            height: 56px;
+            background: #1db954;
+            border: none;
+            border-radius: 50%;
+            color: #000;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s, background 0.2s;
+        }
+        
+        .play-btn:hover {
+            transform: scale(1.06);
+            background: #1ed760;
+        }
+        
+        .action-icon {
+            font-size: 2rem;
+            color: #b3b3b3;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .action-icon:hover {
+            color: #fff;
+        }
+        
+        /* TRACK LIST */
+        .track-list-header {
+            display: grid;
+            grid-template-columns: 40px 6fr 4fr 3fr 80px;
+            gap: 16px;
+            padding: 8px 32px;
+            color: #b3b3b3;
+            font-size: 0.75rem;
+            font-weight: 400;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .track-list { 
+            padding: 0 16px 100px 16px;
+        }
+        
+        .track { 
+            display: grid;
+            grid-template-columns: 40px 6fr 4fr 3fr 80px;
+            gap: 16px;
+            align-items: center;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+            position: relative;
+        }
+        
+        .track:hover { 
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .track.playing {
+            color: #1db954;
+        }
+        
+        .track.playing .t-title,
+        .track.playing .t-num-text {
+            color: #1db954;
+        }
+        
+        .t-num { 
+            text-align: center;
+            font-size: 0.875rem;
+            color: #b3b3b3;
+            position: relative;
+            width: 40px;
+        }
+        
+        .t-num-text {
+            color: #b3b3b3;
+        }
+        
+        .t-num-play {
+            display: none;
+            color: #fff;
+        }
+        
+        .track:hover .t-num-text {
+            display: none;
+        }
+        
+        .track:hover .t-num-play {
+            display: block;
+        }
+        
+        .t-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .t-cover {
+            width: 40px;
+            height: 40px;
+            background: #282828;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .t-details {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .t-title { 
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 400;
+        }
+        
+        .track:hover .t-title {
+            color: #fff;
+        }
+        
+        .t-artist {
+            font-size: 0.875rem;
+            color: #b3b3b3;
+        }
+        
+        .t-album {
+            font-size: 0.875rem;
+            color: #b3b3b3;
+        }
+        
+        .t-added {
+            font-size: 0.875rem;
+            color: #b3b3b3;
+        }
+        
+        .t-duration {
+            font-size: 0.875rem;
+            text-align: right;
+            color: #b3b3b3;
+        }
+        
+        /* PLAYER BAR */
+        .player-bar { 
+            height: 90px; 
+            background: #181818; 
+            border-top: 1px solid #282828; 
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            align-items: center;
+            padding: 0 16px;
+            z-index: 100;
+        }
+        
+        .now-playing {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 180px;
+        }
+        
+        .now-playing-cover {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .now-playing-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .now-playing-title {
+            color: #fff;
+            font-size: 0.875rem;
+            font-weight: 400;
+        }
+        
+        .now-playing-artist {
+            color: #b3b3b3;
+            font-size: 0.75rem;
+        }
+        
+        .player-controls { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+            gap: 8px;
+            max-width: 722px;
+            width: 100%;
+        }
+        
+        .control-buttons {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .control-btn {
+            background: none;
+            border: none;
+            color: #b3b3b3;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: color 0.2s;
+            padding: 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .control-btn:hover {
+            color: #fff;
+        }
+        
+        .control-btn.main {
+            width: 32px;
+            height: 32px;
+            background: #fff;
+            color: #000;
+            border-radius: 50%;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .control-btn.main:hover {
+            transform: scale(1.06);
+        }
+        
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+        }
+        
+        .time {
+            font-size: 0.75rem;
+            color: #b3b3b3;
+            min-width: 40px;
+            text-align: center;
+        }
+        
+        .progress-bar { 
+            flex: 1;
+            height: 4px; 
+            background: #4d4d4d; 
+            border-radius: 2px;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .progress-bar:hover .progress {
+            background: #1db954;
+        }
+        
+        .progress { 
+            height: 100%; 
+            background: #fff; 
+            border-radius: 2px;
+            transition: width 0.1s linear;
+        }
+        
+        .player-right {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 16px;
+        }
+        
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .volume-bar {
+            width: 93px;
+            height: 4px;
+            background: #4d4d4d;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+        
+        .volume-level {
+            width: 70%;
+            height: 100%;
+            background: #fff;
+            border-radius: 2px;
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #4d4d4d;
+            border-radius: 6px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #b3b3b3;
+        }
+
+        /* Home view */
+        .home-view {
+            padding: 24px 32px;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        
+        .playlist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+        
+        .playlist-card {
+            background: #181818;
+            padding: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .playlist-card:hover {
+            background: #282828;
+        }
+        
+        .playlist-card-cover {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 4px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+        
+        .playlist-card-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .playlist-card-desc {
+            font-size: 0.875rem;
+            color: #b3b3b3;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="main">
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <div class="logo">🎵 Spotify</div>
+            
+            <div class="nav-item active" onclick="showHome()">
+                <span class="nav-icon">🏠</span>
+                <span>Home</span>
+            </div>
+            <div class="nav-item" onclick="alert('Search feature coming soon!')">
+                <span class="nav-icon">🔍</span>
+                <span>Search</span>
+            </div>
+            <div class="nav-item" onclick="alert('Library view coming soon!')">
+                <span class="nav-icon">📚</span>
+                <span>Your Library</span>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <div class="nav-item" onclick="alert('Create playlist feature coming soon!')">
+                <span class="nav-icon">➕</span>
+                <span>Create Playlist</span>
+            </div>
+            <div class="nav-item" onclick="alert('Liked songs coming soon!')">
+                <span class="nav-icon">❤️</span>
+                <span>Liked Songs</span>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <div class="playlist-item active" onclick="loadPlaylist('hotgirlwalk')">Hot Girl Walk ✨</div>
+            <div class="playlist-item" onclick="loadPlaylist('yoga')">🧘‍♀️ Yoga Flow</div>
+            <div class="playlist-item" onclick="loadPlaylist('reading')">📖 Reading Vibes</div>
+            <div class="playlist-item" onclick="loadPlaylist('gym')">💪 Gym Hype</div>
+            <div class="playlist-item" onclick="loadPlaylist('floorball')">🏑 Floorball Energy</div>
+            <div class="playlist-item" onclick="loadPlaylist('skincare')">✨ Skincare Routine</div>
+            <div class="playlist-item" onclick="loadPlaylist('datenight')">🌹 Date Night</div>
+            <div class="playlist-item" onclick="loadPlaylist('roadtrip')">🚗 Road Trip to Prague</div>
+        </div>
+        
+        <!-- CONTENT AREA -->
+        <div class="content" id="content-area">
+            <!-- Home view will be rendered here -->
+        </div>
+    </div>
+
+    <!-- PLAYER BAR -->
+    <div class="player-bar">
+        <div class="now-playing">
+            <div class="now-playing-cover" id="player-cover">🎵</div>
+            <div class="now-playing-info">
+                <div class="now-playing-title" id="player-title">Select a song</div>
+                <div class="now-playing-artist" id="player-artist">Agi's Playlist</div>
+            </div>
+            <button class="control-btn" style="font-size: 1.2rem;">♡</button>
+        </div>
+        
+        <div class="player-controls">
+            <div class="control-buttons">
+                <button class="control-btn" title="Shuffle">🔀</button>
+                <button class="control-btn">⏮</button>
+                <button class="control-btn main" id="play-pause-btn" onclick="togglePlay()">▶</button>
+                <button class="control-btn">⏭</button>
+                <button class="control-btn" title="Repeat">🔁</button>
+            </div>
+            <div class="progress-container">
+                <span class="time" id="current-time">0:00</span>
+                <div class="progress-bar" onclick="seekTo(event)">
+                    <div class="progress" id="progress"></div>
+                </div>
+                <span class="time" id="total-time">0:00</span>
+            </div>
+        </div>
+        
+        <div class="player-right">
+            <button class="control-btn">🎤</button>
+            <button class="control-btn">📋</button>
+            <button class="control-btn">🔊</button>
+            <div class="volume-control">
+                <div class="volume-bar">
+                    <div class="volume-level"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Audio context for background music simulation
+        let audioContext = null;
+        let currentOscillator = null;
+
+        // PLAYLIST DATA
+        const playlists = {
+            hotgirlwalk: {
+                title: "Hot Girl Walk",
+                type: "PUBLIC PLAYLIST",
+                description: "Manifesting goals, feeling powerful, and being your best self. ✨",
+                cover: "linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)",
+                emoji: "✨",
+                tracks: [
+                    { title: "Good 4 U", artist: "Olivia Rodrigo", album: "SOUR", added: "3 days ago", duration: "2:58", emoji: "💜" },
+                    { title: "Levitating", artist: "Dua Lipa", album: "Future Nostalgia", added: "1 week ago", duration: "3:23", emoji: "🌟" },
+                    { title: "Don't Start Now", artist: "Dua Lipa", album: "Future Nostalgia", added: "1 week ago", duration: "3:03", emoji: "💃" },
+                    { title: "Love Story", artist: "Taylor Swift", album: "Fearless (TV)", added: "2 weeks ago", duration: "3:55", emoji: "💕" },
+                    { title: "Anti-Hero", artist: "Taylor Swift", album: "Midnights", added: "2 weeks ago", duration: "3:20", emoji: "🌙" },
+                    { title: "Espresso", artist: "Sabrina Carpenter", album: "emails i can't send", added: "3 weeks ago", duration: "2:55", emoji: "☕" },
+                    { title: "Nonsense", artist: "Sabrina Carpenter", album: "emails i can't send", added: "3 weeks ago", duration: "2:43", emoji: "🎀" },
+                    { title: "Flowers", artist: "Miley Cyrus", album: "Endless Summer", added: "1 month ago", duration: "3:20", emoji: "🌸" },
+                    { title: "As It Was", artist: "Harry Styles", album: "Harry's House", added: "1 month ago", duration: "2:47", emoji: "🏠" },
+                    { title: "Calm Down", artist: "Rema, Selena Gomez", album: "Rave & Roses", added: "1 month ago", duration: "3:59", emoji: "🌊" }
+                ]
+            },
+            yoga: {
+                title: "Yoga Flow",
+                type: "FOCUS PLAYLIST",
+                description: "Peaceful vibes for morning stretches and meditation. 🧘‍♀️",
+                cover: "linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)",
+                emoji: "🧘‍♀️",
+                tracks: [
+                    { title: "Weightless", artist: "Marconi Union", album: "Ambient", added: "1 week ago", duration: "8:09", emoji: "☁️" },
+                    { title: "Sun Salutation", artist: "Yoga Music", album: "Morning Flow", added: "1 week ago", duration: "5:32", emoji: "☀️" },
+                    { title: "Inner Peace", artist: "Meditation Relax Club", album: "Zen Garden", added: "2 weeks ago", duration: "6:15", emoji: "🕊️" },
+                    { title: "Ocean Waves", artist: "Nature Sounds", album: "Calm Waters", added: "2 weeks ago", duration: "7:20", emoji: "🌊" },
+                    { title: "Breathe", artist: "Spa Music", album: "Relaxation", added: "3 weeks ago", duration: "4:45", emoji: "🍃" }
+                ]
+            },
+            reading: {
+                title: "Reading Vibes",
+                type: "FOCUS PLAYLIST",
+                description: "Instrumental background for Fourth Wing and cozy reading sessions. 📖",
+                cover: "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)",
+                emoji: "📖",
+                tracks: [
+                    { title: "Clair de Lune", artist: "Debussy", album: "Suite Bergamasque", added: "2 days ago", duration: "5:05", emoji: "🌙" },
+                    { title: "Gymnopédie No.1", artist: "Erik Satie", album: "Piano Works", added: "2 days ago", duration: "3:28", emoji: "🎹" },
+                    { title: "Rainy Cafe", artist: "Lofi Hip Hop", album: "Study Beats", added: "1 week ago", duration: "3:15", emoji: "☕" },
+                    { title: "Library Ambience", artist: "Study Music", album: "Focus Flow", added: "1 week ago", duration: "4:32", emoji: "📚" },
+                    { title: "Cozy Fireplace", artist: "Ambient Sounds", album: "Winter Vibes", added: "2 weeks ago", duration: "6:00", emoji: "🔥" }
+                ]
+            },
+            gym: {
+                title: "Gym Hype",
+                type: "WORKOUT PLAYLIST",
+                description: "High energy beats to crush your PR and stay motivated. 💪",
+                cover: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
+                emoji: "💪",
+                tracks: [
+                    { title: "Till I Collapse", artist: "Eminem", album: "The Eminem Show", added: "1 day ago", duration: "4:57", emoji: "🔥" },
+                    { title: "Stronger", artist: "Kanye West", album: "Graduation", added: "1 day ago", duration: "5:11", emoji: "⚡" },
+                    { title: "Eye of the Tiger", artist: "Survivor", album: "Rocky III", added: "3 days ago", duration: "4:04", emoji: "🐯" },
+                    { title: "Can't Hold Us", artist: "Macklemore", album: "The Heist", added: "1 week ago", duration: "4:18", emoji: "🚀" },
+                    { title: "Thunderstruck", artist: "AC/DC", album: "The Razors Edge", added: "1 week ago", duration: "4:52", emoji: "⚡" },
+                    { title: "Run the World", artist: "Beyoncé", album: "4", added: "2 weeks ago", duration: "3:56", emoji: "👑" }
+                ]
+            },
+            floorball: {
+                title: "Floorball Energy",
+                type: "SPORTS PLAYLIST",
+                description: "Upbeat tracks for practice with Viky and the gym girlies. 🏑",
+                cover: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                emoji: "🏑",
+                tracks: [
+                    { title: "We Will Rock You", artist: "Queen", album: "News of the World", added: "1 week ago", duration: "2:02", emoji: "👊" },
+                    { title: "Pump It", artist: "Black Eyed Peas", album: "Monkey Business", added: "1 week ago", duration: "3:33", emoji: "🎵" },
+                    { title: "Lose Yourself", artist: "Eminem", album: "8 Mile", added: "2 weeks ago", duration: "5:26", emoji: "🎤" },
+                    { title: "Remember the Name", artist: "Fort Minor", album: "The Rising Tied", added: "2 weeks ago", duration: "3:50", emoji: "🔥" },
+                    { title: "Seven Nation Army", artist: "The White Stripes", album: "Elephant", added: "3 weeks ago", duration: "3:52", emoji: "🎸" }
+                ]
+            },
+            skincare: {
+                title: "Skincare Routine",
+                type: "CHILL PLAYLIST",
+                description: "Relaxing tunes for your 10-step glow-up routine. ✨",
+                cover: "linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)",
+                emoji: "✨",
+                tracks: [
+                    { title: "Put Your Records On", artist: "Corinne Bailey Rae", album: "Corinne Bailey Rae", added: "4 days ago", duration: "3:35", emoji: "🎶" },
+                    { title: "Sunday Morning", artist: "Maroon 5", album: "Songs About Jane", added: "4 days ago", duration: "4:04", emoji: "☀️" },
+                    { title: "Soak Up the Sun", artist: "Sheryl Crow", album: "C'mon C'mon", added: "1 week ago", duration: "4:53", emoji: "🌞" },
+                    { title: "Bubbly", artist: "Colbie Caillat", album: "Coco", added: "1 week ago", duration: "3:16", emoji: "💭" },
+                    { title: "Perfect Day", artist: "Hoku", album: "Hoku", added: "2 weeks ago", duration: "3:30", emoji: "🌸" }
+                ]
+            },
+            datenight: {
+                title: "Date Night",
+                type: "ROMANTIC PLAYLIST",
+                description: "Romantic vibes for dinner with Naeem. 🌹",
+                cover: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+                emoji: "🌹",
+                tracks: [
+                    { title: "Perfect", artist: "Ed Sheeran", album: "÷", added: "2 days ago", duration: "4:23", emoji: "💕" },
+                    { title: "Thinking Out Loud", artist: "Ed Sheeran", album: "x", added: "2 days ago", duration: "4:41", emoji: "💭" },
+                    { title: "All of Me", artist: "John Legend", album: "Love in the Future", added: "1 week ago", duration: "4:29", emoji: "❤️" },
+                    { title: "Make You Feel My Love", artist: "Adele", album: "19", added: "1 week ago", duration: "3:32", emoji: "🥰" },
+                    { title: "At Last", artist: "Etta James", album: "At Last!", added: "2 weeks ago", duration: "3:01", emoji: "🎷" }
+                ]
+            },
+            roadtrip: {
+                title: "Road Trip to Prague",
+                type: "TRAVEL PLAYLIST",
+                description: "Czech adventure soundtrack for exploring with Naeem. 🚗",
+                cover: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+                emoji: "🚗",
+                tracks: [
+                    { title: "Life is a Highway", artist: "Rascal Flatts", album: "Cars", added: "1 week ago", duration: "4:30", emoji: "🛣️" },
+                    { title: "Take Me Home", artist: "Cash Cash", album: "Take Me Home", added: "1 week ago", duration: "3:46", emoji: "🏡" },
+                    { title: "Send Me On My Way", artist: "Rusted Root", album: "When I Woke", added: "2 weeks ago", duration: "4:21", emoji: "🌍" },
+                    { title: "Budapest", artist: "George Ezra", album: "Wanted on Voyage", added: "2 weeks ago", duration: "3:20", emoji: "🌆" },
+                    { title: "Mr. Blue Sky", artist: "Electric Light Orchestra", album: "Out of the Blue", added: "3 weeks ago", duration: "5:03", emoji: "☀️" }
+                ]
+            }
+        };
+
+        let currentPlaylist = 'hotgirlwalk';
+        let currentTrackIndex = 0;
+        let isPlaying = false;
+        let progress = 0;
+        let progressInterval = null;
+
+        // Initialize with home view
+        showHome();
+
+        function showHome() {
+            const content = document.getElementById('content-area');
+            content.innerHTML = `
+                <div class="home-view">
+                    <h1 class="section-title">Good afternoon</h1>
+                    <div class="playlist-grid">
+                        ${Object.keys(playlists).map(key => {
+                            const playlist = playlists[key];
+                            return `
+                                <div class="playlist-card" onclick="loadPlaylist('${key}')">
+                                    <div class="playlist-card-cover" style="background: ${playlist.cover};">
+                                        ${playlist.emoji}
+                                    </div>
+                                    <div class="playlist-card-title">${playlist.title}</div>
+                                    <div class="playlist-card-desc">${playlist.description}</div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                    
+                    <h2 class="section-title">Recently Played</h2>
+                    <div class="playlist-grid">
+                        <div class="playlist-card" onclick="loadPlaylist('hotgirlwalk')">
+                            <div class="playlist-card-cover" style="background: ${playlists.hotgirlwalk.cover};">
+                                ${playlists.hotgirlwalk.emoji}
+                            </div>
+                            <div class="playlist-card-title">${playlists.hotgirlwalk.title}</div>
+                            <div class="playlist-card-desc">${playlists.hotgirlwalk.description}</div>
+                        </div>
+                        <div class="playlist-card" onclick="loadPlaylist('gym')">
+                            <div class="playlist-card-cover" style="background: ${playlists.gym.cover};">
+                                ${playlists.gym.emoji}
+                            </div>
+                            <div class="playlist-card-title">${playlists.gym.title}</div>
+                            <div class="playlist-card-desc">${playlists.gym.description}</div>
+                        </div>
+                        <div class="playlist-card" onclick="loadPlaylist('datenight')">
+                            <div class="playlist-card-cover" style="background: ${playlists.datenight.cover};">
+                                ${playlists.datenight.emoji}
+                            </div>
+                            <div class="playlist-card-title">${playlists.datenight.title}</div>
+                            <div class="playlist-card-desc">${playlists.datenight.description}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Update gradient
+            content.style.background = 'linear-gradient(180deg, #535353 0%, #121212 40%)';
+        }
+
+        function loadPlaylist(playlistId) {
+            currentPlaylist = playlistId;
+            const playlist = playlists[playlistId];
+            const content = document.getElementById('content-area');
+            
+            // Update gradient based on playlist
+            const gradient = playlist.cover;
+            content.style.background = `linear-gradient(180deg, ${gradient.match(/\(([^)]+)\)/)[1].split(',').slice(0,2).join(',').replace('135deg', '180deg')} 0%, #121212 40%)`;
+            
+            content.innerHTML = `
+                <div class="playlist-header">
+                    <div class="cover-art" style="background: ${playlist.cover};">${playlist.emoji}</div>
+                    <div class="playlist-info">
+                        <p class="playlist-type">${playlist.type}</p>
+                        <h1 class="playlist-title">${playlist.title}</h1>
+                        <p class="playlist-meta">
+                            <strong>Agi</strong> • ${playlist.tracks.length} songs
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="playlist-actions">
+                    <button class="play-btn" onclick="playPlaylist()">▶</button>
+                    <span class="action-icon">♡</span>
+                    <span class="action-icon">⋯</span>
+                </div>
+                
+                <div class="track-list-header">
+                    <div>#</div>
+                    <div>Title</div>
+                    <div>Album</div>
+                    <div>Date added</div>
+                    <div>⏱</div>
+                </div>
+                
+                <div class="track-list">
+                    ${playlist.tracks.map((track, index) => `
+                        <div class="track" onclick="playTrack(${index})">
+                            <div class="t-num">
+                                <span class="t-num-text">${index + 1}</span>
+                                <span class="t-num-play">▶</span>
+                            </div>
+                            <div class="t-info">
+                                <div class="t-cover">${track.emoji}</div>
+                                <div class="t-details">
+                                    <div class="t-title">${track.title}</div>
+                                    <div class="t-artist">${track.artist}</div>
+                                </div>
+                            </div>
+                            <div class="t-album">${track.album}</div>
+                            <div class="t-added">${track.added}</div>
+                            <div class="t-duration">${track.duration}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            content.scrollTop = 0;
+            
+            // Update sidebar active state
+            document.querySelectorAll('.playlist-item').forEach(item => {
+                item.classList.remove('active');
+            });
+        }
+
+        function playPlaylist() {
+            playTrack(0);
+        }
+
+        function playTrack(index) {
+            currentTrackIndex = index;
+            const playlist = playlists[currentPlaylist];
+            const track = playlist.tracks[index];
+            
+            // Update player
+            document.getElementById('player-title').innerText = track.title;
+            document.getElementById('player-artist').innerText = track.artist;
+            document.getElementById('player-cover').innerText = track.emoji;
+            document.getElementById('player-cover').style.background = playlist.cover;
+            
+            // Set total time
+            document.getElementById('total-time').innerText = track.duration;
+            
+            // Start playing
+            isPlaying = true;
+            document.getElementById('play-pause-btn').innerText = '⏸';
+            
+            // Reset and start progress
+            progress = 0;
+            updateProgress();
+            startProgress();
+            
+            // Play background sound
+            playBackgroundMusic();
+            
+            // Update track list highlighting
+            document.querySelectorAll('.track').forEach((el, i) => {
+                if (i === index) {
+                    el.classList.add('playing');
+                } else {
+                    el.classList.remove('playing');
+                }
+            });
+        }
+
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            document.getElementById('play-pause-btn').innerText = isPlaying ? '⏸' : '▶';
+            
+            if (isPlaying) {
+                startProgress();
+                playBackgroundMusic();
+            } else {
+                stopProgress();
+                stopBackgroundMusic();
+            }
+        }
+
+        function startProgress() {
+            stopProgress();
+            progressInterval = setInterval(() => {
+                if (progress < 100) {
+                    progress += 0.5;
+                    updateProgress();
+                } else {
+                    // Auto play next track
+                    const playlist = playlists[currentPlaylist];
+                    if (currentTrackIndex < playlist.tracks.length - 1) {
+                        playTrack(currentTrackIndex + 1);
+                    } else {
+                        togglePlay();
+                    }
+                }
+            }, 100);
+        }
+
+        function stopProgress() {
+            if (progressInterval) {
+                clearInterval(progressInterval);
+                progressInterval = null;
+            }
+        }
+
+        function updateProgress() {
+            document.getElementById('progress').style.width = progress + '%';
+            
+            // Update current time
+            const playlist = playlists[currentPlaylist];
+            if (playlist && playlist.tracks[currentTrackIndex]) {
+                const track = playlist.tracks[currentTrackIndex];
+                const [mins, secs] = track.duration.split(':').map(Number);
+                const totalSeconds = mins * 60 + secs;
+                const currentSeconds = Math.floor(totalSeconds * (progress / 100));
+                const currentMins = Math.floor(currentSeconds / 60);
+                const currentSecs = currentSeconds % 60;
+                document.getElementById('current-time').innerText = `${currentMins}:${currentSecs.toString().padStart(2, '0')}`;
+            }
+        }
+
+        function seekTo(event) {
+            const bar = event.currentTarget;
+            const rect = bar.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            progress = (x / rect.width) * 100;
+            updateProgress();
+        }
+
+        // BACKGROUND MUSIC SIMULATION
+        // This uses Web Audio API to generate simple ambient tones
+        // Note: Real music would require actual audio files or streaming services
+        
+        function playBackgroundMusic() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            
+            stopBackgroundMusic();
+            
+            // Create a simple pleasant tone based on playlist
+            const frequencies = {
+                'hotgirlwalk': [440, 554.37, 659.25], // Upbeat
+                'yoga': [174.61, 196, 220], // Calm
+                'reading': [261.63, 329.63, 392], // Peaceful
+                'gym': [523.25, 659.25, 783.99], // Energetic
+                'floorball': [493.88, 587.33, 698.46], // Dynamic
+                'skincare': [293.66, 369.99, 440], // Relaxing
+                'datenight': [329.63, 415.30, 493.88], // Romantic
+                'roadtrip': [349.23, 440, 523.25] // Adventure
+            };
+            
+            const freq = frequencies[currentPlaylist] || [440, 554.37, 659.25];
+            const randomFreq = freq[Math.floor(Math.random() * freq.length)];
+            
+            currentOscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            currentOscillator.type = 'sine';
+            currentOscillator.frequency.setValueAtTime(randomFreq, audioContext.currentTime);
+            
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.05, audioContext.currentTime + 0.1);
+            
+            currentOscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            currentOscillator.start();
+            
+            // Vary the tone slightly for more interest
+            const lfo = audioContext.createOscillator();
+            const lfoGain = audioContext.createGain();
+            lfo.frequency.value = 0.5;
+            lfoGain.gain.value = 5;
+            lfo.connect(lfoGain);
+            lfoGain.connect(currentOscillator.frequency);
+            lfo.start();
+        }
+        
+        function stopBackgroundMusic() {
+            if (currentOscillator) {
+                currentOscillator.stop();
+                currentOscillator = null;
+            }
+        }
+
+    </script>
+</body>
+</html>
