@@ -52,24 +52,23 @@ const SYSTEM = {
     },
 
     initDesktop: function() {
-        document.getElementById('bgm').volume = 0.3;
-        document.getElementById('bgm').play().catch(e=>{});
-        
-        setInterval(() => {
-            document.getElementById('taskbar-clock').innerText = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-        }, 1000);
+    document.getElementById('bgm').volume = 0.3;
+    document.getElementById('bgm').play().catch(e=>{});
+    
+    setInterval(() => {
+        document.getElementById('taskbar-clock').innerText = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+    }, 1000);
 
-        this.setupDrag();
-        this.setupStartMenu();
-        
-        // Initialize Apps (but NOT the map yet - it needs to wait until window is visible)
-        GALLERY.init();
-        TOOLS.init();
-        MUSIC.init();
+    this.setupDrag();
+    this.setupStartMenu();
+    
+    GALLERY.init();
+    TOOLS.init();
+    MUSIC.init();
+    BROWSER.init();  // ← A
 
-        // DON'T initialize map here - it will be initialized when window opens
-        
-        setTimeout(() => this.openApp('win-amp'), 800);
+    
+    setTimeout(() => this.openApp('win-amp'), 800);
     },
 
     openApp: function(id) {
@@ -78,7 +77,6 @@ const SYSTEM = {
         win.style.zIndex = ++this.zIndex;
         this.playAudio('click-sound');
 
-        // SPECIAL: Initialize map when map window is opened for the first time
         if(id === 'win-map' && !this.mapInitialized) {
             console.log('🗺️ Map window opened - initializing map...');
             // Small delay to ensure window is fully visible
