@@ -28,33 +28,49 @@
         
         /* Header */
         .maps-header {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
             padding: 15px 20px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 3px solid rgba(255, 255, 255, 0.3);
             display: flex;
             align-items: center;
             gap: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
         
         .maps-logo {
             font-size: 2rem;
+            animation: bounce 2s ease-in-out infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
         
         .maps-title {
             font-size: 2rem;
             font-weight: bold;
+            text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.3);
         }
         
         .search-box {
             flex: 1;
             max-width: 500px;
-            background: rgba(255, 255, 255, 0.9);
-            border: 2px solid #fff;
+            background: rgba(255, 255, 255, 0.95);
+            border: 3px solid #fff;
             padding: 10px 15px;
             border-radius: 25px;
             display: flex;
             align-items: center;
             gap: 10px;
+            box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+        
+        .search-box:focus-within {
+            transform: scale(1.02);
+            box-shadow: 7px 7px 0px rgba(0, 0, 0, 0.3);
         }
         
         .search-box input {
@@ -79,11 +95,12 @@
         
         /* Sidebar */
         .maps-sidebar {
-            width: 300px;
-            background: rgba(0, 0, 0, 0.4);
+            width: 320px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
             padding: 20px;
             overflow-y: auto;
-            border-right: 2px solid rgba(255, 255, 255, 0.2);
+            border-right: 3px solid rgba(255, 255, 255, 0.3);
         }
         
         .sidebar-section {
@@ -91,44 +108,65 @@
         }
         
         .sidebar-section h3 {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             margin-bottom: 15px;
             color: #fff;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 2px 2px 0px rgba(0, 0, 0, 0.3);
         }
         
         .location-card {
             background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            border: 3px solid rgba(255, 255, 255, 0.3);
             padding: 15px;
             margin-bottom: 15px;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .location-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .location-card:hover::before {
+            left: 100%;
         }
         
         .location-card:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.25);
             transform: translateX(5px);
+            border-color: #fff;
+            box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.3);
         }
         
         .location-card h4 {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             margin-bottom: 5px;
         }
         
         .location-card p {
-            font-size: 1.1rem;
-            opacity: 0.8;
+            font-size: 1.2rem;
+            opacity: 0.9;
         }
         
         .distance-badge {
-            background: rgba(255, 77, 109, 0.8);
-            padding: 5px 10px;
-            border-radius: 12px;
+            background: rgba(255, 77, 109, 0.9);
+            border: 2px solid #fff;
+            padding: 5px 12px;
+            border-radius: 15px;
             font-size: 1rem;
             display: inline-block;
-            margin-top: 5px;
+            margin-top: 8px;
+            box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.2);
         }
         
         /* Map Area */
@@ -142,15 +180,15 @@
         }
         
         .pixel-map {
-            width: 80%;
-            height: 80%;
-            background: rgba(0, 0, 0, 0.3);
-            border: 3px solid rgba(255, 255, 255, 0.3);
+            width: 85%;
+            height: 85%;
+            background: rgba(0, 0, 0, 0.4);
+            border: 4px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5), inset 0 0 50px rgba(0, 0, 0, 0.3);
             position: relative;
             overflow: hidden;
         }
         
-        /* Animated grid background */
         .pixel-map::before {
             content: "";
             position: absolute;
@@ -172,12 +210,19 @@
         
         .map-pin {
             position: absolute;
-            width: 40px;
-            height: 40px;
-            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            font-size: 2.5rem;
             animation: pinBounce 2s ease-in-out infinite;
             cursor: pointer;
-            filter: drop-shadow(0 0 10px rgba(255, 77, 109, 0.8));
+            filter: drop-shadow(0 0 15px rgba(255, 77, 109, 0.9));
+            transition: all 0.3s;
+        }
+        
+        .map-pin:hover {
+            transform: scale(1.3) translateY(-10px);
+            animation: none;
+            filter: drop-shadow(0 0 25px rgba(255, 255, 109, 1));
         }
         
         @keyframes pinBounce {
@@ -201,59 +246,104 @@
             left: 48%;
             width: 10%;
             height: 40%;
-            border-left: 3px dashed rgba(255, 77, 109, 0.6);
+            border-left: 4px dashed rgba(255, 77, 109, 0.7);
             animation: dashMove 2s linear infinite;
         }
         
         @keyframes dashMove {
-            0% { border-left-color: rgba(255, 77, 109, 0.3); }
-            50% { border-left-color: rgba(255, 77, 109, 0.9); }
-            100% { border-left-color: rgba(255, 77, 109, 0.3); }
+            0% { 
+                border-left-color: rgba(255, 77, 109, 0.3);
+                filter: drop-shadow(0 0 5px rgba(255, 77, 109, 0.3));
+            }
+            50% { 
+                border-left-color: rgba(255, 77, 109, 1);
+                filter: drop-shadow(0 0 15px rgba(255, 77, 109, 0.9));
+            }
+            100% { 
+                border-left-color: rgba(255, 77, 109, 0.3);
+                filter: drop-shadow(0 0 5px rgba(255, 77, 109, 0.3));
+            }
+        }
+        
+        .plane {
+            position: absolute;
+            font-size: 2rem;
+            animation: flyPlane 8s linear infinite;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+        }
+        
+        @keyframes flyPlane {
+            0% { 
+                top: 30%; 
+                left: 55%; 
+                transform: rotate(-45deg);
+            }
+            50% { 
+                top: 70%; 
+                left: 48%;
+                transform: rotate(135deg);
+            }
+            100% { 
+                top: 30%; 
+                left: 55%;
+                transform: rotate(-45deg);
+            }
         }
         
         .map-overlay {
             position: absolute;
             top: 20px;
             left: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 15px 20px;
-            border-radius: 8px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 20px 25px;
+            border-radius: 12px;
+            border: 3px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.3);
         }
         
         .map-overlay h3 {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             margin-bottom: 10px;
+            color: #ff4d6d;
+            text-shadow: 0 0 10px rgba(255, 77, 109, 0.8);
         }
         
         .map-overlay p {
-            font-size: 1.2rem;
-            opacity: 0.9;
+            font-size: 1.3rem;
+            opacity: 0.95;
         }
         
-        /* Floating info box */
         .info-box {
             position: absolute;
             bottom: 20px;
             right: 20px;
-            background: rgba(255, 77, 109, 0.9);
-            padding: 20px;
-            border-radius: 12px;
-            border: 2px solid #fff;
-            max-width: 300px;
+            background: rgba(255, 77, 109, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 15px;
+            border: 3px solid #fff;
+            max-width: 350px;
+            box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.3);
+            animation: floatBox 3s ease-in-out infinite;
+        }
+        
+        @keyframes floatBox {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
         
         .info-box h4 {
-            font-size: 1.4rem;
-            margin-bottom: 10px;
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
         }
         
         .info-box p {
-            font-size: 1.1rem;
-            line-height: 1.4;
+            font-size: 1.2rem;
+            line-height: 1.5;
         }
         
-        /* Controls */
         .map-controls {
             position: absolute;
             top: 20px;
@@ -264,29 +354,53 @@
         }
         
         .control-btn {
-            width: 50px;
-            height: 50px;
-            background: rgba(0, 0, 0, 0.7);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 8px;
+            width: 55px;
+            height: 55px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(255, 255, 255, 0.4);
+            border-radius: 10px;
             color: #fff;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s;
+            box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.3);
         }
         
         .control-btn:hover {
+            background: rgba(255, 77, 109, 0.9);
+            transform: scale(1.15);
+            border-color: #fff;
+            box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.4);
+        }
+        
+        .control-btn:active {
+            transform: scale(1.05);
+        }
+        
+        .maps-sidebar::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        .maps-sidebar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .maps-sidebar::-webkit-scrollbar-thumb {
             background: rgba(255, 77, 109, 0.8);
-            transform: scale(1.1);
+            border-radius: 5px;
+        }
+        
+        .maps-sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 77, 109, 1);
         }
     </style>
 </head>
 <body>
     <div class="maps-container">
-        <!-- Header -->
         <div class="maps-header">
             <div class="maps-logo">🗺️</div>
             <div class="maps-title">HEARTMAPS</div>
@@ -296,19 +410,15 @@
             </div>
         </div>
         
-        <!-- Main Content -->
         <div class="maps-main">
-            <!-- Sidebar -->
             <div class="maps-sidebar">
                 <div class="sidebar-section">
                     <h3>💕 Our Places</h3>
-                    
                     <div class="location-card" onclick="focusLocation('prague')">
                         <h4>🇨🇿 Prague, Czechia</h4>
                         <p>Your home, my heart</p>
                         <span class="distance-badge">Current Location</span>
                     </div>
-                    
                     <div class="location-card" onclick="focusLocation('capetown')">
                         <h4>🇿🇦 Cape Town, SA</h4>
                         <p>Where adventure begins</p>
@@ -317,62 +427,77 @@
                 </div>
                 
                 <div class="sidebar-section">
-                    <h3>📍 Recent Visits</h3>
-                    
-                    <div class="location-card">
+                    <h3>📍 Czech Adventures</h3>
+                    <div class="location-card" onclick="focusLocation('tarzanie')">
                         <h4>🏔️ Tarzánie</h4>
                         <p>Swinging through trees</p>
                     </div>
-                    
-                    <div class="location-card">
+                    <div class="location-card" onclick="focusLocation('brno')">
                         <h4>🏛️ Brno</h4>
                         <p>City of culture</p>
                     </div>
-                    
-                    <div class="location-card">
-                        <h4>🐧 Boulders Beach</h4>
-                        <p>Penguin paradise</p>
+                    <div class="location-card" onclick="focusLocation('olomouc')">
+                        <h4>⛪ Olomouc</h4>
+                        <p>Historic beauty</p>
                     </div>
-                    
-                    <div class="location-card">
-                        <h4>🌊 Kalk Bay</h4>
-                        <p>Fish & chips by the sea</p>
+                    <div class="location-card" onclick="focusLocation('ostrava')">
+                        <h4>🏭 Ostrava</h4>
+                        <p>Industrial heart</p>
+                    </div>
+                    <div class="location-card" onclick="focusLocation('frenstat')">
+                        <h4>⛰️ Frenštát</h4>
+                        <p>Mountain town charm</p>
                     </div>
                 </div>
                 
                 <div class="sidebar-section">
-                    <h3>🌍 Bucket List</h3>
-                    
-                    <div class="location-card">
-                        <h4>✨ Future Adventures</h4>
-                        <p>Places to explore together</p>
+                    <h3>🌊 Cape Town Memories</h3>
+                    <div class="location-card" onclick="focusLocation('boulders')">
+                        <h4>🐧 Boulders Beach</h4>
+                        <p>Penguin paradise</p>
+                    </div>
+                    <div class="location-card" onclick="focusLocation('kalkbay')">
+                        <h4>🐟 Kalk Bay</h4>
+                        <p>Fish & chips by the sea</p>
+                    </div>
+                    <div class="location-card" onclick="focusLocation('simonstown')">
+                        <h4>⚓ Simon's Town</h4>
+                        <p>Naval charm</p>
+                    </div>
+                    <div class="location-card" onclick="focusLocation('glencairn')">
+                        <h4>🏖️ Glencairn</h4>
+                        <p>Peaceful beach</p>
+                    </div>
+                    <div class="location-card" onclick="focusLocation('aquarium')">
+                        <h4>🐠 Two Oceans Aquarium</h4>
+                        <p>Where oceans meet</p>
                     </div>
                 </div>
             </div>
             
-            <!-- Map View -->
             <div class="map-view">
                 <div class="pixel-map">
                     <div class="map-overlay">
                         <h3>🌍 WORLD MAP</h3>
                         <p>Distance: 9,500 km</p>
                         <p>Flight Time: ~12 hours</p>
+                        <p>Time Difference: 2 hours</p>
                     </div>
                     
-                    <div class="map-pin pin-prague" title="Prague, Czechia">📍</div>
-                    <div class="map-pin pin-capetown" title="Cape Town, SA">📍</div>
+                    <div class="map-pin pin-prague" title="Prague" onclick="focusLocation('prague')">📍</div>
+                    <div class="map-pin pin-capetown" title="Cape Town" onclick="focusLocation('capetown')">📍</div>
                     <div class="route-line"></div>
+                    <div class="plane">✈️</div>
                     
-                    <div class="info-box">
+                    <div class="info-box" id="infoBox">
                         <h4>💕 Connected Across Continents</h4>
-                        <p>No distance too far when hearts are close.</p>
-                        <p style="margin-top: 10px;">From the streets of Prague to the beaches of Cape Town, every mile brings us closer.</p>
+                        <p>No distance too far when hearts are close. From Prague to Cape Town, every mile brings us closer.</p>
                     </div>
                     
                     <div class="map-controls">
-                        <button class="control-btn" title="Zoom In">+</button>
-                        <button class="control-btn" title="Zoom Out">−</button>
-                        <button class="control-btn" title="Reset View">⟲</button>
+                        <button class="control-btn" title="Zoom In" onclick="alert('🔍 Zoom coming soon!')">+</button>
+                        <button class="control-btn" title="Zoom Out" onclick="alert('🔍 Zoom coming soon!')">−</button>
+                        <button class="control-btn" title="Reset" onclick="resetView()">⟲</button>
                     </div>
                 </div>
             </div>
@@ -380,36 +505,49 @@
     </div>
     
     <script>
-        function focusLocation(location) {
+        const locations = {
+            prague: { title: "🇨🇿 Prague, Czechia", desc: "Historic streets, cozy cafes, and endless memories. From Prague Castle to Charles Bridge, every corner tells a story." },
+            capetown: { title: "🇿🇦 Cape Town, SA", desc: "Mountains meet ocean. Adventures, penguins, and sunsets that take your breath away." },
+            tarzanie: { title: "🏔️ Tarzánie", desc: "High ropes adventure in Beskydy mountains. Swinging through trees like Tarzan!" },
+            brno: { title: "🏛️ Brno", desc: "Second city with first-class charm. Architecture, culture, and amazing cafes." },
+            olomouc: { title: "⛪ Olomouc", desc: "UNESCO gem with stunning churches and the famous astronomical clock." },
+            ostrava: { title: "🏭 Ostrava", desc: "Industrial city with rich history. The Bolt Tower offers breathtaking views." },
+            frenstat: { title: "⛰️ Frenštát", desc: "Small mountain town with big heart. Gateway to Beskyd mountains." },
+            boulders: { title: "🐧 Boulders Beach", desc: "Home to African penguins! Watching them waddle is pure joy." },
+            kalkbay: { title: "🐟 Kalk Bay", desc: "Colorful fishing village with the best fish and chips. Remember the seals?" },
+            simonstown: { title: "⚓ Simon's Town", desc: "Charming naval town where our SA adventure began. Penguins and ocean views." },
+            glencairn: { title: "🏖️ Glencairn", desc: "Peaceful beach town with stunning mountain views along False Bay." },
+            aquarium: { title: "🐠 Two Oceans Aquarium", desc: "Where two oceans meet. Mesmerizing jellyfish and incredible marine life!" }
+        };
+        
+        function focusLocation(loc) {
             const pins = document.querySelectorAll('.map-pin');
-            pins.forEach(pin => {
-                pin.style.animation = 'pinBounce 0.5s ease-in-out 3';
-            });
+            pins.forEach(p => p.style.animation = 'pinBounce 0.5s ease-in-out 3');
             
-            const infoBox = document.querySelector('.info-box');
-            
-            if (location === 'prague') {
-                infoBox.innerHTML = `
-                    <h4>🇨🇿 Prague, Czechia</h4>
-                    <p>The city that holds your heart. Historic streets, cozy cafes, and endless memories waiting to be made.</p>
-                `;
-            } else if (location === 'capetown') {
-                infoBox.innerHTML = `
-                    <h4>🇿🇦 Cape Town, South Africa</h4>
-                    <p>Where mountains meet the ocean. Adventures, penguins, and sunsets that take your breath away.</p>
-                `;
+            const box = document.getElementById('infoBox');
+            const data = locations[loc];
+            if (data) {
+                box.innerHTML = `<h4>${data.title}</h4><p>${data.desc}</p>`;
+                box.style.animation = 'none';
+                setTimeout(() => box.style.animation = 'floatBox 3s ease-in-out infinite', 10);
             }
         }
         
-        // Search functionality
+        function resetView() {
+            document.getElementById('infoBox').innerHTML = '<h4>💕 Connected Across Continents</h4><p>No distance too far when hearts are close. From Prague to Cape Town, every mile brings us closer.</p>';
+        }
+        
         document.getElementById('mapSearch').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
-                const query = this.value.toLowerCase();
-                if (query.includes('prague') || query.includes('czechia')) {
-                    focusLocation('prague');
-                } else if (query.includes('cape town') || query.includes('south africa')) {
-                    focusLocation('capetown');
+                const q = this.value.toLowerCase();
+                for (let key in locations) {
+                    if (locations[key].title.toLowerCase().includes(q) || locations[key].desc.toLowerCase().includes(q)) {
+                        focusLocation(key);
+                        this.value = '';
+                        return;
+                    }
                 }
+                alert('Location not found! Try: Prague, Brno, Kalk Bay, etc.');
             }
         });
     </script>
