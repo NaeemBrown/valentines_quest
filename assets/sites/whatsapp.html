@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta charset="UTF-8">
     <title>ChatApp</title>
     <style>
@@ -169,11 +168,27 @@
         .unread-badge {
             background: #25d366;
             color: white;
-            border-radius: 12px;
-            padding: 2px 8px;
+            border-radius: 50%;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 5px;
             font-size: 0.7rem;
             font-weight: bold;
-            margin-left: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .chat-info-bottom {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .chat-info-bottom p {
+            flex: 1;
+            min-width: 0;
         }
 
         /* MAIN CHAT */
@@ -234,6 +249,10 @@
             display: flex; 
             flex-direction: column; 
             gap: 8px;
+        }
+        
+        .messages-spacer {
+            flex: 1;
         }
         
         .msg-wrapper {
@@ -388,8 +407,7 @@
 
         /* Profile images */
         .chat-item-pic img,
-        .profile-pic img,
-        .chat-header-pic img {
+        .profile-pic img {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -442,15 +460,15 @@
             <div class="sidebar-header">
                 <div class="profile-pic" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">A</div>
                 <div class="header-icons">
-                    <span style="cursor: pointer;" title="Status">○</span>
-                    <span style="cursor: pointer;" title="New chat">My chats</span>
-                    <span style="cursor: pointer;" title="Menu">⋮</span>
+                    <span style="cursor: pointer;" title="Status">&#9898;</span>
+                    <span style="cursor: pointer;" title="New chat">&#128172;</span>
+                    <span style="cursor: pointer;" title="Menu">&#8942;</span>
                 </div>
             </div>
             
             <div class="search-box">
                 <div class="search-wrapper">
-                    <span class="search-icon"></span>
+                    <span class="search-icon">&#128269;</span>
                     <input type="text" class="search-input" placeholder="Search or start new chat" id="search" onkeyup="searchChats()">
                 </div>
             </div>
@@ -463,7 +481,7 @@
             <div class="chat-bg"></div>
             
             <div id="empty-state" class="empty-chat">
-                <div class="empty-chat-icon">My chats</div>
+                <div class="empty-chat-icon">&#128172;</div>
                 <h2>WhatsApp Web</h2>
                 <p>Select a chat to start messaging</p>
             </div>
@@ -478,16 +496,16 @@
                         </div>
                     </div>
                     <div class="header-icons">
-                        <span style="cursor: pointer;"></span>
-                        <span style="cursor: pointer;">⋮</span>
+                        <span style="cursor: pointer;">&#128269;</span>
+                        <span style="cursor: pointer;">&#8942;</span>
                     </div>
                 </div>
 
                 <div class="messages-area" id="msg-area"></div>
 
                 <div class="footer">
-                    <span class="footer-icon">😊</span>
-                    <span class="footer-icon">📎</span>
+                    <span class="footer-icon">&#128522;</span>
+                    <span class="footer-icon">&#128206;</span>
                     <input type="text" class="input-box" id="msg-input" placeholder="Type a message" onkeypress="if(event.key==='Enter') sendMsg()">
                     <button class="send-btn" onclick="sendMsg()">
                         <svg viewBox="0 0 24 24" width="24" height="24">
@@ -507,15 +525,15 @@
                 status: "online",
                 pic: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
                 letter: "N",
-                lastMessage: "we can if you stop falling all the time",
+                lastMessage: "Love you! See you tonight \uD83D\uDE18",
                 time: "14:23",
                 unread: 0,
                 messages: [
                     { type: 'in', text: 'HELLOOOO, I just wanted to remind you that I love you soooo much!', time: '08:15' },
                     { type: 'out', text: 'Yes thank you I am so loved, i love you more \u2764\uFE0F', time: '08:17' },
                     { type: 'in', text: 'What time are you going to olomouc later?', time: '10:32' },
-                    { type: 'out', text: '11 \' Then go to lidl to get a snack.', time: '10:34' },
-                    { type: 'out', text: 'Im lazy tho \' my one free day and i have to go to a 1 hour class.', time: '10:35' },
+                    { type: 'out', text: "11 \u2019 Then go to lidl to get a snack.", time: '10:34' },
+                    { type: 'out', text: "Im lazy tho \u2019 my one free day and i have to go to a 1 hour class.", time: '10:35' },
                     { type: 'in', text: 'Yeahhh but hopefully it goes fast yk?', time: '10:40' },
                     { type: 'in', text: 'maybe we can play peak later?', time: '12:15' },
                     { type: 'out', text: 'yeah that would be nice, hopefully we beat the game lol', time: '12:20' },
@@ -528,7 +546,7 @@
                 pic: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
                 img: "../images/profile-pics/monmon.jpg",
                 letter: "M",
-                lastMessage: "yeah lol I get it now",
+                lastMessage: "he just left for the pub now",
                 time: "13:45",
                 unread: 1,
                 messages: [
@@ -543,23 +561,23 @@
                 ]
             },
             granny: {
-                name: "Granny \u{1F475}",
+                name: "Granny \uD83D\uDC75",
                 status: "last seen yesterday at 19:20",
                 pic: "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)",
                 img: "../images/profile-pics/zdeni.jpg",
                 letter: "G",
-                lastMessage: "You: I\'ll visit this weekend! \u2764\uFE0F",
+                lastMessage: "You: I'll visit this weekend! \u2764\uFE0F",
                 time: "Yesterday",
                 unread: 0,
                 messages: [
-                    { type: 'in', text: 'Helloooo Agatko, are you coming to see me as well with thomas and mom? \u{1F496}', time: '11:30' },
+                    { type: 'in', text: 'Helloooo Agatko, are you coming to see me as well with thomas and mom? \uD83D\uDC96', time: '11:30' },
                     { type: 'out', text: 'Yes im going to come after a bit. I will bring my laptop too', time: '11:45' },
-                    { type: 'in', text: 'perfect, also the dogs will be here today for a few hours \u{1F339}', time: '11:50' },
+                    { type: 'in', text: 'perfect, also the dogs will be here today for a few hours \uD83C\uDF39', time: '11:50' },
                     { type: 'out', text: 'THEY WILL?', time: '11:52' },
                     { type: 'in', text: 'You should come visit sooner than later. They want to play', time: '11:55' },
                     { type: 'out', text: 'Ill play with them alot', time: '12:00' },
                     { type: 'out', text: 'They need my caring touch \u2764\uFE0F', time: '12:01' },
-                    { type: 'in', text: 'Good, ill be waiting for you \u{1F60A}', time: '12:05' }
+                    { type: 'in', text: 'Good, ill be waiting for you \uD83D\uDE0A', time: '12:05' }
                 ]
             },
             tina: {
@@ -568,94 +586,71 @@
                 pic: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
                 img: "../images/profile-pics/tina.jpg",
                 letter: "T",
-                lastMessage: "Just finished night shift, exhausted \u{1F634}",
+                lastMessage: "Just finished night shift, exhausted \uD83D\uDE34",
                 time: "07:30",
                 unread: 2,
                 messages: [
-                    { type: 'out', text: 'Hey! How was the night shift?', time: 'Yesterday 22:00' },
-                    { type: 'in', text: 'Crazy busy! Had to deal with a break-in attempt at the mall', time: 'Yesterday 23:45' },
-                    { type: 'out', text: 'Omg! Are you okay?', time: 'Yesterday 23:50' },
-                    { type: 'in', text: 'Yeah I\'m fine! Security footage caught everything', time: 'Yesterday 23:52' },
-                    { type: 'out', text: 'That\'s scary though! Stay safe \u2764\uFE0F', time: 'Yesterday 23:55' },
-                    { type: 'in', text: 'Always! Anyway, another shift tonight \u{1F604}', time: '07:15' },
-                    { type: 'in', text: 'Just finished night shift, exhausted \u{1F634}', time: '07:30' }
+                    { type: 'out', text: 'hey how was the shift', time: 'Yesterday 22:00' },
+                    { type: 'in', text: 'omg so long, some drunk guy tried to get into h&m at 2am', time: 'Yesterday 23:20' },
+                    { type: 'out', text: 'WHAT lmao', time: 'Yesterday 23:22' },
+                    { type: 'in', text: 'yeah just standing there banging on the door', time: 'Yesterday 23:25' },
+                    { type: 'in', text: 'me and jarda had to deal with him for like 20 mins', time: 'Yesterday 23:27' },
+                    { type: 'out', text: 'that sounds exhausting, are you okay?', time: 'Yesterday 23:35' },
+                    { type: 'in', text: 'yeah just tired lol, another one tonight too', time: '07:15' },
+                    { type: 'in', text: 'just finished, absolutely done \uD83D\uDE34', time: '07:30' }
                 ]
             },
             viky: {
-                name: "Viky \u{1F3C3}\u200D\u2640\uFE0F",
+                name: "Viky \uD83C\uDFC3\u200D\u2640\uFE0F",
                 status: "online",
                 pic: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
-                img: "../images/profile-pics//viky.jpg",
+                img: "../images/profile-pics/viky.jpg",
                 letter: "V",
-                lastMessage: "Lions Head hike tomorrow?",
+                lastMessage: "we go early like 7am before it gets too busy",
                 time: "15:10",
                 unread: 3,
                 messages: [
-                    { type: 'in', text: 'Morning! Did 100 squats today \u{1F351}\u{1F4AA}', time: '06:45' },
-                    { type: 'out', text: 'You\'re insane! I can barely do 20 \u{1F602}', time: '09:00' },
-                    { type: 'in', text: 'Haha you just need to build up to it!', time: '09:05' },
-                    { type: 'in', text: 'BTW, are you coming to floorball tonight?', time: '09:10' },
-                    { type: 'out', text: 'Yes! I\'ll be there at 7:30', time: '09:15' },
-                    { type: 'in', text: 'Perfect! I\'m bringing my new shoes', time: '09:20' },
-                    { type: 'in', text: 'Also thinking of doing Lions Head this weekend', time: '15:00' },
-                    { type: 'in', text: 'Lions Head hike tomorrow?', time: '15:10' }
+                    { type: 'in', text: 'are you going to floorball tonight?', time: '09:10' },
+                    { type: 'out', text: 'yes finally, havent been in like 2 weeks', time: '09:15' },
+                    { type: 'in', text: 'same lol my legs are going to die', time: '09:20' },
+                    { type: 'out', text: 'worth it tho', time: '09:22' },
+                    { type: 'in', text: 'also are you free saturday?', time: '15:00' },
+                    { type: 'out', text: 'i think so why', time: '15:05' },
+                    { type: 'in', text: 'pustevny? been wanting to go for ages, the wooden buildings up there look so cool', time: '15:08' },
+                    { type: 'in', text: 'we go early like 7am before it gets too busy', time: '15:10' }
                 ]
             },
             thomas: {
                 name: "Thomas",
                 status: "last seen today at 14:00",
                 pic: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
-                img: "../images/profile-pics//thomas.jpg",
+                img: "../images/profile-pics/thomas.jpg",
                 letter: "T",
-                lastMessage: "You: Can\'t wait! \u{1F60A}",
+                lastMessage: "You: Can't wait! \uD83D\uDE0A",
                 time: "14:05",
                 unread: 0,
                 messages: [
-                    { type: 'in', text: 'Hi Agi! Your mom told me you\'re coming for lunch Sunday', time: '12:00' },
-                    { type: 'out', text: 'Hi Thomas! Yes, we\'ll be there! \u{1F60A}', time: '12:30' },
-                    { type: 'in', text: 'Great! I\'m making bobotie and malva pudding for dessert', time: '12:35' },
-                    { type: 'out', text: 'Wow, that sounds amazing!', time: '12:40' },
-                    { type: 'in', text: 'Your mom says it\'s your favorite, so I want to get it right \u{1F604}', time: '12:45' },
-                    { type: 'out', text: 'That\'s so sweet of you! Mom\'s lucky to have you \u2764\uFE0F', time: '13:00' },
-                    { type: 'in', text: 'I\'m the lucky one! See you Sunday', time: '14:00' },
-                    { type: 'out', text: 'Can\'t wait! \u{1F60A}', time: '14:05' }
+                    { type: 'in', text: 'Hi agi, is your mom awake?', time: '11:00' },
+                    { type: 'out', text: 'No no she is sleeping right now', time: '11:30' },
+                    { type: 'in', text: 'Ok ok just remind her that I will come pick her up around 2pm', time: '11:35' },
+                    { type: 'out', text: 'Yep i will tell her', time: '11:40' },
+                    { type: 'in', text: 'are you coming too?', time: '11:42' },
+                    { type: 'out', text: 'yes im coming after a little bit', time: '11:50' },
+                    { type: 'in', text: 'Ah ok perfect I will see you there', time: '14:00' },
+                    { type: 'out', text: 'bye bye!', time: '14:05' }
                 ]
             },
             nella: {
-                name: "Nella",
-                status: "last seen today at 11:20",
+                name: "Nela \uD83D\uDC31\uD83E\uDD0D",
+                status: "always with you",
                 pic: "linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)",
                 img: "../images/profile-pics/nela.jpg",
                 letter: "N",
-                lastMessage: "Book club next week?",
+                lastMessage: "i am always with you and monmon \u2764\uFE0F",
                 time: "11:20",
-                unread: 0,
+                unread: 1,
                 messages: [
-                    { type: 'in', text: 'Have you finished Fourth Wing yet?', time: '10:00' },
-                    { type: 'out', text: 'Almost done! I\'m on page 450', time: '10:15' },
-                    { type: 'in', text: 'NO SPOILERS but omg the ending!! \u{1F631}', time: '10:20' },
-                    { type: 'out', text: 'Stop! I\'ll finish it tonight \u{1F4D6}', time: '10:25' },
-                    { type: 'in', text: 'Haha okay okay! We need to discuss when you\'re done', time: '10:30' },
-                    { type: 'in', text: 'Book club next week?', time: '11:20' }
-                ]
-            },
-            gym_girlies: {
-                name: "Gym Girlies \u{1F4AA}",
-                status: "5 participants",
-                pic: "linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)",
-                letter: "GG",
-                lastMessage: "Viky: See you all at 7:30!",
-                time: "16:45",
-                unread: 5,
-                messages: [
-                    { type: 'in', text: 'Viky: Who\'s coming to floorball tonight?', time: '15:00', sender: 'Viky' },
-                    { type: 'out', text: 'I\'m in!', time: '15:05' },
-                    { type: 'in', text: 'Sarah: Me too!', time: '15:10', sender: 'Sarah' },
-                    { type: 'in', text: 'Emma: Count me in \u{1F3D1}', time: '15:15', sender: 'Emma' },
-                    { type: 'in', text: 'Viky: Perfect! Practice starts at 7:30pm', time: '16:00', sender: 'Viky' },
-                    { type: 'in', text: 'Lisa: Can\'t make it tonight, have to work late \u{1F622}', time: '16:30', sender: 'Lisa' },
-                    { type: 'in', text: 'Viky: No worries! Next time', time: '16:40', sender: 'Viky' },
-                    { type: 'in', text: 'Viky: See you all at 7:30!', time: '16:45', sender: 'Viky' }
+                    { type: 'in', text: 'hi agi, its me, your nela \uD83D\uDC31\n\ni just wanted to say thank you. thank you for being the best owner i could have ever asked for. you gave me the happiest life, full of cuddles and warm spots on the couch and all the treats i could dream of. you always knew when i needed extra love, and you never ever let me feel alone.\n\ni remember everything. the way you would talk to me like i understood every word (i did, by the way). the way you would let me sleep right next to you. the way you would pick me up even when i pretended i didnt want it. i loved every second of it.\n\ni know you miss me, and i know some days are harder than others. but please dont be sad for too long. i had the most beautiful life because of you, and i wouldnt change a single thing.\n\nplease give monmon extra treats and cuddles from me ok? tell her i love her so much and to be a good girl. she is lucky to have you, just like i was.\n\nyou were the best thing that ever happened to me agi. thank you for choosing me, thank you for loving me, and thank you for giving me a home.\n\ni am always with you and monmon, even if you cant see me. i am right there, purring next to you \u2764\uFE0F', time: '11:20' }
                 ]
             }
         };
@@ -684,24 +679,24 @@
                     ? `<span class="unread-badge">${chat.unread}</span>` 
                     : '';
 
-                const isOut = chat.lastMessage.startsWith('You: ');
-                const displayMessage = isOut 
-                    ? chat.lastMessage 
-                    : chat.lastMessage;
+                const displayMessage = chat.lastMessage;
 
-                const picContent = chat.img
+                const picInner = chat.img
                     ? `<img src="${chat.img}" alt="${chat.name}" onerror="this.parentElement.style.background='${chat.pic}'; this.parentElement.innerHTML='${chat.letter}';">`
                     : chat.letter;
                 const picStyle = chat.img ? '' : `background: ${chat.pic};`;
 
                 item.innerHTML = `
-                    <div class="chat-item-pic" style="${picStyle} ${chat.letter.length > 1 ? 'font-size: 0.9rem;' : ''}">${picContent}</div>
+                    <div class="chat-item-pic" style="${picStyle} ${chat.letter.length > 1 ? 'font-size: 0.9rem;' : ''}">${picInner}</div>
                     <div class="chat-info">
                         <div class="chat-info-top">
                             <h4>${chat.name}</h4>
                             <span class="chat-time">${chat.time}</span>
                         </div>
-                        <p>${displayMessage} ${unreadBadge}</p>
+                        <div class="chat-info-bottom">
+                            <p>${displayMessage}</p>
+                            ${unreadBadge}
+                        </div>
                     </div>
                 `;
                 listEl.appendChild(item);
@@ -743,6 +738,11 @@
             const msgArea = document.getElementById('msg-area');
             msgArea.innerHTML = '';
 
+            // Spacer pushes messages to bottom when there aren't enough to fill
+            const spacer = document.createElement('div');
+            spacer.className = 'messages-spacer';
+            msgArea.appendChild(spacer);
+
             chat.messages.forEach(msg => {
                 const wrapper = document.createElement('div');
                 wrapper.className = `msg-wrapper ${msg.type}`;
@@ -750,7 +750,7 @@
                 const msgDiv = document.createElement('div');
                 msgDiv.className = `msg ${msg.type}`;
                 
-                let content = msg.text;
+                let content = msg.text.replace(/\n/g, '<br>');
                 
                 // Add sender name for group chats
                 if (msg.sender && msg.type === 'in') {
@@ -833,79 +833,58 @@
 
             const replies = {
                 naeem: [
-                    "Love you too! \u2764\uFE0F",
-                    "Can't wait to see you tonight \u{1F618}",
-                    "Miss you already!",
-                    "You're the best! \u{1F496}"
+                    "love you too \u2764\uFE0F",
+                    "miss you already",
+                    "cant wait to see you later",
+                    "you're the best lol"
                 ],
                 mom: [
-                    "Love you darling! \u2764\uFE0F",
-                    "Call me when you're free",
-                    "Take care of yourself!",
-                    "Don't work too hard! \u{1F496}"
+                    "ok ill remind you",
+                    "lol yeah i get it now",
+                    "call me when you're free",
+                    "ok on my way now"
                 ],
                 granny: [
-                    "You're such a sweet girl! \u{1F496}",
-                    "Come visit soon, my dear",
-                    "I miss you so much!",
-                    "God bless you, precious! \u{1F64F}"
+                    "coming soon!",
+                    "ill be there in a bit",
+                    "i miss you so much",
+                    "saving you the biggest hug"
                 ],
                 tina: [
-                    "Haha yeah, night shifts are rough \u{1F604}",
-                    "Coffee is my best friend right now \u2615",
-                    "Thanks babe! Miss hanging out",
-                    "We should catch up soon!"
+                    "omg that sounds hectic",
+                    "get some rest when you can",
+                    "coffee o clock",
+                    "we need to catch up soon"
                 ],
                 viky: [
-                    "Let's do it! \u{1F4AA}",
-                    "I'm so pumped for this!",
-                    "Bring it on! \u{1F525}",
-                    "Yes! Can't wait!"
+                    "im in!!",
+                    "yes lets gooo",
+                    "cant wait to see the wooden chapels up there",
+                    "ok but we better not die on this hike"
                 ],
                 thomas: [
-                    "Thanks Agi! See you Sunday",
-                    "You're very kind! \u{1F60A}",
-                    "Looking forward to it!",
-                    "Your mom talks about you all the time \u{1F604}"
+                    "see you sunday!",
+                    "that sounds so good",
+                    "cant wait for the malva pudding",
+                    "thanks thomas!"
                 ],
                 nella: [
-                    "OMG yes! I need to talk about it!",
-                    "The book is SO good!",
-                    "I'm obsessed! \u{1F4DA}",
-                    "Can't wait to discuss!"
-                ],
-                gym_girlies: [
-                    "Viky: Awesome! \u{1F4AA}",
-                    "Sarah: Can't wait!",
-                    "Emma: See you there! \u{1F3D1}",
-                    "Viky: Let's crush it!"
+                    "i love you so much agi \u2764\uFE0F",
+                    "give monmon a cuddle from me",
+                    "im purring right next to you, you just cant hear me",
+                    "you were the best owner in the whole world"
                 ]
             };
 
             const replyList = replies[currentChat] || ["Sounds good!", "Cool!", "Awesome!", "Nice!"];
             const reply = replyList[Math.floor(Math.random() * replyList.length)];
 
-            let sender = null;
-            if (currentChat === 'gym_girlies' && reply.includes(':')) {
-                const parts = reply.split(': ');
-                sender = parts[0];
-                const replyText = parts[1];
-                
-                chat.messages.push({
-                    type: 'in',
-                    text: replyText,
-                    time: time,
-                    sender: sender
-                });
-                chat.lastMessage = `${sender}: ${replyText}`;
-            } else {
-                chat.messages.push({
-                    type: 'in',
-                    text: reply,
-                    time: time
-                });
-                chat.lastMessage = reply;
-            }
+            chat.messages.push({
+                type: 'in',
+                text: reply,
+                time: time
+            });
+            chat.lastMessage = reply;
 
             chat.time = time;
 

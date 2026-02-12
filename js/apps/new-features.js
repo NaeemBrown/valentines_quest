@@ -1,13 +1,11 @@
 // js/new-features.js
 
 window.NEW_FEATURES = {
-    // Initialize countdown widget
     init() {
-        console.log("🚀 HeartOS New Features Module Loaded");
+        console.log("\uD83D\uDE80 HeartOS New Features Module Loaded");
         this.createCountdownWidget();
     },
 
-    // Countdown Widget Logic
     createCountdownWidget() {
         const desktop = document.getElementById('desktop-screen');
         if (!desktop || document.getElementById('countdown-widget')) return;
@@ -22,15 +20,16 @@ window.NEW_FEATURES = {
         `;
         
         widget.onclick = () => {
-            const title = prompt('What are you counting down to?', localStorage.getItem('countdownTitle') || 'Next Meeting');
+            const t = (typeof I18N !== 'undefined') ? I18N.t.bind(I18N) : (k) => k;
+            const title = prompt(t('widget_prompt_title'), localStorage.getItem('countdownTitle') || t('widget_default_title'));
             if (!title) return;
-            const date = prompt('Date (YYYY-MM-DD):', localStorage.getItem('countdownDate') || '2026-03-14');
+            const date = prompt(t('widget_prompt_date'), localStorage.getItem('countdownDate') || '2026-03-14');
             if (!date) return;
-            const time = prompt('Time (HH:MM):', '00:00');
+            const time = prompt(t('widget_prompt_time'), '00:00');
             if (!time) return;
             
             const fullDate = new Date(`${date}T${time}:00`);
-            if (isNaN(fullDate.getTime())) { alert('Invalid date!'); return; }
+            if (isNaN(fullDate.getTime())) { alert(t('widget_invalid_date')); return; }
             
             localStorage.setItem('countdownDate', fullDate.toISOString());
             localStorage.setItem('countdownTitle', title);
@@ -46,17 +45,18 @@ window.NEW_FEATURES = {
         const widget = document.getElementById('countdown-widget');
         if (!widget) return;
 
+        const t = (typeof I18N !== 'undefined') ? I18N.t.bind(I18N) : (k) => k;
         const saved = localStorage.getItem('countdownDate');
-        const title = localStorage.getItem('countdownTitle') || 'Next Meeting';
+        const title = localStorage.getItem('countdownTitle') || t('widget_default_title');
         
         if (!saved) {
-            widget.innerHTML = '<div style="text-align:center;color:var(--text-main);"><div style="font-weight:bold;color:var(--accent);margin-bottom:5px;">⏰ Countdown</div><div style="font-size:0.9rem;">Click to set</div></div>';
+            widget.innerHTML = '<div style="text-align:center;color:var(--text-main);"><div style="font-weight:bold;color:var(--accent);margin-bottom:5px;">' + t('widget_countdown') + '</div><div style="font-size:0.9rem;">' + t('widget_click_set') + '</div></div>';
             return;
         }
 
         const diff = new Date(saved) - new Date();
         if (diff < 0) {
-            widget.innerHTML = `<div style="text-align:center;color:var(--text-main);"><div style="font-weight:bold;color:var(--accent);margin-bottom:5px;">🎉 ${title}</div><div style="font-size:1.2rem;font-weight:bold;">IT'S TODAY!</div></div>`;
+            widget.innerHTML = '<div style="text-align:center;color:var(--text-main);"><div style="font-weight:bold;color:var(--accent);margin-bottom:5px;">\uD83C\uDF89 ' + title + '</div><div style="font-size:1.2rem;font-weight:bold;">' + t('widget_its_today') + '</div></div>';
             return;
         }
 
@@ -65,14 +65,12 @@ window.NEW_FEATURES = {
         const m = Math.floor((diff % 3600000) / 60000);
         const s = Math.floor((diff % 60000) / 1000);
 
-        widget.innerHTML = `<div style="text-align:center;color:var(--text-main);"><div style="font-weight:bold;color:var(--accent);margin-bottom:8px;font-size:1.1rem;">⏰ ${title}</div><div style="font-size:1.8rem;font-weight:bold;color:var(--accent);">${d}</div><div style="font-size:0.9rem;margin-bottom:5px;">days</div><div style="font-size:1.2rem;font-family:monospace;">${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}</div></div>`;
+        widget.innerHTML = '<div style="text-align:center;color:var(--text-main);"><div style="font-weight:bold;color:var(--accent);margin-bottom:8px;font-size:1.1rem;">\u23F0 ' + title + '</div><div style="font-size:1.8rem;font-weight:bold;color:var(--accent);">' + d + '</div><div style="font-size:0.9rem;margin-bottom:5px;">' + t('widget_days') + '</div><div style="font-size:1.2rem;font-family:monospace;">' + String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0') + '</div></div>';
     }
 };
 
-// Wait for the desktop to actually appear (login successful) before initializing countdown
 const featureInit = setInterval(() => {
     const desktop = document.getElementById('desktop-screen');
-    // Check if desktop exists and DOES NOT have the 'hidden' class
     if (desktop && !desktop.classList.contains('hidden')) {
         NEW_FEATURES.init();
         clearInterval(featureInit);
