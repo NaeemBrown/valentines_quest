@@ -6,10 +6,13 @@ const TOOLS = {
     globe: null,
 
     init: function() {
+        // Always render timeline and letters — they guard their own containers
         this.renderTimeline();
         this.renderLetters();
-        this.renderMap();
-        this.initQuiz();
+        // Always init terminal — it guards its own container
+        if (typeof TERMINAL !== 'undefined') {
+            TERMINAL.init();
+        }
     },
 
     renderTimeline: function() {
@@ -33,6 +36,7 @@ const TOOLS = {
             c.appendChild(div);
         });
     },
+    
 
     // --- THE NEW 3D MAP ENGINE ---
     renderMap: function() {
@@ -61,7 +65,8 @@ const TOOLS = {
         const pivot = new THREE.Group();
         this.scene.add(pivot);
 
-        // A. The Wireframe (Hot Pink Grid)         const geoWire = new THREE.SphereGeometry(5, 24, 24); 
+        // A. The Wireframe (Hot Pink Grid)
+        const geoWire = new THREE.SphereGeometry(5, 24, 24); 
         const matWire = new THREE.MeshBasicMaterial({ 
             color: 0xff4d6d, // Hot Pink
             wireframe: true,
@@ -140,34 +145,5 @@ const TOOLS = {
             this.camera.aspect = w / h;
             this.camera.updateProjectionMatrix();
         });
-    },
-
-    initQuiz: function() {
-        const c = document.getElementById('quiz-wrapper');
-        if(!c) return;
-        c.innerHTML = `<div id="quiz-box"></div>`;
-        this.loadQ(0);
-    },
-
-    loadQ: function(idx) {
-        if(idx >= LORE.quiz.length) {
-             document.getElementById('quiz-box').innerHTML = `<h2 style="color:#ff4d6d">ACCESS GRANTED</h2><p>${LORE.finalMessage || "Welcome Home."}</p>`;
-             return;
-        }
-        const q = LORE.quiz[idx];
-        let html = `<p>> ${q.question}</p>`;
-        q.options.forEach((opt, i) => {
-            html += `<button class="quiz-btn" onclick="TOOLS.check(${idx}, ${i})">[${i}] ${opt}</button>`;
-        });
-        document.getElementById('quiz-box').innerHTML = html;
-    },
-
-    check: function(qIdx, ansIdx) {
-        if(ansIdx === LORE.quiz[qIdx].correct) {
-            this.loadQ(qIdx + 1);
-        } else {
-            SYSTEM.playAudio('error-sound');
-            alert("INCORRECT");
-        }
     }
 };

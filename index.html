@@ -59,16 +59,34 @@
         </div>
 
         <div id="icon-grid">
-            <div class="desktop-icon" onclick="SYSTEM.openApp('win-timeline')"><span class="icon-img">📜</span>History</div>
-            <div class="desktop-icon" onclick="SYSTEM.openApp('win-gallery')"><span class="icon-img">📂</span>Photos</div>
-            <div class="desktop-icon" onclick="SYSTEM.openApp('win-letters')"><span class="icon-img">💌</span>Secrets</div>
-            <div class="desktop-icon" onclick="SYSTEM.openApp('win-map')"><span class="icon-img">🌍</span>Map</div>
-            <div class="desktop-icon" onclick="SYSTEM.openApp('win-quiz')"><span class="icon-img">📟</span>Terminal</div>
-            <div class="desktop-icon" onclick="SYSTEM.openApp('win-amp')"><span class="icon-img">🎵</span>HeartAmp</div>
+            <div class="desktop-icon" onclick="SYSTEM.openApp('win-timeline')">
+                <span class="icon-img">📜</span>
+                <div>History</div>
+            </div>
+            <div class="desktop-icon" onclick="SYSTEM.openApp('win-gallery')">
+                <span class="icon-img">📂</span>
+                <div>Photos</div>
+            </div>
+            <div class="desktop-icon" onclick="SYSTEM.openApp('win-letters')">
+                <span class="icon-img">💌</span>
+                <div>Secrets</div>
+            </div>
+            <div class="desktop-icon" onclick="SYSTEM.openApp('win-map')">
+                <span class="icon-img">🌍</span>
+                <div>Map</div>
+            </div>
+            <div class="desktop-icon" onclick="SYSTEM.openApp('win-quiz')">
+                <span class="icon-img">📟</span>
+                <div>Terminal</div>
+            </div>
+            <div class="desktop-icon" onclick="SYSTEM.openApp('win-amp')">
+                <span class="icon-img">🎵</span>
+                <div>HeartAmp</div>
+            </div>
             <div class="desktop-icon" onclick="SYSTEM.openApp('win-browser')">
-    <span class="icon-img">🌐</span>
-    Browser
-</div>
+                <span class="icon-img">🌐</span>
+                <div>Browser</div>
+            </div>
         </div>
 
         <div id="win-timeline" class="os-window-box app-window hidden" style="top: 5%; left: 5%;">
@@ -92,18 +110,18 @@
         </div>
 
         <div id="win-browser" class="os-window-box app-window hidden" style="top: 5%; left: 5%; width: 900px; height: 600px;">
-    <div class="window-bar">
-        <span>🌐 HeartOS Browser</span>
-        <div class="win-controls">
-            <button onclick="SYSTEM.closeApp('win-browser')">X</button>
+            <div class="window-bar">
+                <span>🌐 HeartOS Browser</span>
+                <div class="win-controls">
+                    <button onclick="SYSTEM.closeApp('win-browser')">X</button>
+                </div>
+            </div>
+            <div class="window-content" id="browser-content" style="padding: 0; overflow: hidden;"></div>
         </div>
-    </div>
-    <div class="window-content" id="browser-content" style="padding: 0; overflow: hidden;"></div>
-</div>
 
-        <div id="win-quiz" class="os-window-box app-window hidden" style="top: 25%; left: 25%;">
+        <div id="win-quiz" class="os-window-box app-window hidden" style="top: 10%; left: 15%; width: 900px; height: 650px;">
             <div class="window-bar"><span>ADMIN_TERMINAL</span><div class="win-controls"><button onclick="SYSTEM.closeApp('win-quiz')">X</button></div></div>
-            <div class="window-content-scroll" style="background:#000; color:#0f0;" id="quiz-wrapper"></div>
+            <div class="window-content-scroll" style="padding: 0;" id="quiz-wrapper"></div>
         </div>
 
         <div id="win-streamer" class="os-window-box app-window hidden" style="top: 5%; left: 5%; width: 800px; height: 600px; z-index: 9999;">
@@ -141,10 +159,14 @@
     <script src="js/system.js"></script>
     <script src="js/apps/gallery.js"></script>
     <script src="js/apps/music.js"></script>
+    <script src="js/apps/terminal.js"></script>
     <script src="js/apps/tools.js"></script>
     <script src="js/apps/streamer.js"></script>
     <script src="js/apps/map.js"></script>
-    <script src="js/apps/browser.js"></script> 
+    <script src="js/apps/browser.js"></script>
+    <script src="js/desktop-enhancements.js"></script>
+    <script src="js/desktop-manager.js"></script>
+    <script src="js/new-features.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>

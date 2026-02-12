@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HeartTweet - Social Feed</title>
+    <title>HeartedIn - Professional Network</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
         
@@ -15,19 +15,20 @@
         }
         
         body {
-            background: #000;
-            color: #fff;
+            background: #0a66c2;
+            color: #000;
             overflow-x: hidden;
         }
         
-        /* Header */
-        .twitter-header {
-            background: rgba(29, 155, 240, 0.1);
-            border-bottom: 3px solid #1d9bf0;
+        .linkedin-header {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
             padding: 15px 40px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            border-bottom: 3px solid #0a66c2;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
         
         .header-left {
@@ -38,187 +39,222 @@
         
         .logo {
             font-size: 2.5rem;
-            color: #1d9bf0;
+            color: #0a66c2;
+            font-weight: bold;
+            animation: pulse 2s ease-in-out infinite;
         }
         
-        .nav-tabs {
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .search-bar {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 20px;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 1.3rem;
+            width: 300px;
+            transition: all 0.3s;
+        }
+        
+        .search-bar:focus {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: #0a66c2;
+            outline: none;
+        }
+        
+        .search-bar::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .nav-menu {
             display: flex;
             gap: 30px;
         }
         
-        .nav-tab {
-            font-size: 1.5rem;
-            color: rgba(255, 255, 255, 0.6);
+        .nav-item {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.4rem;
             cursor: pointer;
-            padding: 10px 20px;
-            border-bottom: 3px solid transparent;
             transition: all 0.3s;
+            position: relative;
         }
         
-        .nav-tab.active {
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #0a66c2;
+            transition: width 0.3s;
+        }
+        
+        .nav-item:hover {
             color: #fff;
-            border-bottom-color: #1d9bf0;
+            transform: translateY(-2px);
         }
         
-        .nav-tab:hover {
-            color: #fff;
+        .nav-item:hover::after {
+            width: 100%;
         }
         
-        .header-right {
-            display: flex;
-            align-items: center;
+        .main-content {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 250px 1fr 300px;
             gap: 20px;
         }
         
-        .tweet-btn {
-            background: #1d9bf0;
-            color: #fff;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            font-size: 1.4rem;
-            font-weight: bold;
-            cursor: pointer;
-            border: 2px solid #1d9bf0;
+        .profile-card {
+            background: #fff;
+            border: 3px solid #000;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.3);
             transition: all 0.3s;
         }
         
-        .tweet-btn:hover {
-            background: #1a8cd8;
-            transform: scale(1.05);
+        .profile-card:hover {
+            box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.4);
+            transform: translateY(-2px);
         }
         
-        /* Main Layout */
-        .main-layout {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 300px 1fr 350px;
-            gap: 30px;
-            padding: 20px;
+        .profile-banner {
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
         }
         
-        /* Sidebar */
-        .sidebar {
-            position: sticky;
-            top: 20px;
-            height: fit-content;
+        .profile-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s infinite;
         }
         
-        .sidebar-section {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(29, 155, 240, 0.3);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
         }
         
-        .section-title {
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            margin: -50px auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            background: #ff4d6d;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .profile-info {
+            padding: 10px 20px 20px;
+            text-align: center;
+        }
+        
+        .profile-name {
             font-size: 1.6rem;
             font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .profile-title {
+            font-size: 1.2rem;
+            color: #666;
             margin-bottom: 15px;
-            color: #1d9bf0;
         }
         
-        .trend-item {
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        .profile-stats {
+            border-top: 2px solid #eee;
+            padding-top: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .stat-item {
+            margin: 8px 0;
+            color: #0a66c2;
             cursor: pointer;
+            transition: all 0.2s;
         }
         
-        .trend-item:last-child {
-            border-bottom: none;
+        .stat-item:hover {
+            color: #084d8f;
+            transform: translateX(5px);
         }
         
-        .trend-category {
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.5);
+        .feed-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
         
-        .trend-tag {
-            font-size: 1.4rem;
-            font-weight: bold;
-            margin: 5px 0;
-        }
-        
-        .trend-count {
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.5);
-        }
-        
-        /* Feed */
-        .feed {
-            border-left: 2px solid rgba(29, 155, 240, 0.3);
-            border-right: 2px solid rgba(29, 155, 240, 0.3);
-        }
-        
-        /* Tweet Composer */
-        .tweet-composer {
-            padding: 20px;
-            border-bottom: 2px solid rgba(29, 155, 240, 0.3);
-        }
-        
-        .composer-input {
-            width: 100%;
-            background: transparent;
-            border: 2px solid rgba(29, 155, 240, 0.3);
+        .post-card {
+            background: #fff;
+            border: 3px solid #000;
             border-radius: 8px;
-            padding: 15px;
-            color: #fff;
-            font-size: 1.4rem;
-            resize: vertical;
-            min-height: 100px;
-        }
-        
-        .composer-input::placeholder {
-            color: rgba(255, 255, 255, 0.3);
-        }
-        
-        .composer-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 15px;
-        }
-        
-        .composer-icons {
-            display: flex;
-            gap: 15px;
-            font-size: 1.5rem;
-            color: #1d9bf0;
-        }
-        
-        .composer-icon {
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .composer-icon:hover {
-            transform: scale(1.2);
-        }
-        
-        /* Tweet Card */
-        .tweet {
             padding: 20px;
-            border-bottom: 2px solid rgba(29, 155, 240, 0.3);
+            box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.2);
             transition: all 0.3s;
         }
         
-        .tweet:hover {
-            background: rgba(29, 155, 240, 0.05);
+        .post-card:hover {
+            box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
         }
         
-        .tweet-header {
+        .create-post {
             display: flex;
+            flex-direction: column;
             gap: 15px;
-            margin-bottom: 10px;
         }
         
-        .tweet-avatar {
+        .post-input {
+            width: 100%;
+            min-height: 80px;
+            padding: 15px;
+            font-size: 1.3rem;
+            font-family: 'VT323', monospace;
+            border: 2px solid #eee;
+            border-radius: 4px;
+            resize: vertical;
+            transition: all 0.3s;
+        }
+        
+        .post-input:focus {
+            outline: none;
+            border-color: #0a66c2;
+            box-shadow: 0 0 0 3px rgba(10, 102, 194, 0.1);
+        }
+        
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .post-avatar {
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            border: 2px solid #1d9bf0;
+            border: 2px solid #0a66c2;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -226,11 +262,11 @@
             flex-shrink: 0;
         }
         
-        .tweet-author-info {
+        .post-author-info {
             flex: 1;
         }
         
-        .tweet-author {
+        .post-author {
             display: flex;
             align-items: center;
             gap: 10px;
@@ -241,317 +277,350 @@
             font-weight: bold;
         }
         
-        .author-handle {
+        .author-info {
+            font-size: 1.1rem;
+            color: #666;
+        }
+        
+        .post-content {
             font-size: 1.3rem;
-            color: rgba(255, 255, 255, 0.5);
-        }
-        
-        .tweet-time {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.5);
-        }
-        
-        .tweet-content {
-            font-size: 1.4rem;
             line-height: 1.6;
-            margin: 15px 0;
+            margin-bottom: 15px;
         }
         
-        .tweet-hashtag {
-            color: #1d9bf0;
-            cursor: pointer;
-        }
-        
-        .tweet-actions {
+        .post-actions {
             display: flex;
-            justify-content: space-around;
-            margin-top: 15px;
+            gap: 20px;
             padding-top: 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 2px solid #eee;
         }
         
-        .action {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: rgba(255, 255, 255, 0.5);
-            cursor: pointer;
+        .action-btn {
+            flex: 1;
+            padding: 10px;
+            background: transparent;
+            border: 2px solid #0a66c2;
+            border-radius: 4px;
+            color: #0a66c2;
             font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: #0a66c2;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .action-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .action-btn:hover {
+            color: #fff;
+            border-color: #0a66c2;
+        }
+        
+        .action-btn span {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .action-btn.liked {
+            background: #0a66c2;
+            color: #fff;
+        }
+        
+        .premium-badge {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #000;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 1rem;
+            display: inline-block;
+            animation: shimmerBadge 2s ease-in-out infinite;
+        }
+        
+        @keyframes shimmerBadge {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.9; transform: scale(1.05); }
+        }
+        
+        .sidebar-card {
+            background: #fff;
+            border: 3px solid #000;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
             transition: all 0.3s;
         }
         
-        .action:hover {
-            color: #1d9bf0;
+        .sidebar-card:hover {
+            box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
         }
         
-        .action.liked {
-            color: #f91880;
+        .sidebar-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
         }
         
-        .verified-badge {
-            color: #1d9bf0;
-            font-size: 1.2rem;
-        }
-        
-        /* Who to Follow */
-        .follow-card {
-            padding: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        .connection-item {
             display: flex;
             align-items: center;
             gap: 10px;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
         }
         
-        .follow-avatar {
-            width: 50px;
-            height: 50px;
+        .connection-item:hover {
+            background: rgba(10, 102, 194, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .connection-avatar {
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            border: 2px solid #1d9bf0;
+            border: 2px solid #0a66c2;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
         }
         
-        .follow-info {
-            flex: 1;
-        }
-        
-        .follow-name {
-            font-size: 1.3rem;
-            font-weight: bold;
-        }
-        
-        .follow-handle {
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.5);
-        }
-        
-        .follow-btn {
-            background: #1d9bf0;
-            color: #fff;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 20px;
+        .connection-name {
             font-size: 1.2rem;
-            cursor: pointer;
         }
         
-        .follow-btn:hover {
-            background: #1a8cd8;
+        .like-count {
+            display: inline-block;
+            transition: all 0.3s;
+        }
+        
+        .like-count.animate {
+            animation: pop 0.3s ease-out;
+        }
+        
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.5); }
+            100% { transform: scale(1); }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <div class="twitter-header">
+    <div class="linkedin-header">
         <div class="header-left">
-            <div class="logo">🐦 HeartTweet</div>
-            <div class="nav-tabs">
-                <div class="nav-tab active">For You</div>
-                <div class="nav-tab">Following</div>
-                <div class="nav-tab">Explore</div>
-            </div>
+            <div class="logo">💼 HeartedIn</div>
+            <input type="text" class="search-bar" placeholder="Search connections...">
         </div>
-        <div class="header-right">
-            <button class="tweet-btn">💕 Post</button>
+        <div class="nav-menu">
+            <div class="nav-item">🏠 Home</div>
+            <div class="nav-item">👥 Network</div>
+            <div class="nav-item">💼 Jobs</div>
+            <div class="nav-item">💬 Messages</div>
         </div>
     </div>
     
-    <!-- Main Layout -->
-    <div class="main-layout">
-        <!-- Left Sidebar -->
-        <div class="sidebar">
-            <div class="sidebar-section">
-                <div class="section-title">🔥 Trending Now</div>
-                
-                <div class="trend-item">
-                    <div class="trend-category">Travel • Trending</div>
-                    <div class="trend-tag">#LongDistanceLove</div>
-                    <div class="trend-count">12.5K posts</div>
-                </div>
-                
-                <div class="trend-item">
-                    <div class="trend-category">Relationships • Hot</div>
-                    <div class="trend-tag">#TogetherApart</div>
-                    <div class="trend-count">8.2K posts</div>
-                </div>
-                
-                <div class="trend-item">
-                    <div class="trend-category">Europe • Trending</div>
-                    <div class="trend-tag">#PragueLife</div>
-                    <div class="trend-count">15.7K posts</div>
-                </div>
-                
-                <div class="trend-item">
-                    <div class="trend-category">Africa • Popular</div>
-                    <div class="trend-tag">#CapeTownMagic</div>
-                    <div class="trend-count">9.1K posts</div>
+    <div class="main-content">
+        <div>
+            <div class="profile-card">
+                <div class="profile-banner"></div>
+                <div class="profile-avatar">💕</div>
+                <div class="profile-info">
+                    <div class="profile-name">Our Journey</div>
+                    <div class="profile-title">Professional Adventurers</div>
+                    <div class="profile-stats">
+                        <div class="stat-item">💼 Connections: ∞</div>
+                        <div class="stat-item">🌍 Locations: 2</div>
+                        <div class="stat-item">⭐ Endorsements: Unlimited</div>
+                    </div>
                 </div>
             </div>
         </div>
         
-        <!-- Main Feed -->
-        <div class="feed">
-            <!-- Tweet Composer -->
-            <div class="tweet-composer">
-                <textarea class="composer-input" placeholder="What's happening in your journey?"></textarea>
-                <div class="composer-actions">
-                    <div class="composer-icons">
-                        <span class="composer-icon">📷</span>
-                        <span class="composer-icon">🎬</span>
-                        <span class="composer-icon">📊</span>
-                        <span class="composer-icon">😊</span>
-                        <span class="composer-icon">📍</span>
+        <div class="feed-container">
+            <div class="post-card create-post">
+                <textarea class="post-input" id="newPost" placeholder="Share an update about your journey..."></textarea>
+                <button class="action-btn" onclick="createPost()"><span>💕 Post Update</span></button>
+            </div>
+            
+            <div class="post-card" id="post1">
+                <div class="post-header">
+                    <div class="post-avatar" style="background: linear-gradient(135deg, #667eea, #764ba2);">🇨🇿</div>
+                    <div class="post-author-info">
+                        <div class="post-author">
+                            <span class="author-name">Prague Adventures</span>
+                            <span class="premium-badge">✨ PRO</span>
+                        </div>
+                        <div class="author-info">Current Location • 2h ago</div>
                     </div>
-                    <button class="tweet-btn">Post</button>
+                </div>
+                <div class="post-content">
+                    Excited to share that I'm currently exploring the beautiful streets of Prague! The architecture, the culture, the food - everything is amazing. Special shoutout to my travel companion who makes every moment memorable. 🏰❤️
+                    <br><br>
+                    #TravelGoals #PragueLife #AdventureTogether
+                </div>
+                <div class="post-actions">
+                    <button class="action-btn" onclick="likePost(1)"><span>👍 Like <span class="like-count" id="likes1">(127)</span></span></button>
+                    <button class="action-btn"><span>💬 Comment</span></button>
+                    <button class="action-btn"><span>↗️ Share</span></button>
                 </div>
             </div>
             
-            <!-- Tweet 1 -->
-            <div class="tweet">
-                <div class="tweet-header">
-                    <div class="tweet-avatar" style="background: linear-gradient(135deg, #667eea, #764ba2);">🇨🇿</div>
-                    <div class="tweet-author-info">
-                        <div class="tweet-author">
-                            <span class="author-name">Prague Wanderer</span>
-                            <span class="verified-badge">✓</span>
-                            <span class="author-handle">@prague_dreams</span>
-                            <span class="tweet-time">• 2h</span>
+            <div class="post-card" id="post2">
+                <div class="post-header">
+                    <div class="post-avatar" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">🇿🇦</div>
+                    <div class="post-author-info">
+                        <div class="post-author">
+                            <span class="author-name">Cape Town Memories</span>
                         </div>
+                        <div class="author-info">Travel Highlights • 1 week ago</div>
                     </div>
                 </div>
-                <div class="tweet-content">
-                    Nothing beats walking through Prague's old town at sunset 🌇 The cobblestone streets, the castle views, and having someone special by your side makes it all perfect. Sometimes home isn't a place, it's a person. 💕
+                <div class="post-content">
+                    Just wrapped up an incredible adventure in Cape Town! From penguin encounters at Boulders Beach to breathtaking views at Table Mountain, every day was filled with wonder. Can't wait for the next chapter! 🐧🌊
                     <br><br>
-                    <span class="tweet-hashtag">#Prague</span> <span class="tweet-hashtag">#TravelLove</span> <span class="tweet-hashtag">#HeartOS</span>
+                    #CapeTown #SouthAfrica #TravelDiaries
                 </div>
-                <div class="tweet-actions">
-                    <div class="action">💬 42</div>
-                    <div class="action">🔁 18</div>
-                    <div class="action liked">❤️ 234</div>
-                    <div class="action">📊 1.2K</div>
-                    <div class="action">↗️</div>
+                <div class="post-actions">
+                    <button class="action-btn" onclick="likePost(2)"><span>👍 Like <span class="like-count" id="likes2">(89)</span></span></button>
+                    <button class="action-btn"><span>💬 Comment</span></button>
+                    <button class="action-btn"><span>↗️ Share</span></button>
                 </div>
             </div>
             
-            <!-- Tweet 2 -->
-            <div class="tweet">
-                <div class="tweet-header">
-                    <div class="tweet-avatar" style="background: linear-gradient(135deg, #f093fb, #f5576c);">🇿🇦</div>
-                    <div class="tweet-author-info">
-                        <div class="tweet-author">
-                            <span class="author-name">Cape Town Adventures</span>
-                            <span class="verified-badge">✓</span>
-                            <span class="author-handle">@ct_explorer</span>
-                            <span class="tweet-time">• 5h</span>
+            <div class="post-card" id="post3">
+                <div class="post-header">
+                    <div class="post-avatar" style="background: linear-gradient(135deg, #fa709a, #fee140);">✈️</div>
+                    <div class="post-author-info">
+                        <div class="post-author">
+                            <span class="author-name">Long Distance Love</span>
                         </div>
+                        <div class="author-info">Relationship Goals • 3 days ago</div>
                     </div>
                 </div>
-                <div class="tweet-content">
-                    Just witnessed the most incredible sunset from Signal Hill! 🌅 Cape Town really knows how to put on a show. Missing my person who's 9,500km away but feeling connected through shared sunsets (even if they're 2 hours apart) 💫
+                <div class="post-content">
+                    9,500 kilometers apart but never closer at heart. Celebrating another milestone in our journey together. Distance is just a number when you've found the one. 💕✨
                     <br><br>
-                    <span class="tweet-hashtag">#CapeTown</span> <span class="tweet-hashtag">#LongDistance</span> <span class="tweet-hashtag">#SunsetViews</span>
+                    #LongDistance #LoveWins #TogetherApart
                 </div>
-                <div class="tweet-actions">
-                    <div class="action">💬 67</div>
-                    <div class="action">🔁 89</div>
-                    <div class="action liked">❤️ 456</div>
-                    <div class="action">📊 2.1K</div>
-                    <div class="action">↗️</div>
-                </div>
-            </div>
-            
-            <!-- Tweet 3 -->
-            <div class="tweet">
-                <div class="tweet-header">
-                    <div class="tweet-avatar" style="background: linear-gradient(135deg, #fa709a, #fee140);">✈️</div>
-                    <div class="tweet-author-info">
-                        <div class="tweet-author">
-                            <span class="author-name">Distance Doesn't Matter</span>
-                            <span class="verified-badge">✓</span>
-                            <span class="author-handle">@love_unlimited</span>
-                            <span class="tweet-time">• 1d</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="tweet-content">
-                    Hot take: Long distance relationships aren't harder, they just require different strengths. 💪 You learn patience, trust, and how to make every moment count. Plus, airport reunions hit different. 🛫💕
-                    <br><br>
-                    Who else is in the timezone struggle gang? 🙋
-                    <br><br>
-                    <span class="tweet-hashtag">#LDR</span> <span class="tweet-hashtag">#RelationshipGoals</span> <span class="tweet-hashtag">#WorthIt</span>
-                </div>
-                <div class="tweet-actions">
-                    <div class="action">💬 128</div>
-                    <div class="action">🔁 234</div>
-                    <div class="action liked">❤️ 892</div>
-                    <div class="action">📊 4.5K</div>
-                    <div class="action">↗️</div>
-                </div>
-            </div>
-            
-            <!-- Tweet 4 -->
-            <div class="tweet">
-                <div class="tweet-header">
-                    <div class="tweet-avatar" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">🐧</div>
-                    <div class="tweet-author-info">
-                        <div class="tweet-author">
-                            <span class="author-name">Boulders Beach Penguins</span>
-                            <span class="verified-badge">✓</span>
-                            <span class="author-handle">@penguin_waddle</span>
-                            <span class="tweet-time">• 2d</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="tweet-content">
-                    PSA: If you haven't visited Boulders Beach to see us waddle around, are you even living? 🐧 We're basically the cutest residents of Cape Town (don't @ us, seals). Come say hi! 
-                    <br><br>
-                    <span class="tweet-hashtag">#BouldersBeach</span> <span class="tweet-hashtag">#Penguins</span> <span class="tweet-hashtag">#CapeTown</span>
-                </div>
-                <div class="tweet-actions">
-                    <div class="action">💬 95</div>
-                    <div class="action">🔁 156</div>
-                    <div class="action liked">❤️ 678</div>
-                    <div class="action">📊 3.2K</div>
-                    <div class="action">↗️</div>
+                <div class="post-actions">
+                    <button class="action-btn liked" onclick="likePost(3)"><span>👍 Liked <span class="like-count" id="likes3">(234)</span></span></button>
+                    <button class="action-btn"><span>💬 Comment</span></button>
+                    <button class="action-btn"><span>↗️ Share</span></button>
                 </div>
             </div>
         </div>
         
-        <!-- Right Sidebar -->
-        <div class="sidebar">
-            <div class="sidebar-section">
-                <div class="section-title">💕 Who to Follow</div>
+        <div>
+            <div class="sidebar-card">
+                <div class="sidebar-title">🌟 Suggested</div>
                 
-                <div class="follow-card">
-                    <div class="follow-avatar" style="background: #667eea;">🏰</div>
-                    <div class="follow-info">
-                        <div class="follow-name">Prague Castle</div>
-                        <div class="follow-handle">@official_castle</div>
-                    </div>
-                    <button class="follow-btn">Follow</button>
+                <div class="connection-item">
+                    <div class="connection-avatar" style="background: #667eea;">🏔️</div>
+                    <div class="connection-name">Tarzánie Adventures</div>
                 </div>
                 
-                <div class="follow-card">
-                    <div class="follow-avatar" style="background: #f093fb;">🏔️</div>
-                    <div class="follow-info">
-                        <div class="follow-name">Table Mountain</div>
-                        <div class="follow-handle">@tablemtn</div>
-                    </div>
-                    <button class="follow-btn">Follow</button>
+                <div class="connection-item">
+                    <div class="connection-avatar" style="background: #f093fb;">🎨</div>
+                    <div class="connection-name">Brno Culture</div>
                 </div>
                 
-                <div class="follow-card">
-                    <div class="follow-avatar" style="background: #43e97b;">💑</div>
-                    <div class="follow-info">
-                        <div class="follow-name">Couple Goals Daily</div>
-                        <div class="follow-handle">@couplegoals</div>
-                    </div>
-                    <button class="follow-btn">Follow</button>
+                <div class="connection-item">
+                    <div class="connection-avatar" style="background: #4facfe;">🌊</div>
+                    <div class="connection-name">Kalk Bay Vibes</div>
+                </div>
+            </div>
+            
+            <div class="sidebar-card">
+                <div class="sidebar-title">📰 Trending</div>
+                <div style="font-size: 1.2rem; line-height: 2;">
+                    <div style="margin: 10px 0; color: #0a66c2; cursor: pointer;">#TravelCouples</div>
+                    <div style="margin: 10px 0; color: #0a66c2; cursor: pointer;">#DigitalNomads</div>
+                    <div style="margin: 10px 0; color: #0a66c2; cursor: pointer;">#EuropeTravels</div>
+                    <div style="margin: 10px 0; color: #0a66c2; cursor: pointer;">#AfricaAdventure</div>
                 </div>
             </div>
         </div>
     </div>
+    
+    <script>
+        let postIdCounter = 4;
+        
+        function createPost() {
+            const input = document.getElementById('newPost');
+            const content = input.value.trim();
+            
+            if (!content) {
+                alert('Please write something first!');
+                return;
+            }
+            
+            const feed = document.querySelector('.feed-container');
+            const newPost = document.createElement('div');
+            newPost.className = 'post-card';
+            newPost.style.animation = 'none';
+            newPost.innerHTML = `
+                <div class="post-header">
+                    <div class="post-avatar" style="background: linear-gradient(135deg, #ff4d6d, #ff8fa3);">💕</div>
+                    <div class="post-author-info">
+                        <div class="post-author">
+                            <span class="author-name">You</span>
+                        </div>
+                        <div class="author-info">Just now</div>
+                    </div>
+                </div>
+                <div class="post-content">${content}</div>
+                <div class="post-actions">
+                    <button class="action-btn" onclick="likePost(${postIdCounter})"><span>👍 Like <span class="like-count" id="likes${postIdCounter}">(0)</span></span></button>
+                    <button class="action-btn"><span>💬 Comment</span></button>
+                    <button class="action-btn"><span>↗️ Share</span></button>
+                </div>
+            `;
+            
+            feed.insertBefore(newPost, feed.children[1]);
+            postIdCounter++;
+            input.value = '';
+            
+            setTimeout(() => {
+                newPost.style.animation = '';
+            }, 10);
+        }
+        
+        function likePost(id) {
+            const likeCount = document.getElementById('likes' + id);
+            const btn = likeCount.closest('.action-btn');
+            
+            if (btn.classList.contains('liked')) {
+                btn.classList.remove('liked');
+                const count = parseInt(likeCount.textContent.match(/\d+/)[0]) - 1;
+                likeCount.textContent = `(${count})`;
+            } else {
+                btn.classList.add('liked');
+                const count = parseInt(likeCount.textContent.match(/\d+/)[0]) + 1;
+                likeCount.textContent = `(${count})`;
+                likeCount.classList.add('animate');
+                setTimeout(() => likeCount.classList.remove('animate'), 300);
+            }
+        }
+    </script>
 </body>
 </html>

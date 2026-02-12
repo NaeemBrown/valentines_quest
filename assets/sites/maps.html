@@ -208,86 +208,34 @@
             100% { transform: translate(50px, 50px); }
         }
         
-        .map-pin {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            font-size: 2.5rem;
-            animation: pinBounce 2s ease-in-out infinite;
+        /* SVG Continent hover effects */
+        .continent {
+            transition: all 0.3s ease;
             cursor: pointer;
-            filter: drop-shadow(0 0 15px rgba(255, 77, 109, 0.9));
-            transition: all 0.3s;
         }
         
-        .map-pin:hover {
-            transform: scale(1.3) translateY(-10px);
-            animation: none;
-            filter: drop-shadow(0 0 25px rgba(255, 255, 109, 1));
+        .continent:hover {
+            opacity: 0.9;
+            filter: brightness(1.2) drop-shadow(0 0 15px currentColor);
         }
         
-        @keyframes pinBounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+        #worldMap {
+            pointer-events: all;
         }
         
-        .pin-prague {
-            top: 30%;
-            left: 55%;
+        #pragueMarker:hover circle,
+        #capetownMarker:hover circle {
+            r: 16;
+            filter: drop-shadow(0 0 20px #ff4d6d);
         }
         
-        .pin-capetown {
-            top: 70%;
-            left: 48%;
+        #routeLine {
+            animation: dashFlow 2s linear infinite;
         }
         
-        .route-line {
-            position: absolute;
-            top: 30%;
-            left: 48%;
-            width: 10%;
-            height: 40%;
-            border-left: 4px dashed rgba(255, 77, 109, 0.7);
-            animation: dashMove 2s linear infinite;
-        }
-        
-        @keyframes dashMove {
-            0% { 
-                border-left-color: rgba(255, 77, 109, 0.3);
-                filter: drop-shadow(0 0 5px rgba(255, 77, 109, 0.3));
-            }
-            50% { 
-                border-left-color: rgba(255, 77, 109, 1);
-                filter: drop-shadow(0 0 15px rgba(255, 77, 109, 0.9));
-            }
-            100% { 
-                border-left-color: rgba(255, 77, 109, 0.3);
-                filter: drop-shadow(0 0 5px rgba(255, 77, 109, 0.3));
-            }
-        }
-        
-        .plane {
-            position: absolute;
-            font-size: 2rem;
-            animation: flyPlane 8s linear infinite;
-            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
-        }
-        
-        @keyframes flyPlane {
-            0% { 
-                top: 30%; 
-                left: 55%; 
-                transform: rotate(-45deg);
-            }
-            50% { 
-                top: 70%; 
-                left: 48%;
-                transform: rotate(135deg);
-            }
-            100% { 
-                top: 30%; 
-                left: 55%;
-                transform: rotate(-45deg);
-            }
+        @keyframes dashFlow {
+            0% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: 30; }
         }
         
         .map-overlay {
@@ -484,10 +432,76 @@
                         <p>Time Difference: 2 hours</p>
                     </div>
                     
-                    <div class="map-pin pin-prague" title="Prague" onclick="focusLocation('prague')">📍</div>
-                    <div class="map-pin pin-capetown" title="Cape Town" onclick="focusLocation('capetown')">📍</div>
-                    <div class="route-line"></div>
-                    <div class="plane">✈️</div>
+                    <!-- SVG World Map -->
+                    <svg id="worldMap" viewBox="0 0 1000 500" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
+                        <!-- Europe -->
+                        <path d="M 520 180 L 530 175 L 540 178 L 545 185 L 550 190 L 555 185 L 560 180 L 565 185 L 560 195 L 555 200 L 545 205 L 535 200 L 525 195 L 520 188 Z" 
+                              fill="rgba(102, 126, 234, 0.6)" stroke="#667eea" stroke-width="2" class="continent"/>
+                        
+                        <!-- Africa -->
+                        <path d="M 510 250 L 520 245 L 535 245 L 550 248 L 565 255 L 575 265 L 580 280 L 580 295 L 575 310 L 565 320 L 550 325 L 535 325 L 520 320 L 510 310 L 505 295 L 505 270 Z" 
+                              fill="rgba(240, 147, 251, 0.6)" stroke="#f093fb" stroke-width="2" class="continent"/>
+                        
+                        <!-- North America -->
+                        <path d="M 180 150 L 200 145 L 220 148 L 240 155 L 255 165 L 265 180 L 270 195 L 265 210 L 250 220 L 230 225 L 210 220 L 190 210 L 175 195 L 170 175 Z" 
+                              fill="rgba(67, 233, 123, 0.6)" stroke="#43e97b" stroke-width="2" class="continent"/>
+                        
+                        <!-- South America -->
+                        <path d="M 280 260 L 295 255 L 310 258 L 320 265 L 325 280 L 328 300 L 325 320 L 318 340 L 305 355 L 290 360 L 275 355 L 265 340 L 260 320 L 262 300 L 270 280 Z" 
+                              fill="rgba(250, 112, 154, 0.6)" stroke="#fa709a" stroke-width="2" class="continent"/>
+                        
+                        <!-- Asia -->
+                        <path d="M 600 160 L 630 155 L 670 160 L 700 170 L 720 185 L 730 200 L 735 220 L 730 240 L 715 255 L 690 265 L 660 268 L 630 265 L 610 255 L 595 240 L 590 220 L 592 200 L 595 180 Z" 
+                              fill="rgba(255, 141, 103, 0.6)" stroke="#ff8d67" stroke-width="2" class="continent"/>
+                        
+                        <!-- Australia -->
+                        <path d="M 750 320 L 770 318 L 790 322 L 805 330 L 815 345 L 815 360 L 808 375 L 790 382 L 770 383 L 750 378 L 735 365 L 732 350 L 738 335 Z" 
+                              fill="rgba(79, 172, 254, 0.6)" stroke="#4facfe" stroke-width="2" class="continent"/>
+                        
+                        <!-- Antarctica (bottom) -->
+                        <path d="M 100 450 L 900 450 L 890 470 L 850 480 L 750 485 L 600 488 L 450 488 L 300 485 L 200 480 L 150 470 L 110 460 Z" 
+                              fill="rgba(255, 255, 255, 0.4)" stroke="#fff" stroke-width="2" class="continent"/>
+                        
+                        <!-- Ocean grid lines for detail -->
+                        <line x1="0" y1="100" x2="1000" y2="100" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1"/>
+                        <line x1="0" y1="200" x2="1000" y2="200" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1"/>
+                        <line x1="0" y1="300" x2="1000" y2="300" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1"/>
+                        <line x1="0" y1="400" x2="1000" y2="400" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1"/>
+                        
+                        <line x1="200" y1="0" x2="200" y2="500" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1"/>
+                        <line x1="400" y1="0" x2="400" y2="500" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1"/>
+                        <line x1="600" y1="0" x2="600" y2="500" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1"/>
+                        <line x1="800" y1="0" x2="800" y2="500" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1"/>
+                        
+                        <!-- Route line between Prague and Cape Town -->
+                        <line id="routeLine" x1="535" y1="185" x2="555" y2="315" 
+                              stroke="#ff4d6d" stroke-width="3" stroke-dasharray="10,5" 
+                              style="filter: drop-shadow(0 0 8px rgba(255, 77, 109, 0.8));"/>
+                        
+                        <!-- Location markers -->
+                        <g id="pragueMarker" style="cursor: pointer;" onclick="focusLocation('prague')">
+                            <circle cx="535" cy="185" r="12" fill="#ff4d6d" stroke="#fff" stroke-width="2">
+                                <animate attributeName="r" values="12;16;12" dur="2s" repeatCount="indefinite"/>
+                            </circle>
+                            <text x="535" y="175" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold" 
+                                  style="text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Prague 🇨🇿</text>
+                        </g>
+                        
+                        <g id="capetownMarker" style="cursor: pointer;" onclick="focusLocation('capetown')">
+                            <circle cx="555" cy="315" r="12" fill="#ff4d6d" stroke="#fff" stroke-width="2">
+                                <animate attributeName="r" values="12;16;12" dur="2s" repeatCount="indefinite"/>
+                            </circle>
+                            <text x="555" y="330" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold"
+                                  style="text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Cape Town 🇿🇦</text>
+                        </g>
+                        
+                        <!-- Animated plane -->
+                        <g id="animatedPlane">
+                            <text font-size="24" fill="#fff" style="filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));">✈️</text>
+                            <animateMotion dur="8s" repeatCount="indefinite"
+                                path="M 535,185 Q 500,250 555,315 Q 590,250 535,185"/>
+                        </g>
+                    </svg>
                     
                     <div class="info-box" id="infoBox">
                         <h4>💕 Connected Across Continents</h4>

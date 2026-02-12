@@ -2,12 +2,19 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Instagram</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HeartGram ✨</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+        
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'VT323', monospace;
             background: #fafafa;
             height: 100vh;
             overflow: hidden;
@@ -16,25 +23,22 @@
         .app {
             display: flex;
             height: 100vh;
-            max-width: 100%;
         }
 
         /* SIDEBAR */
         .sidebar {
-            width: 245px;
+            width: 260px;
             background: #fff;
             border-right: 1px solid #dbdbdb;
             padding: 8px 12px 20px;
             display: flex;
             flex-direction: column;
-            position: fixed;
             height: 100vh;
-            z-index: 10;
         }
 
         .logo {
             padding: 25px 12px 16px;
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: bold;
             background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
             -webkit-background-clip: text;
@@ -50,21 +54,23 @@
             margin: 4px 0;
             border-radius: 8px;
             cursor: pointer;
-            transition: background 0.2s;
-            font-size: 1rem;
+            transition: all 0.2s;
+            font-size: 1.4rem;
         }
 
         .nav-item:hover {
             background: #f2f2f2;
+            transform: translateX(5px);
         }
 
         .nav-item.active {
             font-weight: bold;
+            background: linear-gradient(90deg, rgba(240,148,51,0.1) 0%, rgba(188,24,136,0.1) 100%);
         }
 
         .nav-icon {
-            font-size: 1.5rem;
-            width: 24px;
+            font-size: 1.8rem;
+            width: 30px;
             text-align: center;
         }
 
@@ -83,233 +89,439 @@
         }
 
         .profile-pic-small {
-            width: 32px;
-            height: 32px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #f09433 0%, #bc1888 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: bold;
+            font-size: 1.2rem;
         }
 
         /* MAIN CONTENT */
         .main-content {
-            margin-left: 245px;
             flex: 1;
-            display: flex;
-            justify-content: center;
             overflow-y: auto;
-            padding-top: 0;
+            background: #fafafa;
         }
 
-        .feed-container {
-            width: 630px;
-            padding: 20px 0;
+        .view {
+            display: none;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        /* STORIES */
+        .view.active {
+            display: block;
+        }
+
+        /* HOME FEED */
         .stories {
             background: #fff;
             border: 1px solid #dbdbdb;
             border-radius: 8px;
             padding: 16px;
-            margin-bottom: 24px;
-            overflow-x: auto;
+            margin-bottom: 20px;
             display: flex;
-            gap: 16px;
+            gap: 15px;
+            overflow-x: auto;
         }
 
         .story {
             display: flex;
             flex-direction: column;
             align-items: center;
+            gap: 8px;
             cursor: pointer;
-            min-width: 66px;
         }
 
         .story-ring {
-            width: 66px;
-            height: 66px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
-            background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
-            padding: 2px;
-            margin-bottom: 4px;
+            background: linear-gradient(45deg, #f09433, #dc2743, #bc1888);
+            padding: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .story-pic {
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            border: 3px solid #fff;
+            background: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
+            font-size: 2rem;
         }
 
         .story-name {
-            font-size: 0.75rem;
-            max-width: 66px;
+            font-size: 1.1rem;
+            max-width: 70px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
 
-        /* POST */
         .post {
             background: #fff;
             border: 1px solid #dbdbdb;
             border-radius: 8px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .post-header {
+            padding: 14px 16px;
             display: flex;
             align-items: center;
-            padding: 14px 16px;
+            justify-content: space-between;
+        }
+
+        .post-user {
+            display: flex;
+            align-items: center;
             gap: 12px;
         }
 
-        .post-profile-pic {
-            width: 32px;
-            height: 32px;
+        .post-user-pic {
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
             color: white;
             font-weight: bold;
-        }
-
-        .post-user-info {
-            flex: 1;
-        }
-
-        .post-username {
-            font-weight: 600;
-            font-size: 0.875rem;
-        }
-
-        .post-location {
-            font-size: 0.75rem;
-            color: #737373;
-        }
-
-        .post-options {
-            font-size: 1.5rem;
-            cursor: pointer;
         }
 
         .post-image {
             width: 100%;
             aspect-ratio: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 8rem;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        .post-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            font-size: 4rem;
+            color: white;
+            cursor: pointer;
         }
 
         .post-actions {
+            padding: 12px 16px;
             display: flex;
-            padding: 8px 16px;
             gap: 16px;
         }
 
         .action-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.2s;
         }
 
         .action-btn:hover {
-            transform: scale(1.1);
+            transform: scale(1.2);
         }
 
         .action-btn.liked {
-            animation: like 0.4s;
-        }
-
-        @keyframes like {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.3); }
-        }
-
-        .bookmark {
-            margin-left: auto;
+            color: #ed4956;
         }
 
         .post-likes {
             padding: 0 16px 8px;
-            font-weight: 600;
-            font-size: 0.875rem;
+            font-weight: bold;
+            font-size: 1.2rem;
         }
 
         .post-caption {
-            padding: 0 16px 8px;
-            font-size: 0.875rem;
-        }
-
-        .caption-username {
-            font-weight: 600;
-            margin-right: 6px;
-        }
-
-        .post-comments {
-            padding: 0 16px 8px;
-            font-size: 0.875rem;
-            color: #737373;
-            cursor: pointer;
-        }
-
-        .post-time {
             padding: 0 16px 12px;
-            font-size: 0.625rem;
-            color: #737373;
-            text-transform: uppercase;
-            letter-spacing: 0.2px;
+            font-size: 1.2rem;
         }
 
-        .add-comment {
-            border-top: 1px solid #efefef;
+        /* SEARCH VIEW */
+        .search-bar {
+            background: #efefef;
+            border: 1px solid #dbdbdb;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 1.3rem;
+            width: 100%;
+            margin-bottom: 20px;
+            font-family: 'VT323', monospace;
+        }
+
+        .search-results {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+        }
+
+        .search-item {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            transition: all 0.2s;
+        }
+
+        .search-item:hover {
+            transform: scale(0.95);
+            opacity: 0.8;
+        }
+
+        /* MESSAGES VIEW */
+        .messages-container {
+            background: #fff;
+            border: 1px solid #dbdbdb;
+            border-radius: 8px;
+            height: calc(100vh - 100px);
+            display: flex;
+        }
+
+        .conversations {
+            width: 350px;
+            border-right: 1px solid #dbdbdb;
+            overflow-y: auto;
+        }
+
+        .conversation-item {
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .conversation-item:hover {
+            background: #f2f2f2;
+        }
+
+        .conversation-item.active {
+            background: #efefef;
+        }
+
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
             padding: 16px;
+            border-bottom: 1px solid #dbdbdb;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 20px;
+            font-size: 1.2rem;
+        }
+
+        .message.sent {
+            align-self: flex-end;
+            background: #efefef;
+        }
+
+        .message.received {
+            align-self: flex-start;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .chat-input-container {
+            padding: 16px;
+            border-top: 1px solid #dbdbdb;
             display: flex;
             gap: 12px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #dbdbdb;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            font-family: 'VT323', monospace;
+        }
+
+        .send-btn {
+            background: linear-gradient(45deg, #f09433, #bc1888);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.2rem;
+            font-family: 'VT323', monospace;
+        }
+
+        /* NOTIFICATIONS VIEW */
+        .notification-item {
+            background: #fff;
+            border: 1px solid #dbdbdb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .notif-pic {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #43e97b, #38f9d7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .notif-content {
+            flex: 1;
+        }
+
+        .notif-text {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+
+        .notif-time {
+            font-size: 1rem;
+            color: #8e8e8e;
+        }
+
+        /* CREATE VIEW */
+        .create-container {
+            background: #fff;
+            border: 1px solid #dbdbdb;
+            border-radius: 8px;
+            padding: 40px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .create-title {
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #f09433, #bc1888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .upload-area {
+            border: 2px dashed #dbdbdb;
+            border-radius: 8px;
+            padding: 60px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .upload-area:hover {
+            background: #fafafa;
+            border-color: #bc1888;
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            margin-bottom: 16px;
+        }
+
+        /* PROFILE VIEW */
+        .profile-header {
+            background: #fff;
+            border: 1px solid #dbdbdb;
+            border-radius: 8px;
+            padding: 40px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 40px;
             align-items: center;
         }
 
-        .comment-input {
-            flex: 1;
-            border: none;
-            outline: none;
-            font-size: 0.875rem;
+        .profile-pic-large {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f09433 0%, #bc1888 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+            font-weight: bold;
         }
 
-        .post-btn {
-            background: none;
-            border: none;
-            color: #0095f6;
-            font-weight: 600;
+        .profile-stats {
+            display: flex;
+            gap: 40px;
+            margin: 20px 0;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.6rem;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 1.2rem;
+            color: #8e8e8e;
+        }
+
+        .profile-bio {
+            margin-top: 20px;
+            font-size: 1.2rem;
+        }
+
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+        }
+
+        .grid-item {
+            aspect-ratio: 1;
             cursor: pointer;
-            font-size: 0.875rem;
+            overflow: hidden;
+            position: relative;
         }
 
-        .post-btn:disabled {
-            color: #b3dffc;
-            cursor: default;
+        .grid-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
     </style>
 </head>
@@ -317,313 +529,516 @@
     <div class="app">
         <!-- SIDEBAR -->
         <div class="sidebar">
-            <div class="logo">Instagram</div>
+            <div class="logo">💕 HeartGram</div>
             
-            <div class="nav-item active">
+            <div class="nav-item active" onclick="switchView('home')">
                 <span class="nav-icon">🏠</span>
                 <span>Home</span>
             </div>
             
-            <div class="nav-item">
+            <div class="nav-item" onclick="switchView('search')">
                 <span class="nav-icon">🔍</span>
                 <span>Search</span>
             </div>
             
-            <div class="nav-item">
+            <div class="nav-item" onclick="switchView('explore')">
                 <span class="nav-icon">🧭</span>
                 <span>Explore</span>
             </div>
             
-            <div class="nav-item">
+            <div class="nav-item" onclick="switchView('reels')">
                 <span class="nav-icon">🎬</span>
                 <span>Reels</span>
             </div>
             
-            <div class="nav-item" onclick="showMessages()">
+            <div class="nav-item" onclick="switchView('messages')">
                 <span class="nav-icon">💬</span>
                 <span>Messages</span>
             </div>
             
-            <div class="nav-item">
+            <div class="nav-item" onclick="switchView('notifications')">
                 <span class="nav-icon">❤️</span>
                 <span>Notifications</span>
             </div>
             
-            <div class="nav-item">
+            <div class="nav-item" onclick="switchView('create')">
                 <span class="nav-icon">➕</span>
                 <span>Create</span>
             </div>
             
-            <div class="profile-section" onclick="showProfile()">
-                <div class="profile-pic-small">A</div>
-                <span>Profile</span>
+            <div class="profile-section" onclick="switchView('profile')">
+                <div class="profile-pic-small">💕</div>
+                <span>Your Profile</span>
             </div>
         </div>
 
         <!-- MAIN CONTENT -->
-        <div class="main-content" id="main-content">
-            <!-- Content will be loaded by JavaScript -->
+        <div class="main-content">
+            <!-- HOME VIEW -->
+            <div id="home" class="view active">
+                <div class="stories">
+                    <div class="story">
+                        <div class="story-ring">
+                            <div class="story-pic">🇨🇿</div>
+                        </div>
+                        <div class="story-name">Prague</div>
+                    </div>
+                    <div class="story">
+                        <div class="story-ring">
+                            <div class="story-pic">🇿🇦</div>
+                        </div>
+                        <div class="story-name">Cape Town</div>
+                    </div>
+                    <div class="story">
+                        <div class="story-ring">
+                            <div class="story-pic">🏔️</div>
+                        </div>
+                        <div class="story-name">Adventures</div>
+                    </div>
+                    <div class="story">
+                        <div class="story-ring">
+                            <div class="story-pic">💕</div>
+                        </div>
+                        <div class="story-name">Memories</div>
+                    </div>
+                </div>
+
+                <!-- Post 1 - Naeem Prague -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-user">
+                            <div class="post-user-pic">💕</div>
+                            <div>
+                                <div style="font-weight: bold; font-size: 1.2rem;">naeem_prague</div>
+                                <div style="font-size: 1rem; color: #8e8e8e;">Prague, Czechia</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 1.5rem; cursor: pointer;">⋯</div>
+                    </div>
+                    <img src="../images/posts/naeem_prague.jpg" class="post-image" style="object-fit: cover;">
+                    <div class="post-actions">
+                        <span class="action-btn liked" onclick="toggleLike(this)">❤️</span>
+                        <span class="action-btn">💬</span>
+                        <span class="action-btn">📤</span>
+                        <span class="action-btn" style="margin-left: auto;">🔖</span>
+                    </div>
+                    <div class="post-likes">1,247 likes</div>
+                    <div class="post-caption">
+                        <strong>naeem_prague</strong> Living my best life in this beautiful city 🏰✨ #Prague #CityOfLove
+                    </div>
+                </div>
+
+                <!-- Post 2 - Roses Garden -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-user">
+                            <div class="post-user-pic">🌹</div>
+                            <div>
+                                <div style="font-weight: bold; font-size: 1.2rem;">roses_garden_cz</div>
+                                <div style="font-size: 1rem; color: #8e8e8e;">Gardens of Prague</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 1.5rem; cursor: pointer;">⋯</div>
+                    </div>
+                    <img src="../images/posts/roses_garden.jpg" class="post-image" style="object-fit: cover;">
+                    <div class="post-actions">
+                        <span class="action-btn" onclick="toggleLike(this)">🤍</span>
+                        <span class="action-btn">💬</span>
+                        <span class="action-btn">📤</span>
+                        <span class="action-btn" style="margin-left: auto;">🔖</span>
+                    </div>
+                    <div class="post-likes">892 likes</div>
+                    <div class="post-caption">
+                        <strong>roses_garden_cz</strong> Beautiful blooms in the heart of the city 🌹💕
+                    </div>
+                </div>
+
+                <!-- Post 3 - Red Panda -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-user">
+                            <div class="post-user-pic">🐼</div>
+                            <div>
+                                <div style="font-weight: bold; font-size: 1.2rem;">redpanda_baby</div>
+                                <div style="font-size: 1rem; color: #8e8e8e;">Prague Zoo</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 1.5rem; cursor: pointer;">⋯</div>
+                    </div>
+                    <img src="../images/posts/redpanda_baby.jpg" class="post-image" style="object-fit: cover;">
+                    <div class="post-actions">
+                        <span class="action-btn liked" onclick="toggleLike(this)">❤️</span>
+                        <span class="action-btn">💬</span>
+                        <span class="action-btn">📤</span>
+                        <span class="action-btn" style="margin-left: auto;">🔖</span>
+                    </div>
+                    <div class="post-likes">2,134 likes</div>
+                    <div class="post-caption">
+                        <strong>redpanda_baby</strong> Cutest visitor at Prague Zoo today! 🐼❤️ #RedPanda #PragueZoo
+                    </div>
+                </div>
+
+                <!-- Post 4 - Viky Hike -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-user">
+                            <div class="post-user-pic">🏔️</div>
+                            <div>
+                                <div style="font-weight: bold; font-size: 1.2rem;">viky_adventures</div>
+                                <div style="font-size: 1rem; color: #8e8e8e;">Beskydy Mountains</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 1.5rem; cursor: pointer;">⋯</div>
+                    </div>
+                    <img src="../images/posts/viky_hike.jpg" class="post-image" style="object-fit: cover;">
+                    <div class="post-actions">
+                        <span class="action-btn" onclick="toggleLike(this)">🤍</span>
+                        <span class="action-btn">💬</span>
+                        <span class="action-btn">📤</span>
+                        <span class="action-btn" style="margin-left: auto;">🔖</span>
+                    </div>
+                    <div class="post-likes">567 likes</div>
+                    <div class="post-caption">
+                        <strong>viky_adventures</strong> Hiking through the beautiful Czech mountains! 🏔️✨
+                    </div>
+                </div>
+
+                <!-- Post 5 - Whippet Puppy -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-user">
+                            <div class="post-user-pic">🐕</div>
+                            <div>
+                                <div style="font-weight: bold; font-size: 1.2rem;">whippet_pup</div>
+                                <div style="font-size: 1rem; color: #8e8e8e;">Prague</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 1.5rem; cursor: pointer;">⋯</div>
+                    </div>
+                    <img src="../images/posts/whippet_puppy.jpg" class="post-image" style="object-fit: cover;">
+                    <div class="post-actions">
+                        <span class="action-btn liked" onclick="toggleLike(this)">❤️</span>
+                        <span class="action-btn">💬</span>
+                        <span class="action-btn">📤</span>
+                        <span class="action-btn" style="margin-left: auto;">🔖</span>
+                    </div>
+                    <div class="post-likes">1,456 likes</div>
+                    <div class="post-caption">
+                        <strong>whippet_pup</strong> This little cutie stole my heart! 🐕💕 #WhippetLove
+                    </div>
+                </div>
+
+                <!-- Post 6 - Skincare Flatlay -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-user">
+                            <div class="post-user-pic">✨</div>
+                            <div>
+                                <div style="font-weight: bold; font-size: 1.2rem;">skincare_daily</div>
+                                <div style="font-size: 1rem; color: #8e8e8e;">Prague</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 1.5rem; cursor: pointer;">⋯</div>
+                    </div>
+                    <img src="../images/posts/skincare_flatlay.jpg" class="post-image" style="object-fit: cover;">
+                    <div class="post-actions">
+                        <span class="action-btn" onclick="toggleLike(this)">🤍</span>
+                        <span class="action-btn">💬</span>
+                        <span class="action-btn">📤</span>
+                        <span class="action-btn" style="margin-left: auto;">🔖</span>
+                    </div>
+                    <div class="post-likes">734 likes</div>
+                    <div class="post-caption">
+                        <strong>skincare_daily</strong> My current skincare routine ✨💆‍♀️ #Skincare #SelfCare
+                    </div>
+                </div>
+
+                <!-- Post 7 - Floorball Action -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-user">
+                            <div class="post-user-pic">🏒</div>
+                            <div>
+                                <div style="font-weight: bold; font-size: 1.2rem;">floorball_cz</div>
+                                <div style="font-size: 1rem; color: #8e8e8e;">Sports Hall, Prague</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 1.5rem; cursor: pointer;">⋯</div>
+                    </div>
+                    <img src="../images/posts/floorball_action.jpg" class="post-image" style="object-fit: cover;">
+                    <div class="post-actions">
+                        <span class="action-btn" onclick="toggleLike(this)">🤍</span>
+                        <span class="action-btn">💬</span>
+                        <span class="action-btn">📤</span>
+                        <span class="action-btn" style="margin-left: auto;">🔖</span>
+                    </div>
+                    <div class="post-likes">423 likes</div>
+                    <div class="post-caption">
+                        <strong>floorball_cz</strong> Game day! 🏒💪 #Floorball #Sports
+                    </div>
+                </div>
+
+                <!-- Post 8 - Fourth Wing Book -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-user">
+                            <div class="post-user-pic">📚</div>
+                            <div>
+                                <div style="font-weight: bold; font-size: 1.2rem;">bookworm_viky</div>
+                                <div style="font-size: 1rem; color: #8e8e8e;">Cozy Corner</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 1.5rem; cursor: pointer;">⋯</div>
+                    </div>
+                    <img src="../images/posts/fourthwing_book.jpeg" class="post-image" style="object-fit: cover;">
+                    <div class="post-actions">
+                        <span class="action-btn liked" onclick="toggleLike(this)">❤️</span>
+                        <span class="action-btn">💬</span>
+                        <span class="action-btn">📤</span>
+                        <span class="action-btn" style="margin-left: auto;">🔖</span>
+                    </div>
+                    <div class="post-likes">1,892 likes</div>
+                    <div class="post-caption">
+                        <strong>bookworm_viky</strong> Currently reading and OBSESSED! 📚🐉 #FourthWing #BookTok
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEARCH VIEW -->
+            <div id="search" class="view">
+                <input type="text" class="search-bar" placeholder="Search...">
+                <div class="search-results">
+                    <div class="search-item" style="background: linear-gradient(135deg, #667eea, #764ba2);">🏰</div>
+                    <div class="search-item" style="background: linear-gradient(135deg, #f093fb, #f5576c);">🐧</div>
+                    <div class="search-item" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">🌊</div>
+                    <div class="search-item" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">🏔️</div>
+                    <div class="search-item" style="background: linear-gradient(135deg, #fa709a, #fee140);">☀️</div>
+                    <div class="search-item" style="background: linear-gradient(135deg, #30cfd0, #330867);">🌙</div>
+                    <div class="search-item" style="background: linear-gradient(135deg, #a8edea, #fed6e3);">💕</div>
+                    <div class="search-item" style="background: linear-gradient(135deg, #ff9a9e, #fecfef);">🎨</div>
+                    <div class="search-item" style="background: linear-gradient(135deg, #ffecd2, #fcb69f);">☕</div>
+                </div>
+            </div>
+
+            <!-- EXPLORE VIEW -->
+            <div id="explore" class="view">
+                <h2 style="margin-bottom: 20px; font-size: 2rem;">Explore</h2>
+                <div class="search-results">
+                    <div class="search-item">✈️</div>
+                    <div class="search-item">🎭</div>
+                    <div class="search-item">🍕</div>
+                    <div class="search-item">🎸</div>
+                    <div class="search-item">📚</div>
+                    <div class="search-item">🎮</div>
+                    <div class="search-item">🎨</div>
+                    <div class="search-item">🏃</div>
+                    <div class="search-item">🍰</div>
+                </div>
+            </div>
+
+            <!-- REELS VIEW -->
+            <div id="reels" class="view">
+                <h2 style="margin-bottom: 20px; font-size: 2rem;">Reels</h2>
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-user">
+                            <div class="post-user-pic">🎬</div>
+                            <div>
+                                <div style="font-weight: bold; font-size: 1.2rem;">Travel Reels</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="post-image" style="background: linear-gradient(135deg, #667eea, #764ba2);">▶️</div>
+                    <div class="post-caption">
+                        Short video clips coming soon! 🎬✨
+                    </div>
+                </div>
+            </div>
+
+            <!-- MESSAGES VIEW -->
+            <div id="messages" class="view">
+                <div class="messages-container">
+                    <div class="conversations">
+                        <div style="padding: 20px; font-weight: bold; font-size: 1.5rem; border-bottom: 1px solid #dbdbdb;">Messages</div>
+                        <div class="conversation-item active" onclick="loadChat('prague')">
+                            <div class="post-user-pic">🇨🇿</div>
+                            <div>
+                                <div style="font-weight: bold; font-size: 1.2rem;">Prague Memories</div>
+                                <div style="font-size: 1rem; color: #8e8e8e;">Active now</div>
+                            </div>
+                        </div>
+                        <div class="conversation-item" onclick="loadChat('capetown')">
+                            <div class="post-user-pic">🇿🇦</div>
+                            <div>
+                                <div style="font-weight: bold; font-size: 1.2rem;">Cape Town Vibes</div>
+                                <div style="font-size: 1rem; color: #8e8e8e;">2h ago</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-area">
+                        <div class="chat-header" id="chatHeader">Prague Memories</div>
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="message received">Hey! How's Prague treating you? 🏰</div>
+                            <div class="message sent">Amazing! The city is beautiful 💕</div>
+                            <div class="message received">Can't wait to visit! Send me pics! 📸</div>
+                        </div>
+                        <div class="chat-input-container">
+                            <input type="text" class="chat-input" id="messageInput" placeholder="Message...">
+                            <button class="send-btn" onclick="sendMessage()">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NOTIFICATIONS VIEW -->
+            <div id="notifications" class="view">
+                <h2 style="margin-bottom: 20px; font-size: 2rem;">Notifications</h2>
+                <div class="notification-item">
+                    <div class="notif-pic">🇨🇿</div>
+                    <div class="notif-content">
+                        <div class="notif-text"><strong>Prague Adventures</strong> liked your post</div>
+                        <div class="notif-time">2 hours ago</div>
+                    </div>
+                </div>
+                <div class="notification-item">
+                    <div class="notif-pic">🇿🇦</div>
+                    <div class="notif-content">
+                        <div class="notif-text"><strong>Cape Town Vibes</strong> started following you</div>
+                        <div class="notif-time">5 hours ago</div>
+                    </div>
+                </div>
+                <div class="notification-item">
+                    <div class="notif-pic">💕</div>
+                    <div class="notif-content">
+                        <div class="notif-text"><strong>Travel Couple</strong> commented on your post</div>
+                        <div class="notif-time">1 day ago</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CREATE VIEW -->
+            <div id="create" class="view">
+                <div class="create-container">
+                    <div class="create-title">Create New Post</div>
+                    <div class="upload-area">
+                        <div class="upload-icon">📷</div>
+                        <div style="font-size: 1.4rem; margin-bottom: 8px;">Drag photos here</div>
+                        <div style="font-size: 1.1rem; color: #8e8e8e;">or click to select from computer</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROFILE VIEW -->
+            <div id="profile" class="view">
+                <div class="profile-header">
+                    <div class="profile-pic-large">💕</div>
+                    <div style="flex: 1;">
+                        <div style="font-size: 2rem; font-weight: bold; margin-bottom: 10px;">your_journey</div>
+                        <div class="profile-stats">
+                            <div class="stat">
+                                <div class="stat-number">8</div>
+                                <div class="stat-label">posts</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">892</div>
+                                <div class="stat-label">followers</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">234</div>
+                                <div class="stat-label">following</div>
+                            </div>
+                        </div>
+                        <div class="profile-bio">
+                            💕 Living between Prague and Cape Town<br>
+                            🌍 Adventures across continents<br>
+                            ✨ Making memories one city at a time
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="posts-grid">
+                    <div class="grid-item"><img src="../images/posts/naeem_prague.jpg"></div>
+                    <div class="grid-item"><img src="../images/posts/roses_garden.jpg"></div>
+                    <div class="grid-item"><img src="../images/posts/redpanda_baby.jpg"></div>
+                    <div class="grid-item"><img src="../images/posts/viky_hike.jpg"></div>
+                    <div class="grid-item"><img src="../images/posts/whippet_puppy.jpg"></div>
+                    <div class="grid-item"><img src="../images/posts/skincare_flatlay.jpg"></div>
+                    <div class="grid-item"><img src="../images/posts/floorball_action.jpg"></div>
+                    <div class="grid-item"><img src="../images/posts/fourthwing_book.jpeg"></div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        function renderPost(data) {
-            return `
-                <div class="post">
-                    <div class="post-header">
-                        <div class="post-profile-pic" style="background: ${data.userBg};">${data.userEmoji}</div>
-                        <div class="post-user-info">
-                            <div class="post-username">${data.username}</div>
-                            ${data.location ? `<div class="post-location">${data.location}</div>` : ''}
-                        </div>
-                        <div class="post-options">⋯</div>
-                    </div>
-                    
-                    <div class="post-image" ${data.postImage ? '' : `style="background: ${data.postBg};"`}>
-                        ${data.postImage ? `<img src="../images/posts/${data.postImage}" alt="${data.username}'s post">` : data.postEmoji}
-                    </div>
-                    
-                    <div class="post-actions">
-                        <button class="action-btn" onclick="toggleLike(this)">♡</button>
-                        <button class="action-btn">💬</button>
-                        <button class="action-btn">✈️</button>
-                        <button class="action-btn bookmark">🔖</button>
-                    </div>
-                    
-                    <div class="post-likes">${data.likes.toLocaleString()} likes</div>
-                    
-                    <div class="post-caption">
-                        <span class="caption-username">${data.username}</span>
-                        ${data.caption}
-                    </div>
-                    
-                    <div class="post-comments">View all ${data.comments} comments</div>
-                    
-                    <div class="post-time">${data.time}</div>
-                    
-                    <div class="add-comment">
-                        <input type="text" class="comment-input" placeholder="Add a comment...">
-                        <button class="post-btn" disabled>Post</button>
-                    </div>
-                </div>
-            `;
+        function switchView(viewName) {
+            // Remove active class from all nav items and views
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
+            
+            // Add active class to clicked nav item
+            event.target.closest('.nav-item').classList.add('active');
+            
+            // Show the selected view
+            document.getElementById(viewName).classList.add('active');
         }
 
-        function showFeed() {
-            const content = document.getElementById('main-content');
-            content.innerHTML = `
-                <div class="feed-container">
-                    <div class="stories">
-                        <div class="story">
-                            <div class="story-ring">
-                                <div class="story-pic" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">A</div>
-                            </div>
-                            <div class="story-name">Your story</div>
-                        </div>
-                        <div class="story">
-                            <div class="story-ring">
-                                <div class="story-pic" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">❤️</div>
-                            </div>
-                            <div class="story-name">naeem_cz</div>
-                        </div>
-                        <div class="story">
-                            <div class="story-ring">
-                                <div class="story-pic" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">V</div>
-                            </div>
-                            <div class="story-name">viky_fitness</div>
-                        </div>
-                        <div class="story">
-                            <div class="story-ring">
-                                <div class="story-pic" style="background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);">🐼</div>
-                            </div>
-                            <div class="story-name">red_pandas</div>
-                        </div>
-                        <div class="story">
-                            <div class="story-ring">
-                                <div class="story-pic" style="background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);">📚</div>
-                            </div>
-                            <div class="story-name">booktube</div>
-                        </div>
-                    </div>
-                    
-                    ${renderPost({
-                        username: 'naeem_cz',
-                        userEmoji: '❤️',
-                        userBg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                        location: 'Prague, Czech Republic',
-                        postImage: 'naeem_prague.jpg',  // Will use assets/images/posts/naeem_prague.jpg
-                        postEmoji: '🌃',
-                        postBg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                        likes: 247,
-                        caption: 'Missing you already... can\'t wait to see you again 💕',
-                        comments: 12,
-                        time: '2 hours ago'
-                    })}
-                    
-                    ${renderPost({
-                        username: 'viky_fitness',
-                        userEmoji: 'V',
-                        userBg: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-                        location: 'Lion\'s Head, Cape Town',
-                        postImage: 'viky_hike.jpg',  // Will use assets/images/posts/viky_hike.jpg
-                        postEmoji: '🏔️',
-                        postBg: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-                        likes: 189,
-                        caption: 'Sunrise hike done! Who\'s joining me next week? 💪🌅',
-                        comments: 24,
-                        time: '5 hours ago'
-                    })}
-                    
-                    ${renderPost({
-                        username: 'redpanda_official',
-                        userEmoji: '🐼',
-                        userBg: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-                        location: 'Conservation Center',
-                        postImage: 'redpanda_baby.jpg',  // Will use assets/images/posts/redpanda_baby.jpg
-                        postEmoji: '🐾',
-                        postBg: 'linear-gradient(135deg, #ff6b6b 0%, #feca57 100%)',
-                        likes: 1243,
-                        caption: 'Meet our newest baby red panda! Born last week and already stealing hearts 🥺',
-                        comments: 86,
-                        time: '8 hours ago'
-                    })}
-                    
-                    ${renderPost({
-                        username: 'dailyglow_skincare',
-                        userEmoji: '✨',
-                        userBg: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)',
-                        location: 'Skincare Studio',
-                        postImage: 'skincare_flatlay.jpg',  // Will use assets/images/posts/skincare_flatlay.jpg
-                        postEmoji: '🧴',
-                        postBg: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
-                        likes: 892,
-                        caption: 'My low-buy year update: Month 2! Loving my minimalist routine 🌸 Link in bio for the products I\'m actually using',
-                        comments: 45,
-                        time: '12 hours ago'
-                    })}
-                    
-                    ${renderPost({
-                        username: 'paws_and_noses',
-                        userEmoji: '🐕',
-                        userBg: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)',
-                        location: 'Cape Town Breeder',
-                        postImage: 'whippet_puppy.jpg',  // Will use assets/images/posts/whippet_puppy.jpg
-                        postEmoji: '🦌',
-                        postBg: 'linear-gradient(135deg, #d4a5a5 0%, #e9defa 100%)',
-                        likes: 456,
-                        caption: 'Blue fawn whippet girl looking for her forever home! 💙 She\'s the sweetest little deer. DM for details!',
-                        comments: 67,
-                        time: '1 day ago'
-                    })}
-                    
-                    ${renderPost({
-                        username: 'nella_reads',
-                        userEmoji: 'N',
-                        userBg: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)',
-                        location: 'Cozy Reading Corner',
-                        postImage: 'fourthwing_book.jpg',  // Will use assets/images/posts/fourthwing_book.jpg
-                        postEmoji: '📚',
-                        postBg: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)',
-                        likes: 234,
-                        caption: 'Just finished Fourth Wing and I AM NOT OKAY 😭🐉 Who else is obsessed??',
-                        comments: 89,
-                        time: '1 day ago'
-                    })}
-                    
-                    ${renderPost({
-                        username: 'cape_floorball',
-                        userEmoji: '🏑',
-                        userBg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                        location: 'Sports Hall, Cape Town',
-                        postImage: 'floorball_action.jpg',  // Will use assets/images/posts/floorball_action.jpg
-                        postEmoji: '💪',
-                        postBg: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-                        likes: 178,
-                        caption: 'Practice tonight was 🔥! Great game everyone! Same time next week 🏑',
-                        comments: 34,
-                        time: '2 days ago'
-                    })}
-                    
-                    ${renderPost({
-                        username: 'granny_rose',
-                        userEmoji: '👵',
-                        userBg: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
-                        location: 'My Garden',
-                        postImage: 'roses_garden.jpg',  // Will use assets/images/posts/roses_garden.jpg
-                        postEmoji: '🌹',
-                        postBg: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-                        likes: 312,
-                        caption: 'My roses are blooming beautifully this year! Can\'t wait for Agi to visit this weekend 💕',
-                        comments: 28,
-                        time: '2 days ago'
-                    })}
-                </div>
-            `;
-        }
-
-        function toggleLike(btn) {
-            if (btn.classList.contains('liked')) {
-                btn.classList.remove('liked');
-                btn.innerHTML = '♡';
+        function toggleLike(element) {
+            if (element.classList.contains('liked')) {
+                element.classList.remove('liked');
+                element.textContent = '🤍';
             } else {
-                btn.classList.add('liked');
-                btn.innerHTML = '❤️';
+                element.classList.add('liked');
+                element.textContent = '❤️';
             }
         }
 
-        function showMessages() {
-            alert('Messages feature coming soon! 💬');
+        function loadChat(chatName) {
+            // Remove active from all conversations
+            document.querySelectorAll('.conversation-item').forEach(item => item.classList.remove('active'));
+            event.target.closest('.conversation-item').classList.add('active');
+            
+            const chatHeader = document.getElementById('chatHeader');
+            const chatMessages = document.getElementById('chatMessages');
+            
+            if (chatName === 'prague') {
+                chatHeader.textContent = 'Prague Memories';
+                chatMessages.innerHTML = `
+                    <div class="message received">Hey! How's Prague treating you? 🏰</div>
+                    <div class="message sent">Amazing! The city is beautiful 💕</div>
+                    <div class="message received">Can't wait to visit! Send me pics! 📸</div>
+                `;
+            } else if (chatName === 'capetown') {
+                chatHeader.textContent = 'Cape Town Vibes';
+                chatMessages.innerHTML = `
+                    <div class="message received">The penguins were so cute today! 🐧</div>
+                    <div class="message sent">I saw your story! Looks amazing! 😍</div>
+                    <div class="message received">You should come visit! 🌊</div>
+                `;
+            }
         }
 
-        function showProfile() {
-            const content = document.getElementById('main-content');
-            content.innerHTML = `
-                <div class="feed-container" style="padding-top: 30px;">
-                    <div style="background: #fff; border: 1px solid #dbdbdb; border-radius: 8px; padding: 40px; text-align: center;">
-                        <div style="width: 150px; height: 150px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: white; font-weight: bold;">
-                            A
-                        </div>
-                        <h2 style="margin-bottom: 8px;">agi_capetown</h2>
-                        <p style="color: #737373; margin-bottom: 20px;">Living my best life in Cape Town 🌊</p>
-                        
-                        <div style="display: flex; justify-content: center; gap: 40px; margin: 20px 0; padding: 20px 0; border-top: 1px solid #dbdbdb; border-bottom: 1px solid #dbdbdb;">
-                            <div>
-                                <div style="font-weight: 600; font-size: 1.1rem;">127</div>
-                                <div style="color: #737373; font-size: 0.875rem;">posts</div>
-                            </div>
-                            <div>
-                                <div style="font-weight: 600; font-size: 1.1rem;">892</div>
-                                <div style="color: #737373; font-size: 0.875rem;">followers</div>
-                            </div>
-                            <div>
-                                <div style="font-weight: 600; font-size: 1.1rem;">456</div>
-                                <div style="color: #737373; font-size: 0.875rem;">following</div>
-                            </div>
-                        </div>
-                        
-                        <div style="text-align: left; max-width: 400px; margin: 20px auto;">
-                            <p style="font-weight: 600; margin-bottom: 4px;">Agi ✨</p>
-                            <p style="margin-bottom: 4px;">🐼 Red panda enthusiast</p>
-                            <p style="margin-bottom: 4px;">🏑 Floorball player</p>
-                            <p style="margin-bottom: 4px;">📚 Currently reading: Fourth Wing</p>
-                            <p style="margin-bottom: 4px;">💕 In love with Prague & Naeem</p>
-                            <p style="margin-bottom: 4px;">🐕 Future whippet mom</p>
-                        </div>
-                        
-                        <button style="margin-top: 20px; padding: 8px 24px; background: #efefef; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Edit profile</button>
-                    </div>
-                </div>
-            `;
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const messagesContainer = document.getElementById('chatMessages');
+            
+            if (input.value.trim()) {
+                const newMessage = document.createElement('div');
+                newMessage.className = 'message sent';
+                newMessage.textContent = input.value;
+                messagesContainer.appendChild(newMessage);
+                
+                input.value = '';
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
         }
 
-        // Load feed on page load
-        window.addEventListener('DOMContentLoaded', showFeed);
-        // Also call immediately in case DOMContentLoaded already fired (for iframes)
-        if (document.readyState === 'loading') {
-            window.addEventListener('DOMContentLoaded', showFeed);
-        } else {
-            showFeed();
-        }
+        // Allow Enter key to send message
+        document.getElementById('messageInput')?.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
     </script>
 </body>
 </html>

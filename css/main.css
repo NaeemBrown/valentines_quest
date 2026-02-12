@@ -36,3 +36,378 @@ body::after {
     background: radial-gradient(circle, transparent 60%, rgba(0,0,0,0.4) 100%);
     z-index: 99999; pointer-events: none;
 }
+
+/* ENHANCED DESKTOP STYLES */
+
+/* Animated Gradient Desktop Background */
+#desktop-screen {
+    background: linear-gradient(45deg, #ffc2d1, #ffb3c1, #ffd4e5, #ffe5ec);
+    background-size: 400% 400%;
+    height: 100%; 
+    width: 100%; 
+    position: relative;
+    overflow: hidden;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* 3D Parallax Effect on Icons */
+#icon-grid {
+    padding: 20px; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 20px; 
+    flex-wrap: wrap; 
+    height: 90%;
+    perspective: 1000px;
+}
+
+.desktop-icon {
+    width: 90px; 
+    text-align: center; 
+    cursor: pointer;
+    transition: transform 0.1s ease-out;
+    transform-style: preserve-3d;
+}
+
+.desktop-icon:hover {
+    background: rgba(255, 255, 255, 0.4); 
+    border: 1px dotted #fff;
+    transform: scale(1.1) !important;
+}
+
+/* Desktop Filler Widgets */
+.desktop-filler {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.9);
+    border: 3px solid #ff4d6d;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 
+        4px 4px 0 rgba(89, 13, 34, 0.2),
+        0 0 20px rgba(255, 77, 109, 0.3);
+    backdrop-filter: blur(10px);
+    animation: widgetFloat 3s ease-in-out infinite;
+}
+
+@keyframes widgetFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+}
+
+/* Quote Widget */
+#quote-widget {
+    bottom: 120px;
+    left: 20px;
+    width: 280px;
+    text-align: center;
+}
+
+.quote-icon {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    animation: heartbeat 2s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.quote-text {
+    font-size: 1.2rem;
+    color: #590d22;
+    font-style: italic;
+    line-height: 1.4;
+}
+
+/* Stats Widget */
+#stats-widget {
+    bottom: 120px;
+    right: 20px;
+    width: 200px;
+}
+
+#stats-widget h3 {
+    margin: 0 0 15px 0;
+    color: #ff4d6d;
+    font-size: 1.4rem;
+    text-align: center;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 5px;
+    background: rgba(255, 77, 109, 0.1);
+    border-radius: 5px;
+}
+
+.stat-label {
+    font-size: 1rem;
+    color: #590d22;
+}
+
+.stat-value {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #ff4d6d;
+}
+
+/* Calendar Widget */
+#calendar-widget {
+    top: 120px;
+    right: 20px;
+    width: 220px;
+}
+
+.calendar-header {
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #ff4d6d;
+    margin-bottom: 10px;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.calendar-day-label {
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #590d22;
+    padding: 5px 0;
+}
+
+.calendar-day {
+    text-align: center;
+    font-size: 1rem;
+    padding: 8px 5px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    color: #590d22;
+}
+
+.calendar-day.today {
+    background: #ff4d6d;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(255, 77, 109, 0.5);
+}
+
+/* Right-Click Context Menu */
+.context-menu {
+    position: fixed;
+    background: #fff;
+    border: 3px solid #590d22;
+    box-shadow: 8px 8px 0 rgba(89, 13, 34, 0.2);
+    z-index: 10000;
+    min-width: 200px;
+    padding: 5px 0;
+    animation: contextAppear 0.2s ease-out;
+}
+
+@keyframes contextAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.context-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.2rem;
+    color: #590d22;
+    transition: all 0.2s;
+}
+
+.context-item:hover {
+    background: #ff4d6d;
+    color: white;
+}
+
+.context-icon {
+    font-size: 1.3rem;
+}
+
+.context-divider {
+    height: 2px;
+    background: #fb6f92;
+    margin: 5px 10px;
+}
+
+/* Window Snapping Effect */
+.app-window.snapped {
+    transition: all 0.2s ease-out;
+    box-shadow: 
+        0 0 0 3px #ff4d6d,
+        8px 8px 0 rgba(89, 13, 34, 0.2),
+        0 0 30px rgba(255, 77, 109, 0.5) !important;
+}
+
+/* Enhanced Window Controls */
+.win-controls {
+    display: flex;
+    gap: 5px;
+    z-index: 100;
+    position: relative;
+}
+
+.win-controls button {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: white;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.2rem;
+    transition: all 0.2s;
+}
+
+.win-controls button:hover {
+    background: rgba(0, 0, 0, 0.5);
+    transform: scale(1.1);
+}
+
+.win-controls button:first-child {
+    font-size: 1.5rem;
+    line-height: 0.5;
+}
+
+/* Taskbar App Buttons */
+.taskbar-app {
+    background: linear-gradient(180deg, #fff 0%, #c0c0c0 100%);
+    border-top: 2px solid #fff;
+    border-left: 2px solid #fff;
+    border-right: 2px solid #404040;
+    border-bottom: 2px solid #404040;
+    padding: 4px 12px;
+    font-family: 'VT323', monospace;
+    font-size: 1.2rem;
+    cursor: pointer;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.taskbar-app:hover {
+    background: linear-gradient(180deg, #fff 0%, #d4d4d4 100%);
+}
+
+.taskbar-app:active {
+    border-top: 2px solid #404040;
+    border-left: 2px solid #404040;
+    border-right: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    background: #c0c0c0;
+}
+
+/* Enhanced Taskbar */
+#taskbar {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+    background: #c0c0c0;
+    border-top: 2px solid #fff;
+    display: flex;
+    align-items: center;
+    padding: 0 5px;
+    justify-content: space-between;
+    z-index: 999;
+    gap: 5px;
+}
+
+.task-clock {
+    background: rgba(0, 0, 0, 0.1);
+    border: 1px inset #808080;
+    padding: 4px 10px;
+    font-weight: bold;
+    font-size: 1.3rem;
+    min-width: 80px;
+    text-align: center;
+}
+
+/* Draggable Icon States */
+.desktop-icon[style*="position: absolute"] {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Icon Grid Adjustments for Absolute Positioned Icons */
+#icon-grid .desktop-icon:not([style*="position: absolute"]) {
+    position: relative;
+}
+
+/* Enhanced Desktop Widget */
+#desktop-widget {
+    position: absolute;
+    top: 20px;
+    right: 250px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 3px solid #ff4d6d;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 
+        4px 4px 0 rgba(89, 13, 34, 0.2),
+        0 0 20px rgba(255, 77, 109, 0.3);
+    width: 200px;
+    backdrop-filter: blur(10px);
+}
+
+.widget-row {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 1.3rem;
+    padding: 5px;
+    background: rgba(255, 77, 109, 0.1);
+    border-radius: 5px;
+}
+
+.widget-row span:first-child {
+    color: #590d22;
+}
+
+.widget-row span:last-child {
+    color: #ff4d6d;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .desktop-filler {
+        display: none; /* Hide widgets on mobile */
+    }
+    
+    #desktop-widget {
+        width: 150px;
+        right: 10px;
+        top: 10px;
+    }
+    
+    .context-menu {
+        min-width: 150px;
+    }
+}

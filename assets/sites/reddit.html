@@ -19,7 +19,6 @@
             color: #d7dadc;
         }
         
-        /* Header */
         .reddit-header {
             background: #1a1a1b;
             border-bottom: 3px solid #ff4500;
@@ -27,6 +26,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
         }
         
         .header-left {
@@ -39,6 +39,13 @@
             font-size: 2.5rem;
             color: #ff4500;
             font-weight: bold;
+            animation: wiggle 3s ease-in-out infinite;
+        }
+        
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
         }
         
         .search-bar {
@@ -49,15 +56,18 @@
             color: #d7dadc;
             font-size: 1.3rem;
             width: 500px;
+            transition: all 0.3s;
+        }
+        
+        .search-bar:focus {
+            outline: none;
+            border-color: #ff4500;
+            background: #1a1a1b;
+            box-shadow: 0 0 0 3px rgba(255, 69, 0, 0.2);
         }
         
         .search-bar::placeholder {
             color: #818384;
-        }
-        
-        .header-right {
-            display: flex;
-            gap: 15px;
         }
         
         .header-btn {
@@ -70,14 +80,15 @@
             cursor: pointer;
             font-weight: bold;
             transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(255, 69, 0, 0.3);
         }
         
         .header-btn:hover {
             background: #ff5722;
             transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 69, 0, 0.5);
         }
         
-        /* Main Layout */
         .main-layout {
             max-width: 1400px;
             margin: 20px auto;
@@ -87,7 +98,6 @@
             padding: 0 20px;
         }
         
-        /* Post Card */
         .post-card {
             background: #1a1a1b;
             border: 2px solid #343536;
@@ -99,6 +109,7 @@
         
         .post-card:hover {
             border-color: #ff4500;
+            box-shadow: 0 4px 20px rgba(255, 69, 0, 0.2);
         }
         
         .post-container {
@@ -120,16 +131,35 @@
             font-size: 1.8rem;
             cursor: pointer;
             transition: all 0.3s;
+            user-select: none;
         }
         
         .vote-btn:hover {
             color: #ff4500;
+            transform: scale(1.2);
+        }
+        
+        .vote-btn.upvoted {
+            color: #ff4500;
+        }
+        
+        .vote-btn.downvoted {
+            color: #7193ff;
         }
         
         .vote-count {
             font-size: 1.3rem;
             font-weight: bold;
             color: #d7dadc;
+            transition: all 0.3s;
+        }
+        
+        .vote-count.positive {
+            color: #ff4500;
+        }
+        
+        .vote-count.negative {
+            color: #7193ff;
         }
         
         .post-content {
@@ -149,6 +179,11 @@
         .subreddit {
             color: #d7dadc;
             font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .subreddit:hover {
+            text-decoration: underline;
         }
         
         .subreddit-icon {
@@ -177,6 +212,7 @@
             margin-bottom: 10px;
             cursor: pointer;
             line-height: 1.3;
+            transition: color 0.2s;
         }
         
         .post-title:hover {
@@ -198,6 +234,7 @@
             font-size: 1.1rem;
             display: inline-block;
             margin-right: 10px;
+            border: 1px solid rgba(255, 69, 0, 0.3);
         }
         
         .post-actions {
@@ -222,7 +259,6 @@
             color: #d7dadc;
         }
         
-        /* Sidebar */
         .sidebar {
             position: sticky;
             top: 20px;
@@ -235,6 +271,12 @@
             border-radius: 8px;
             padding: 20px;
             margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-card:hover {
+            border-color: #ff4500;
+            box-shadow: 0 4px 20px rgba(255, 69, 0, 0.2);
         }
         
         .sidebar-title {
@@ -257,6 +299,7 @@
         
         .community-item:hover {
             background: #272729;
+            transform: translateX(5px);
         }
         
         .community-icon {
@@ -292,9 +335,19 @@
             border-radius: 20px;
             font-size: 1.2rem;
             cursor: pointer;
+            transition: all 0.3s;
         }
         
-        /* Create Post */
+        .join-btn:hover {
+            background: #0060a8;
+        }
+        
+        .join-btn.joined {
+            background: transparent;
+            border: 1px solid #0079d3;
+            color: #0079d3;
+        }
+        
         .create-post-card {
             background: #1a1a1b;
             border: 2px solid #343536;
@@ -302,7 +355,7 @@
             padding: 15px 20px;
             margin-bottom: 20px;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             gap: 15px;
         }
         
@@ -325,43 +378,61 @@
             padding: 12px 15px;
             color: #d7dadc;
             font-size: 1.3rem;
-            cursor: pointer;
+            font-family: 'VT323', monospace;
+            transition: all 0.3s;
+            resize: vertical;
+            min-height: 60px;
         }
         
-        .create-input:hover {
-            border-color: #818384;
+        .create-input:focus {
+            outline: none;
+            border-color: #ff4500;
+            background: #1a1a1b;
+        }
+        
+        .create-input::placeholder {
+            color: #818384;
+        }
+        
+        .award-animation {
+            animation: awardPop 0.5s ease-out;
+        }
+        
+        @keyframes awardPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3) rotate(10deg); }
+            100% { transform: scale(1); }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <div class="reddit-header">
         <div class="header-left">
             <div class="logo">👽 HeartReddit</div>
             <input type="text" class="search-bar" placeholder="Search communities and posts...">
         </div>
         <div class="header-right">
-            <button class="header-btn">💕 Create Post</button>
+            <button class="header-btn" onclick="createNewPost()">💕 Create Post</button>
         </div>
     </div>
     
-    <!-- Main Layout -->
     <div class="main-layout">
-        <!-- Feed -->
         <div class="feed">
-            <!-- Create Post -->
-            <div class="create-post-card">
-                <div class="create-avatar">💕</div>
-                <div class="create-input">Share your journey...</div>
+            <div class="create-post-card" id="createPostBox" style="display: none;">
+                <textarea class="create-input" id="postTitle" placeholder="Post title..." rows="1"></textarea>
+                <textarea class="create-input" id="postContent" placeholder="What's on your mind?" rows="5"></textarea>
+                <div style="display: flex; gap: 10px;">
+                    <button class="header-btn" onclick="submitPost()">Post</button>
+                    <button class="header-btn" style="background: #272729;" onclick="cancelPost()">Cancel</button>
+                </div>
             </div>
             
-            <!-- Post 1 -->
             <div class="post-card">
                 <div class="post-container">
                     <div class="vote-section">
-                        <div class="vote-btn">▲</div>
-                        <div class="vote-count">2.3k</div>
-                        <div class="vote-btn">▼</div>
+                        <div class="vote-btn" onclick="vote(this, 1, 'up')">▲</div>
+                        <div class="vote-count" data-score="2300">2.3k</div>
+                        <div class="vote-btn" onclick="vote(this, 1, 'down')">▼</div>
                     </div>
                     <div class="post-content">
                         <div class="post-header">
@@ -385,18 +456,18 @@
                             <div class="action-btn">💬 127 Comments</div>
                             <div class="action-btn">↗️ Share</div>
                             <div class="action-btn">🔖 Save</div>
+                            <div class="action-btn" onclick="giveAward(this)">🎁 Award</div>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <!-- Post 2 -->
             <div class="post-card">
                 <div class="post-container">
                     <div class="vote-section">
-                        <div class="vote-btn">▲</div>
-                        <div class="vote-count">4.7k</div>
-                        <div class="vote-btn">▼</div>
+                        <div class="vote-btn" onclick="vote(this, 2, 'up')">▲</div>
+                        <div class="vote-count" data-score="4700">4.7k</div>
+                        <div class="vote-btn" onclick="vote(this, 2, 'down')">▼</div>
                     </div>
                     <div class="post-content">
                         <div class="post-header">
@@ -420,18 +491,18 @@
                             <div class="action-btn">💬 89 Comments</div>
                             <div class="action-btn">↗️ Share</div>
                             <div class="action-btn">🔖 Save</div>
+                            <div class="action-btn" onclick="giveAward(this)">🎁 Award</div>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <!-- Post 3 -->
             <div class="post-card">
                 <div class="post-container">
                     <div class="vote-section">
-                        <div class="vote-btn">▲</div>
-                        <div class="vote-count">8.9k</div>
-                        <div class="vote-btn">▼</div>
+                        <div class="vote-btn upvoted" onclick="vote(this, 3, 'up')">▲</div>
+                        <div class="vote-count positive" data-score="8900">8.9k</div>
+                        <div class="vote-btn" onclick="vote(this, 3, 'down')">▼</div>
                     </div>
                     <div class="post-content">
                         <div class="post-header">
@@ -458,49 +529,13 @@
                             <div class="action-btn">💬 456 Comments</div>
                             <div class="action-btn">↗️ Share</div>
                             <div class="action-btn">🔖 Save</div>
-                            <div class="action-btn">🎁 Award</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Post 4 -->
-            <div class="post-card">
-                <div class="post-container">
-                    <div class="vote-section">
-                        <div class="vote-btn">▲</div>
-                        <div class="vote-count">1.2k</div>
-                        <div class="vote-btn">▼</div>
-                    </div>
-                    <div class="post-content">
-                        <div class="post-header">
-                            <div class="subreddit-icon" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">✈️</div>
-                            <span class="subreddit">r/travel</span>
-                            <span>•</span>
-                            <span class="post-author">Posted by u/europe_to_africa</span>
-                            <span>•</span>
-                            <span class="post-time">12 hours ago</span>
-                        </div>
-                        <div class="post-title">Best budget airlines for Prague → Cape Town route?</div>
-                        <div class="post-text">
-                            Planning my 5th trip this year (yes, I know, but love makes you do crazy things 😅) and looking to save some money on flights. 
-                            <br><br>
-                            Has anyone found good deals on this route? Currently looking at connections through Turkey or Dubai but open to suggestions!
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            <span class="post-flair">✈️ Question</span>
-                        </div>
-                        <div class="post-actions">
-                            <div class="action-btn">💬 34 Comments</div>
-                            <div class="action-btn">↗️ Share</div>
-                            <div class="action-btn">🔖 Save</div>
+                            <div class="action-btn" onclick="giveAward(this)">🎁 Award (3)</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         
-        <!-- Sidebar -->
         <div class="sidebar">
             <div class="sidebar-card">
                 <div class="sidebar-title">💕 Your Communities</div>
@@ -531,7 +566,7 @@
             </div>
             
             <div class="sidebar-card">
-                <div class="sidebar-title">🔥 Trending Communities</div>
+                <div class="sidebar-title">🔥 Trending</div>
                 
                 <div class="community-item">
                     <div class="community-icon" style="background: #4facfe;">✈️</div>
@@ -539,7 +574,7 @@
                         <div class="community-name">r/travel</div>
                         <div class="community-members">8.9M members</div>
                     </div>
-                    <button class="join-btn">Join</button>
+                    <button class="join-btn" onclick="toggleJoin(this)">Join</button>
                 </div>
                 
                 <div class="community-item">
@@ -548,17 +583,123 @@
                         <div class="community-name">r/EarthPorn</div>
                         <div class="community-members">23M members</div>
                     </div>
-                    <button class="join-btn">Join</button>
+                    <button class="join-btn" onclick="toggleJoin(this)">Join</button>
                 </div>
             </div>
             
             <div class="sidebar-card">
-                <div class="sidebar-title">ℹ️ About HeartReddit</div>
+                <div class="sidebar-title">ℹ️ About</div>
                 <div style="font-size: 1.2rem; line-height: 1.6; color: #818384;">
                     Your personal corner of the internet for sharing adventures, memories, and connection across continents. 💕
                 </div>
             </div>
         </div>
     </div>
+    
+    <script>
+        const userVotes = {};
+        
+        function vote(btn, postId, direction) {
+            const voteSection = btn.parentElement;
+            const upBtn = voteSection.querySelector('.vote-btn:first-child');
+            const downBtn = voteSection.querySelector('.vote-btn:last-child');
+            const countEl = voteSection.querySelector('.vote-count');
+            const baseScore = parseInt(countEl.dataset.score);
+            
+            let currentVote = userVotes[postId] || 0;
+            let newVote = 0;
+            
+            if (direction === 'up') {
+                newVote = currentVote === 1 ? 0 : 1;
+                upBtn.classList.toggle('upvoted');
+                downBtn.classList.remove('downvoted');
+            } else {
+                newVote = currentVote === -1 ? 0 : -1;
+                downBtn.classList.toggle('downvoted');
+                upBtn.classList.remove('upvoted');
+            }
+            
+            userVotes[postId] = newVote;
+            const displayScore = baseScore + newVote;
+            
+            countEl.textContent = displayScore >= 1000 ? (displayScore / 1000).toFixed(1) + 'k' : displayScore;
+            countEl.className = 'vote-count';
+            if (newVote > 0) countEl.classList.add('positive');
+            if (newVote < 0) countEl.classList.add('negative');
+        }
+        
+        function giveAward(btn) {
+            btn.classList.add('award-animation');
+            const match = btn.textContent.match(/\((\d+)\)/);
+            const count = match ? parseInt(match[1]) + 1 : 1;
+            btn.innerHTML = `🎁 Award (${count})`;
+            setTimeout(() => btn.classList.remove('award-animation'), 500);
+        }
+        
+        function toggleJoin(btn) {
+            if (btn.classList.contains('joined')) {
+                btn.classList.remove('joined');
+                btn.textContent = 'Join';
+            } else {
+                btn.classList.add('joined');
+                btn.textContent = 'Joined';
+            }
+        }
+        
+        function createNewPost() {
+            document.getElementById('createPostBox').style.display = 'flex';
+        }
+        
+        function cancelPost() {
+            document.getElementById('createPostBox').style.display = 'none';
+            document.getElementById('postTitle').value = '';
+            document.getElementById('postContent').value = '';
+        }
+        
+        function submitPost() {
+            const title = document.getElementById('postTitle').value.trim();
+            const content = document.getElementById('postContent').value.trim();
+            
+            if (!title || !content) {
+                alert('Please fill in both title and content!');
+                return;
+            }
+            
+            const feed = document.querySelector('.feed');
+            const newPost = document.createElement('div');
+            newPost.className = 'post-card';
+            newPost.innerHTML = `
+                <div class="post-container">
+                    <div class="vote-section">
+                        <div class="vote-btn upvoted" onclick="vote(this, ${Date.now()}, 'up')">▲</div>
+                        <div class="vote-count positive" data-score="1">1</div>
+                        <div class="vote-btn" onclick="vote(this, ${Date.now()}, 'down')">▼</div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-header">
+                            <div class="subreddit-icon" style="background: linear-gradient(135deg, #ff4d6d, #ff8fa3);">💕</div>
+                            <span class="subreddit">r/HeartOS</span>
+                            <span>•</span>
+                            <span class="post-author">Posted by u/you</span>
+                            <span>•</span>
+                            <span class="post-time">just now</span>
+                        </div>
+                        <div class="post-title">${title}</div>
+                        <div class="post-text">${content}</div>
+                        <div class="post-actions">
+                            <div class="action-btn">💬 0 Comments</div>
+                            <div class="action-btn">↗️ Share</div>
+                            <div class="action-btn">🔖 Save</div>
+                            <div class="action-btn" onclick="giveAward(this)">🎁 Award</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            userVotes[Date.now()] = 1;
+            feed.insertBefore(newPost, feed.children[1]);
+            cancelPost();
+        }
+    </script>
 </body>
 </html>

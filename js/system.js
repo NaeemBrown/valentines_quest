@@ -3,10 +3,9 @@
 const SYSTEM = {
     zIndex: 100,
     mapInitialized: false,
-    browserInitialized: false, // Track if browser has been rendered
+    browserInitialized: false,
 
     boot: function() {
-        // Build the pixel heart grid
         this.buildPixelHeart();
         
         const text = document.getElementById('boot-text');
@@ -14,23 +13,22 @@ const SYSTEM = {
         const progressText = document.getElementById('boot-progress-text');
         
         const lines = [
-            "♥ INITIALIZING HEARTOS v3.0...",
-            "► CHECKING SYSTEM INTEGRITY... OK",
-            "► LOADING EMOTIONAL CORE... OK", 
-            "► MOUNTING MEMORY DRIVES... OK",
-            "► ESTABLISHING CONNECTION... OK",
-            "► DECRYPTING VAULT... OK",
-            "♥ SYSTEM READY - WELCOME BACK ♥"
+            "â™¥ INITIALIZING HEARTOS v3.0...",
+            "â–º CHECKING SYSTEM INTEGRITY... OK",
+            "â–º LOADING EMOTIONAL CORE... OK", 
+            "â–º MOUNTING MEMORY DRIVES... OK",
+            "â–º ESTABLISHING CONNECTION... OK",
+            "â–º DECRYPTING VAULT... OK",
+            "â™¥ SYSTEM READY - WELCOME BACK â™¥"
         ];
         
         let delay = 0;
         const totalLines = lines.length;
-        const stepDelay = 800; // Slower: 800ms per step instead of 500ms
+        const stepDelay = 800;
         
         lines.forEach((line, index) => {
             delay += stepDelay;
             setTimeout(() => {
-                // Add text line
                 const p = document.createElement('p'); 
                 p.innerText = line;
                 p.style.animationDelay = '0s';
@@ -41,22 +39,18 @@ const SYSTEM = {
                 }
                 text.appendChild(p);
                 
-                // Update progress bar
                 const progress = ((index + 1) / totalLines) * 100;
                 progressBar.style.width = progress + '%';
                 progressText.innerText = Math.round(progress) + '%';
                 
-                // Light up portions of the heart as we load
                 this.lightUpHeartSection(index, totalLines);
                 
-                // Sound effect for each step
                 if (index < lines.length - 1) {
                     this.playAudio('click-sound');
                 }
             }, delay);
         });
         
-        // Transition to login screen
         setTimeout(() => {
             this.playAudio('startup-sound');
             document.getElementById('boot-screen').classList.add('hidden');
@@ -65,7 +59,6 @@ const SYSTEM = {
     },
     
     buildPixelHeart: function() {
-        // 15x13 pixel heart pattern (1 = filled, 0 = empty)
         const heartPattern = [
             [0,0,1,1,1,0,0,0,1,1,1,0,0,0,0],
             [0,1,1,1,1,1,0,1,1,1,1,1,0,0,0],
@@ -103,18 +96,16 @@ const SYSTEM = {
         const startIdx = step * pixelsPerStep;
         const endIdx = Math.min(startIdx + pixelsPerStep, pixels.length);
         
-        // Light up pixels in this section with slight random delay for cool effect
         for (let i = startIdx; i < endIdx; i++) {
             setTimeout(() => {
                 if (pixels[i]) {
                     pixels[i].classList.add('active');
-                    // Add extra glow to last few pixels of each section
                     if (i >= endIdx - 3) {
                         pixels[i].classList.add('glow');
                         setTimeout(() => pixels[i].classList.remove('glow'), 1000);
                     }
                 }
-            }, (i - startIdx) * 30); // Stagger the pixels slightly
+            }, (i - startIdx) * 30);
         }
     },
 
@@ -141,7 +132,8 @@ const SYSTEM = {
             document.getElementById('taskbar-clock').innerText = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
         }, 1000);
 
-        this.setupDrag();
+        // DESKTOP_MANAGER now handles dragging and resizing
+        // this.setupDrag();
         this.setupStartMenu();
         
         BROWSER.init(); 
@@ -156,12 +148,18 @@ const SYSTEM = {
     openApp: function(id) {
         const win = document.getElementById(id);
         win.classList.remove('hidden');
-        win.style.zIndex = ++this.zIndex;
+        
+        // Let DESKTOP_MANAGER handle focus and z-index
+        if (typeof DESKTOP_MANAGER !== 'undefined') {
+            DESKTOP_MANAGER.focusWindow(id);
+        } else {
+            win.style.zIndex = ++this.zIndex;
+        }
+        
         this.playAudio('click-sound');
 
-        // Initialize map when map window opens
         if(id === 'win-map' && !this.mapInitialized) {
-            console.log('🗺️ Map window opened - initializing map...');
+            console.log('ðŸ—ºï¸ Map window opened - initializing map...');
             setTimeout(() => {
                 if(typeof MAP !== 'undefined') {
                     MAP.init();
@@ -172,9 +170,8 @@ const SYSTEM = {
             }, 100);
         }
 
-        // Initialize browser when browser window opens
         if(id === 'win-browser' && !this.browserInitialized) {
-            console.log('🌐 Browser window opened - rendering browser...');
+            console.log('ðŸŒ Browser window opened - rendering browser...');
             setTimeout(() => {
                 if(typeof BROWSER !== 'undefined') {
                     BROWSER.renderOnOpen();
@@ -210,11 +207,117 @@ const SYSTEM = {
 
             window.addEventListener('mousemove', e => {
                 if(!isDragging) return;
-                win.style.left = (initLeft + (e.clientX - startX)) + "px";
-                win.style.top = (initTop + (e.clientY - startY)) + "px";
+                
+                let newLeft = initLeft + (e.clientX - startX);
+                let newTop = initTop + (e.clientY - startY);
+                
+                // Get window dimensions
+                const winWidth = win.offsetWidth;
+                const winHeight = win.offsetHeight;
+                const screenWidth = window.innerWidth;
+                const screenHeight = window.innerHeight;
+                
+                // Constrain to screen boundaries
+                // Left edge
+                newLeft = Math.max(0, newLeft);
+                // Right edge (ensure at least 100px of window is visible)
+                newLeft = Math.min(screenWidth - 100, newLeft);
+                // Top edge
+                newTop = Math.max(0, newTop);
+                // Bottom edge (account for taskbar - 40px)
+                newTop = Math.min(screenHeight - 40 - 30, newTop); // Keep at least title bar visible
+                
+                win.style.left = newLeft + "px";
+                win.style.top = newTop + "px";
             });
 
             window.addEventListener('mouseup', () => isDragging = false);
+            
+            // Add resize handles
+            this.makeResizable(win);
+        });
+    },
+    
+    makeResizable: function(win) {
+        const handles = [
+            { pos: 'se', cursor: 'nwse-resize' },
+            { pos: 'e', cursor: 'ew-resize' },
+            { pos: 's', cursor: 'ns-resize' },
+            { pos: 'sw', cursor: 'nesw-resize' },
+            { pos: 'ne', cursor: 'nesw-resize' },
+            { pos: 'nw', cursor: 'nwse-resize' }
+        ];
+        
+        handles.forEach(handle => {
+            const resizer = document.createElement('div');
+            resizer.className = `resize-handle resize-${handle.pos}`;
+            resizer.style.cursor = handle.cursor;
+            win.appendChild(resizer);
+            
+            let isResizing = false;
+            let startX, startY, startWidth, startHeight, startLeft, startTop;
+            
+            resizer.addEventListener('mousedown', e => {
+                e.preventDefault();
+                e.stopPropagation();
+                isResizing = true;
+                startX = e.clientX;
+                startY = e.clientY;
+                startWidth = parseInt(getComputedStyle(win).width);
+                startHeight = parseInt(getComputedStyle(win).height);
+                startLeft = win.offsetLeft;
+                startTop = win.offsetTop;
+                win.style.zIndex = ++this.zIndex;
+            });
+            
+            window.addEventListener('mousemove', e => {
+                if (!isResizing) return;
+                
+                const deltaX = e.clientX - startX;
+                const deltaY = e.clientY - startY;
+                const minWidth = 400;
+                const minHeight = 300;
+                
+                // Get screen bounds
+                const maxWidth = window.innerWidth - startLeft;
+                const maxHeight = window.innerHeight - startTop - 40; // 40px for taskbar
+                
+                if (handle.pos.includes('e')) {
+                    const newWidth = Math.max(minWidth, Math.min(maxWidth, startWidth + deltaX));
+                    win.style.width = newWidth + 'px';
+                }
+                
+                if (handle.pos.includes('s')) {
+                    const newHeight = Math.max(minHeight, Math.min(maxHeight, startHeight + deltaY));
+                    win.style.height = newHeight + 'px';
+                }
+                
+                if (handle.pos.includes('w')) {
+                    const newWidth = Math.max(minWidth, startWidth - deltaX);
+                    const newLeft = startLeft + deltaX;
+                    
+                    // Don't allow window to go off left edge
+                    if (newWidth > minWidth && newLeft >= 0) {
+                        win.style.width = newWidth + 'px';
+                        win.style.left = newLeft + 'px';
+                    }
+                }
+                
+                if (handle.pos.includes('n')) {
+                    const newHeight = Math.max(minHeight, startHeight - deltaY);
+                    const newTop = startTop + deltaY;
+                    
+                    // Don't allow window to go off top edge
+                    if (newHeight > minHeight && newTop >= 0) {
+                        win.style.height = newHeight + 'px';
+                        win.style.top = newTop + 'px';
+                    }
+                }
+            });
+            
+            window.addEventListener('mouseup', () => {
+                isResizing = false;
+            });
         });
     },
 
@@ -233,8 +336,16 @@ const SYSTEM = {
         const cap = document.getElementById('lightbox-caption');
         
         wrapper.innerHTML = "";
-        cap.innerHTML = caption;
-        
+        cap.innerHTML = caption || '';
+
+        // Letters pass null url — show text content directly
+        if (!url) {
+            cap.innerHTML = '';
+            wrapper.innerHTML = `<div style="background:#1a0510;border:2px solid #ff4d6d;padding:40px;max-width:520px;text-align:center;font-family:VT323,monospace;color:#fff;font-size:1.3rem;line-height:1.8;">${caption || ''}</div>`;
+            box.classList.remove('hidden');
+            return;
+        }
+
         ext = ext || url.split('.').pop().toLowerCase();
 
         if (['mp4', 'webm', 'ogg', 'mov'].includes(ext)) {
@@ -247,7 +358,7 @@ const SYSTEM = {
         } else if (['mp3', 'wav'].includes(ext)) {
             wrapper.innerHTML = `
                 <div style="background: #000; padding: 50px; border: 5px solid #fff; text-align: center;">
-                    <div style="font-size: 5rem;">🎵</div>
+                    <div style="font-size: 5rem;">ðŸŽµ</div>
                     <audio controls autoplay src="${url}" style="margin-top: 20px;"></audio>
                 </div>`;
                 
