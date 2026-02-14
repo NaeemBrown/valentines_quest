@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="referrer" content="no-referrer">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Amazon.za - Your Premium Shopping Destination</title>
     
@@ -480,8 +481,10 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
             box-shadow: 0 2px 8px rgba(255,107,53,0.4);
+            z-index: 2;
         }
 
+        /* PRODUCT IMAGE */
         .product-image {
             width: 100%;
             aspect-ratio: 1;
@@ -1342,13 +1345,13 @@
             console.log('Updating product language to:', I18N.currentLang);
         }
 
-        // Enhanced product database with Czech translations
+        // Enhanced product database with COMPLETE Czech translations
         const products = [
     {
         id: 1,
         title: 'Psychopath Security Guard - Blonde Czech Edition',
         title_cs: 'Psychopatická bezpečnostní hlídka - Blond česká edice',
-        image: '../images/products/psychopath.jpg',
+        image: 'https://i.imgur.com/GDcziXq.jpeg',
         price: 1499,
         originalPrice: 2999,
         rating: 2.3,
@@ -1357,16 +1360,38 @@
         category: 'questionable',
         badge: '⚠️ Danger',
         badge_cs: '⚠️ Nebezpečí',
-        description: 'Hire this crazy white Czech girl who will chase intruders around at night with a glow stick! Acts like security but mostly just terrifies everyone. Highly effective but also highly unhinged. Not responsible for psychological damage to trespassers.',
-        description_cs: 'Najměte si tuto šílenou bílou českou holku, která bude pronásledovat narušitele v noci s fluorescenční tyčí! Chová se jako ostraha, ale většinou jen všechny terorizuje. Vysoce účinná, ale také vysoce nepříčetná. Neručíme za psychické škody vetřelců.',
-        specs: ['Nationality: Czech', 'Hair: Blonde', 'Sanity level: Questionable', 'Chase speed: Terrifying', 'Glow stick included: Yes', 'Background check: Failed'],
-        specs_cs: ['Národnost: Česká', 'Vlasy: Blond', 'Úroveň příčetnosti: Pochybná', 'Rychlost pronásledování: Děsivá', 'Fluorescenční tyč: Zahrnuto', 'Prověrka: Neprošla']
+        description: 'Hire this crazy white Czech girl who will chase intruders around at night with a glow stick! Acts like security but mostly just terrifies everyone. Perfect for keeping your property safe through sheer psychological warfare. Warning: May also scare away pizza delivery drivers, your own family members, and local wildlife. Not responsible for therapy bills.',
+        description_cs: 'Najměte si tuto šílenou bílou českou holku, která bude pronásledovat narušitele v noci s fluorescenční tyčí! Chová se jako ochranka, ale většinou jen všechny děsí. Ideální pro ochranu majetku pomocí psychologického teroru. Varování: Může také vyděsit doručovatele pizzy, vaše vlastní rodinné příslušníky a místní divokou zvěř. Nejsme zodpovědní za účty za terapii.',
+        specs: [
+            'Nationality: Czech Republic',
+            'Hair Color: Blonde (possibly natural)',
+            'Sanity Level: Questionable at best',
+            'Work Hours: Exclusively nighttime',
+            'Equipment: 1x Glow stick (color varies)',
+            'Training: Unknown / Self-taught',
+            'Success Rate: 100% (nobody stays around)',
+            'Warranty: None. Seriously.',
+            'Side Effects: Nightmares, PTSD, fear of the dark',
+            'Language Skills: Czech, broken English, screaming'
+        ],
+        specs_cs: [
+            'Národnost: Česká republika',
+            'Barva vlasů: Blond (možná přirozená)',
+            'Úroveň příčetnosti: Pochybná v nejlepším případě',
+            'Pracovní doba: Výhradně noční',
+            'Vybavení: 1x Fluorescenční tyč (barva se liší)',
+            'Školení: Neznámé / Samouk',
+            'Úspěšnost: 100% (nikdo nezůstane)',
+            'Záruka: Žádná. Vážně.',
+            'Vedlejší účinky: Noční můry, PTSD, strach ze tmy',
+            'Jazykové znalosti: Čeština, rozbitá angličtina, křik'
+        ]
     },
     {
         id: 2,
-        title: 'Mogu Mogu Lychee Drink - Exotic Refreshment',
-        title_cs: 'Mogu Mogu s příchutí liči - Exotické osvěžení',
-        image: '../images/products/mogumogu.jpg',
+        title: 'Mogu Mogu Lychee Drink',
+        title_cs: 'Mogu Mogu s příchutí liči',
+        image: 'https://i.imgur.com/oEvARY5.jpeg',
         price: 45,
         originalPrice: 89,
         rating: 4.7,
@@ -1375,16 +1400,38 @@
         category: 'essential',
         badge: 'Refreshing',
         badge_cs: 'Osvěžující',
-        description: 'A delicious lychee juice drink! Sweet, refreshing, and comes with those weird chewy bits that nobody asked for but everyone secretly loves. Perfect for pretending you\'re cultured.',
-        description_cs: 'Lahodný nápoj s liči džusem! Sladký, osvěžující a s těmi divnými žvýkacími kousky, o které se nikdo neprosil, ale všichni je tajně milují. Ideální pro předstírání, že jste světoví.',
-        specs: ['Volume: 320ml', 'Flavor: Lychee', 'Weird bits: Included', 'Cultural points: +50', 'Pronunciation difficulty: Medium'],
-        specs_cs: ['Objem: 320ml', 'Příchuť: Liči', 'Divné kousky: Zahrnuto', 'Kulturní body: +50', 'Obtížnost výslovnosti: Střední']
+        description: 'Delicious lychee juice with chewy bits! It\'s like drinking a fruit salad, but in liquid form with weird squishy coconut jelly chunks that make you question your life choices. Imported straight from Thailand where they apparently decided drinks should also be a chewing experience. Perfect for confusing your mouth!',
+        description_cs: 'Lahodný nápoj s liči džusem a žvýkacími kousky! Je to jako pít ovocný salát, ale v tekuté formě s divnými gumovými kousky kokosové želé, které vás přiměje zpochybnit své životní volby. Dováženo přímo z Thajska, kde zřejmě rozhodli, že nápoje by měly být také žvýkací zážitek. Ideální pro zmást své chuťové pohárky!',
+        specs: [
+            'Volume: 320ml (one serving of confusion)',
+            'Flavor: Lychee (allegedly)',
+            'Texture: Liquid + Chewy bits',
+            'Origin: Thailand',
+            'Ingredients: Lychee juice, coconut jelly, mystery',
+            'Calories: Who cares, it\'s delicious',
+            'Warning: May cause addiction',
+            'Best served: Cold or room temp (still weird)',
+            'Expiration: Check bottle (if you dare)',
+            'Fun Fact: Name means "chew chew" in Thai'
+        ],
+        specs_cs: [
+            'Objem: 320ml (jedna porce zmatku)',
+            'Příchuť: Liči (údajně)',
+            'Textura: Tekutá + Žvýkací kousky',
+            'Původ: Thajsko',
+            'Ingredience: Liči džus, kokosová želé, tajemství',
+            'Kalorie: Koho to zajímá, je to lahodné',
+            'Varování: Může způsobit závislost',
+            'Nejlépe podávat: Chlazené nebo pokojové (stále divné)',
+            'Expirace: Zkontrolujte lahev (pokud se odvážíte)',
+            'Zajímavost: Jméno znamená "žvýkej žvýkej" v thajštině'
+        ]
     },
     {
         id: 3,
-        title: 'Emotional Support Donuts - For Baby Adults',
-        title_cs: 'Koblihy pro emocionální podporu - Pro dospělá mimina',
-        image: '../images/products/donuts.jpg',
+        title: 'Emotional Support Donuts',
+        title_cs: 'Koblihy pro emocionální podporu',
+        image: 'https://i.imgur.com/EZayczI.jpeg',
         price: 399,
         originalPrice: 649,
         rating: 5.0,
@@ -1393,16 +1440,42 @@
         category: 'essential',
         badge: 'Therapy',
         badge_cs: 'Terapie',
-        description: 'Because adulting is hard and you need plush donuts to cope. These soft, squeezable emotional support donuts are here for baby adults who can\'t handle life. No judgment, just sprinkles and comfort.',
-        description_cs: 'Protože dospělost je těžká a vy potřebujete plyšové koblihy, abyste to zvládli. Tyto měkké, mačkací koblihy pro emocionální podporu jsou tu pro dospělá mimina, která nedávají život. Žádné odsuzování, jen posypka a pohodlí.',
-        specs: ['Target audience: Baby adults', 'Emotional support: Unlimited', 'Judgment: None', 'Calories: 0 (they\'re plush)', 'Comes with: Sunglasses donut for cool points'],
-        specs_cs: ['Cílovka: Dospělá mimina', 'Emoční podpora: Neomezená', 'Odsuzování: Žádné', 'Kalorie: 0 (jsou plyšové)', 'Obsahuje: Koblihu se slunečními brýlemi pro styl']
+        description: 'Plush donuts for baby adults who can\'t handle life. Because sometimes you\'re 35 and still need a comfort object that won\'t judge you for crying during Disney movies. Cheaper than actual therapy and significantly more huggable. These donuts won\'t fix your problems, but at least they won\'t ghost you either. Perfect for existential crises, Monday mornings, or just existing in general.',
+        description_cs: 'Plyšové koblihy pro dospělá mimina, která nezvládají život. Protože někdy máte 35 let a stále potřebujete utěšující předmět, který vás nebude soudit za pláč při Disney filmech. Levnější než skutečná terapie a výrazně více obejmatelné. Tyto koblihy nevyřeší vaše problémy, ale aspoň vás nebudou ghostovat. Perfektní pro existenciální krize, pondělní rána, nebo jen obecně existenci.',
+        specs: [
+            'Material: Ultra-soft plush (softer than your future)',
+            'Size: Medium (perfect for hugging)',
+            'Color Options: Pink, Brown, Rainbow sprinkles',
+            'Filling: 100% polyester + crushed dreams',
+            'Therapy Sessions: Unlimited',
+            'Judgment Level: Zero',
+            'Recommended Age: 25-45 (or whenever life hits)',
+            'Calories: 0 (unlike real donuts)',
+            'Washable: Yes (tears come out easily)',
+            'Comes with: Free validation',
+            'Side Effects: Temporary happiness',
+            'Warning: Not edible (we have to say this)'
+        ],
+        specs_cs: [
+            'Materiál: Ultra-měkký plyš (měkčí než vaše budoucnost)',
+            'Velikost: Střední (perfektní na objímání)',
+            'Barevné varianty: Růžová, hnědá, duhové posypky',
+            'Náplň: 100% polyester + rozdrcené sny',
+            'Terapeutické sezení: Neomezené',
+            'Úroveň posuzování: Nula',
+            'Doporučený věk: 25-45 (nebo kdykoli život udeří)',
+            'Kalorie: 0 (na rozdíl od skutečných koblih)',
+            'Pratelné: Ano (slzy se snadno vyprou)',
+            'Dodává se s: Zdarma validací',
+            'Vedlejší účinky: Dočasné štěstí',
+            'Varování: Nejedlé (musíme to říct)'
+        ]
     },
     {
         id: 4,
         title: 'Black Bonnet - Satin Sleep Cap',
-        title_cs: 'Černý čepec - Saténová čepice na spaní',
-        image: '../images/products/bonnet.jpg',
+        title_cs: 'Černý čepec - Saténová čepice',
+        image: 'https://i.imgur.com/NpV31rt.jpeg',
         price: 149,
         originalPrice: 249,
         rating: 4.6,
@@ -1411,16 +1484,42 @@
         category: 'essential',
         badge: 'Beauty Sleep',
         badge_cs: 'Spánek krásy',
-        description: 'A simple black bonnet for protecting your hair while you sleep. Wake up looking less like you fought a tornado. Satin material keeps your hair smooth and your life together (kind of).',
-        description_cs: 'Jednoduchý černý čepec na ochranu vlasů během spánku. Probuďte se a vypadejte méně jako po bitvě s tornádem. Satén udrží vaše vlasy hladké a váš život pohromadě (tak nějak).',
-        specs: ['Color: Black', 'Material: Satin', 'Hair protection: Maximum', 'Morning disasters: Prevented', 'Looking fancy: Guaranteed'],
-        specs_cs: ['Barva: Černá', 'Materiál: Satén', 'Ochrana vlasů: Maximální', 'Ranní katastrofy: Odvráceny', 'Elegantní vzhled: Zaručen']
+        description: 'Protect your hair while you sleep in luxurious satin! Wake up looking like a pampered queen instead of a bird\'s nest survivor. Your pillow has been secretly destroying your hair all these years - this is your revenge. Suitable for all hair types, especially those who are tired of waking up looking like they fought a tornado and lost.',
+        description_cs: 'Chraňte své vlasy během spánku v luxusním saténu! Probuďte se vypadající jako rozmazlovaná královna místo přeživšího ptačího hnízda. Váš polštář tajně ničil vaše vlasy po všechny tyto roky - toto je vaše pomsta. Vhodné pro všechny typy vlasů, zvláště pro ty, kteří jsou unavení z toho, že se budí vypadající jako kdyby bojovali s tornádem a prohráli.',
+        specs: [
+            'Material: Premium satin (fancy!)',
+            'Color: Midnight Black',
+            'Size: One size fits most heads',
+            'Elastic Band: Adjustable comfort',
+            'Hair Protection: Maximum',
+            'Frizz Reduction: 95%',
+            'Morning Hair Disasters: Prevented',
+            'Works For: All hair types and textures',
+            'Care: Hand wash, air dry',
+            'Durability: Built to last',
+            'Bonus: Feel fancy while sleeping',
+            'Partners Opinion: "Why are you wearing that?"'
+        ],
+        specs_cs: [
+            'Materiál: Prémiový satén (luxusní!)',
+            'Barva: Půlnoční černá',
+            'Velikost: Jedna velikost pro většinu hlav',
+            'Elastická páska: Nastavitelný komfort',
+            'Ochrana vlasů: Maximální',
+            'Redukce krepatění: 95%',
+            'Ranní vlasové katastrofy: Zabráněno',
+            'Funguje pro: Všechny typy a textury vlasů',
+            'Péče: Ruční praní, sušení na vzduchu',
+            'Odolnost: Vyrobeno na dlouhou dobu',
+            'Bonus: Cítit se luxusně při spánku',
+            'Názor partnera: "Proč to máš na sobě?"'
+        ]
     },
     {
         id: 5,
-        title: 'Brand New TV - 100% Works, Definitely Not Broken',
-        title_cs: 'Úplně nová TV - 100% funguje, rozhodně není rozbitá',
-        image: '../images/products/fixedtv.jpg',
+        title: 'Brand New TV - 100% Works',
+        title_cs: 'Úplně nová TV - 100% funguje',
+        image: 'https://i.imgur.com/jwW1u61.jpeg',
         price: 3999,
         originalPrice: 6999,
         rating: 4.9,
@@ -1429,16 +1528,42 @@
         category: 'essential',
         badge: '✅ Certified',
         badge_cs: '✅ Certifikováno',
-        description: 'This TV is BRAND NEW and 100% FULLY FUNCTIONAL! It definitely works and is absolutely not broken in any way. The screen turns on and everything! Why would we lie? Trust us completely!',
-        description_cs: 'Tato televize je ÚPLNĚ NOVÁ a 100% PLNĚ FUNKČNÍ! Fakt funguje a rozhodně není nijak rozbitá. Obrazovka se normálně zapne a tak! Proč bychom lhali? Totálně nám věřte!',
-        specs: ['Condition: Brand new (we promise)', 'Screen status: Working perfectly', 'Trustworthiness: 110%', 'Previous repairs: None whatsoever', 'Warranty: Uh... about that...'],
-        specs_cs: ['Stav: Úplně nová (slibujeme)', 'Stav obrazovky: Funguje perfektně', 'Důvěryhodnost: 110%', 'Předchozí opravy: Vůbec žádné', 'Záruka: No... o tom potom...']
+        description: 'BRAND NEW TV. Trust us completely! Still in box (we think). Definitely never used (probably). May or may not have "fell off a truck" but that\'s none of our business. Serial number slightly scratched off but that\'s totally normal, right? Comes with a suspiciously generic remote and absolutely zero questions asked policy. Works 100% (citation needed).',
+        description_cs: 'ÚPLNĚ NOVÁ televize. Věřte nám na 100%! Fakt! Stále v krabici (myslíme). Určitě nikdy nepoužitá (pravděpodobně). Možná "spadla z náklaďáku" ale to není naše věc. Sériové číslo lehce seškrábnuté, ale to je totálně normální, ne? Dodává se s podezřele generickým ovladačem a absolutně žádnou politikou kladení otázek. Funguje na 100% (citace nutná).',
+        specs: [
+            'Condition: "Brand New" (trust us bro)',
+            'Screen Size: Big enough (we forgot to check)',
+            'Resolution: HD? 4K? Yes.',
+            'Smart Features: Probably',
+            'Remote Control: Included (universal... very universal)',
+            'HDMI Ports: Some',
+            'Warranty: LOL',
+            'Serial Number: What serial number?',
+            'Original Packaging: Mostly intact',
+            'Provenance: Don\'t ask',
+            'Returns: No questions, but also no returns',
+            'Previous Owners: Allegedly zero'
+        ],
+        specs_cs: [
+            'Stav: "Úplně nová" (věř nám bratře)',
+            'Velikost obrazovky: Dost velká (zapomněli jsme zkontrolovat)',
+            'Rozlišení: HD? 4K? Ano.',
+            'Chytré funkce: Pravděpodobně',
+            'Dálkový ovladač: Součástí (univerzální... velmi univerzální)',
+            'HDMI porty: Nějaké',
+            'Záruka: LOL',
+            'Sériové číslo: Jaké sériové číslo?',
+            'Původní balení: Většinou neporušené',
+            'Původ: Neptej se',
+            'Vrácení: Žádné otázky, ale také žádné vrácení',
+            'Předchozí majitelé: Údajně nula'
+        ]
     },
     {
         id: 6,
-        title: 'Glow-in-the-Dark Bear - Geometric Light-Up Friend',
-        title_cs: 'Svítící medvěd - Geometrický světelný kámoš',
-        image: '../images/products/glowbear.jpg',
+        title: 'Glow-in-the-Dark Bear',
+        title_cs: 'Svítící medvěd',
+        image: 'https://i.imgur.com/DS1slmw.jpeg',
         price: 599,
         originalPrice: 999,
         rating: 4.8,
@@ -1447,16 +1572,42 @@
         category: 'essential',
         badge: 'Glows!',
         badge_cs: 'Svítí!',
-        description: 'A bear that glows in the dark! This geometric LED bear will light up your room with rainbow RGB vibes. Perfect for people who think regular teddy bears are too boring and need more cyberpunk in their lives.',
-        description_cs: 'Medvěd, co svítí ve tmě! Tento geometrický LED méďa rozzáří váš pokoj duhovými RGB barvami. Ideální pro lidi, kterým přijdou normální plyšáci nudní a potřebují v životě víc cyberpunku.',
-        specs: ['Glows: Yes, obviously', 'RGB modes: All of them', 'Geometric: Very', 'Bear-shaped: Technically', 'Electricity required: Yes', 'Aesthetic level: Maximum'],
-        specs_cs: ['Svítí: Ano, očividně', 'RGB režimy: Všechny', 'Geometrický: Velmi', 'Tvar medvěda: Technicky vzato ano', 'Vyžaduje elektřinu: Ano', 'Úroveň estetiky: Maximální']
+        description: 'Geometric LED bear with RGB vibes! This isn\'t your grandma\'s teddy bear - this is FUTURE bear. Features more lighting modes than you have life goals. Perfect for people who think regular bears are too boring and need their stuffed animals to look like they belong at a rave. Warning: May cause spontaneous dancing.',
+        description_cs: 'Geometrický LED medvěd s RGB efekty! Tohle není plyšák vaší babičky - tohle je medvěd BUDOUCNOSTI. Má více světelných režimů než máte životních cílů. Perfektní pro lidi, kteří si myslí, že normální medvědi jsou příliš nudní a potřebují, aby jejich plyšáci vypadali jako z technoparty. Varování: Může způsobit spontánní tanec.',
+        specs: [
+            'Style: Geometric / Low-poly design',
+            'Lights: RGB LED (all the colors)',
+            'Modes: Static, Fade, Flash, Party mode',
+            'Power: USB rechargeable',
+            'Battery Life: 6-8 hours of glow',
+            'Size: 30cm tall (perfect desk buddy)',
+            'Material: Plastic + electronics',
+            'Glow Level: MAXIMUM',
+            'Recommended For: Ravers, gamers, night owls',
+            'Energy: Big techno energy',
+            'Annoying Factor: High (but in a good way)',
+            'Mood: Always vibing'
+        ],
+        specs_cs: [
+            'Styl: Geometrický / Low-poly design',
+            'Světla: RGB LED (všechny barvy)',
+            'Režimy: Statický, Prolínání, Blikání, Party režim',
+            'Napájení: USB dobíjecí',
+            'Výdrž baterie: 6-8 hodin svícení',
+            'Velikost: 30cm vysoký (perfektní kamarád na stůl)',
+            'Materiál: Plast + elektronika',
+            'Úroveň svícení: MAXIMÁLNÍ',
+            'Doporučeno pro: Raveři, hráči, noční ptáci',
+            'Energie: Velká techno energie',
+            'Faktor otravnosti: Vysoký (ale v dobrém smyslu)',
+            'Nálada: Vždy ve vibesu'
+        ]
     },
     {
         id: 7,
-        title: '2 Chihuahua Puppies - Tiny Dogs Available Now!',
-        title_cs: '2 štěňata čivavy - Malincí psi k mání!',
-        image: '../images/products/pups.jpg',
+        title: '2 Chihuahua Puppies',
+        title_cs: '2 štěňata čivavy',
+        image: 'https://i.imgur.com/1qXFs5G.jpeg',
         price: 8999,
         originalPrice: 12999,
         rating: 5.0,
@@ -1465,16 +1616,46 @@
         category: 'questionable',
         badge: '🐕 Live',
         badge_cs: '🐕 Živé',
-        description: 'Two adorable chihuahua puppies for sale! Currently tiny potatoes wrapped in a pink blanket. Will eventually grow into professional ankle biters. Extreme cuteness warning! Handle with care.',
-        description_cs: 'Dvě roztomilá štěňátka čivavy na prodej! Momentálně jsou to jen malé brambory zabalené v růžové dece. Časem z nich vyrostou profesionální kousači kotníků. Varování: Extrémní roztomilost! Zacházejte opatrně.',
-        specs: ['Quantity: 2 puppies', 'Current size: Potato', 'Future size: Still small', 'Bark volume: TBD but probably loud', 'Blanket: Pink (included)', 'Cuteness: Lethal levels'],
-        specs_cs: ['Množství: 2 štěňata', 'Aktuální velikost: Brambora', 'Budoucí velikost: Pořád malá', 'Hlasitost štěkotu: Uvidíme, ale asi dost', 'Deka: Růžová (v ceně)', 'Roztomilost: Smrtící úroveň']
+        description: 'Two adorable chihuahua puppies! Warning: These tiny potatoes with anxiety will steal your heart and your socks. They vibrate when excited (which is always). Size of a baked potato, attitude of a wolf. Will bark at literally everything including their own reflection, the wind, and existential dread. Come in a matching set because misery loves company.',
+        description_cs: 'Dvě roztomilá štěňátka čivavy! Varování: Tyto malé brambory s úzkostí vám ukradnou srdce i ponožky. Vibrují když jsou vzrušené (což je vždy). Velikost pečené brambory, postoj vlka. Budou štěkat doslova na všechno včetně vlastního odrazu, větru a existenciální úzkosti. Dodává se v párové sadě, protože bída má ráda společnost.',
+        specs: [
+            'Quantity: 2 (buy one anxiety, get one free)',
+            'Size: Potato (approximately 1.5kg each)',
+            'Noise Level: MAXIMUM',
+            'Vibration: Constant when excited',
+            'Temperament: Confident napoleon complex',
+            'Energy: Unlimited (unfortunately)',
+            'Sleep Schedule: Random',
+            'Destructive Power: Surprisingly high',
+            'Vet Bills: Yes',
+            'Training Difficulty: LOL good luck',
+            'Comes With: Attitude, sass, trembling',
+            'Food: They eat like kings',
+            'Lifespan: 12-20 years of chaos',
+            'Warning: NOT for amateur dog owners'
+        ],
+        specs_cs: [
+            'Množství: 2 (kup jednu úzkost, druhou zdarma)',
+            'Velikost: Brambora (přibližně 1,5kg každá)',
+            'Úroveň hluku: MAXIMÁLNÍ',
+            'Vibrace: Neustálé když jsou vzrušené',
+            'Temperament: Sebevědomý napoleonský komplex',
+            'Energie: Neomezená (bohužel)',
+            'Spací režim: Náhodný',
+            'Destruktivní síla: Překvapivě vysoká',
+            'Veterinární účty: Ano',
+            'Obtížnost výcviku: LOL hodně štěstí',
+            'Dodává se s: Postojem, drzostí, třesem',
+            'Jídlo: Jedí jako králové',
+            'Délka života: 12-20 let chaosu',
+            'Varování: NE pro amatérské majitele psů'
+        ]
     },
     {
         id: 8,
-        title: 'Plane Ticket to Cape Town - One Way Trip',
-        title_cs: 'Letenka do Kapského Města - Jednosměrná cesta',
-        image: '../images/products/ticket.jpg',
+        title: 'Plane Ticket to Cape Town',
+        title_cs: 'Letenka do Kapského Města',
+        image: 'https://i.imgur.com/KMat9ND.jpeg',
         price: 4299,
         originalPrice: 5999,
         rating: 3.8,
@@ -1483,16 +1664,46 @@
         category: 'questionable',
         badge: '✈️ Travel',
         badge_cs: '✈️ Cestování',
-        description: 'One plane ticket to Cape Town! Escape to South Africa and never look back. Warning: This is economy class, seat 32K. You\'ll be sitting between two strangers for hours. Good luck!',
-        description_cs: 'Jedna letenka do Kapského Města! Utečte do Jižní Afriky a už se neohlížejte. Varování: Tohle je ekonomická třída, sedadlo 32K. Budete sedět hodiny mezi dvěma cizinci. Hodně štěstí!',
-        specs: ['Destination: Cape Town', 'Class: Economy (sorry)', 'Seat: 32K (the worst one)', 'Legroom: What\'s that?', 'Snacks: Not included', 'Regret level: TBD'],
-        specs_cs: ['Cíl: Kapské Město', 'Třída: Ekonomická (sorry)', 'Sedadlo: 32K (to nejhorší)', 'Místo na nohy: Co to je?', 'Svačiny: Nejsou v ceně', 'Úroveň lítosti: Uvidíme']
+        description: 'One way ticket to Cape Town. Seat 32K (the one by the bathroom that doesn\'t recline). We can\'t guarantee the departure time, the airline, or that you\'ll actually arrive, but hey - it\'s an adventure! Note: Return ticket sold separately (obviously). May include complimentary crying baby in seat 32J.',
+        description_cs: 'Jednosměrná cesta do Kapského Města. Sedadlo 32K (to u záchodu, které se nenaklání). Nemůžeme garantovat čas odletu, leteckou společnost, nebo že skutečně dorazíte, ale hej - to je dobrodružství! Poznámka: Zpáteční letenka prodávána zvlášť (samozřejmě). Může zahrnovat zdarma plačící miminko na sedadle 32J.',
+        specs: [
+            'Direction: One way (no coming back apparently)',
+            'Destination: Cape Town, South Africa',
+            'Seat: 32K (by the loo, smells great)',
+            'Class: Economy (the struggle)',
+            'Recline: Nope',
+            'Legroom: What legroom?',
+            'Meal: Peanuts (maybe)',
+            'Entertainment: Broken screen',
+            'Departure: "Soon"',
+            'Airline: Budget Airlines Inc.',
+            'Baggage: Extra fee (of course)',
+            'Neighbors: Guaranteed crying baby',
+            'WiFi: R500 extra',
+            'Refundable: Absolutely not'
+        ],
+        specs_cs: [
+            'Směr: Jednosměrná (zřejmě se nevrátíte)',
+            'Destinace: Kapské Město, Jižní Afrika',
+            'Sedadlo: 32K (u záchodu, skvěle voní)',
+            'Třída: Ekonomická (boj)',
+            'Naklonění: Ne',
+            'Prostor pro nohy: Jaký prostor?',
+            'Jídlo: Arašídy (možná)',
+            'Zábava: Rozbitá obrazovka',
+            'Odlet: "Brzy"',
+            'Letecká společnost: Budget Airlines Inc.',
+            'Zavazadla: Extra poplatek (samozřejmě)',
+            'Sousedé: Garantované plačící miminko',
+            'WiFi: 500 Kč extra',
+            'Vratné: Absolutně ne'
+        ]
     },
     {
         id: 9,
-        title: 'Used TV - Owner Wants to Sell ASAP (Definitely Works)',
-        title_cs: 'Použitá TV - Majitel chce prodat ASAP (Fakt funguje)',
-        image: '../images/products/tv.jpg',
+        title: 'Used TV - Definitely Works',
+        title_cs: 'Použitá TV - Fakt funguje',
+        image: 'https://i.imgur.com/oM0E9kf.jpeg',
         price: 2499,
         originalPrice: 4999,
         rating: 3.5,
@@ -1501,16 +1712,46 @@
         category: 'questionable',
         badge: 'Pre-Owned',
         badge_cs: 'Z druhé ruky',
-        description: 'The owner REALLY wants to sell this TV. It definitely works fine. Ignore the software update screen. Ignore the suspicious urgency. Just buy it. PLEASE.',
-        description_cs: 'Majitel tuhle televizi FAKT chce prodat. Funguje úplně v pohodě. Ignorujte tu obrazovku s aktualizací. Ignorujte tu podezřelou naléhavost. Prostě to kupte. PROSÍM.',
-        specs: ['Condition: "Good"', 'Owner urgency: Very high', 'Reasons for selling: "Moving"', 'Software updates: Ongoing', 'Trust factor: Questionable'],
-        specs_cs: ['Stav: "Dobrý"', 'Naléhavost majitele: Velmi vysoká', 'Důvod prodeje: "Stěhování"', 'Aktualizace softwaru: Probíhají', 'Faktor důvěry: Pochybný']
+        description: 'Owner REALLY wants to sell. Definitely works! (He said three times, unprompted). Only used for "watching TV" (air quotes included). Minor scratches (and one mysterious stain we don\'t discuss). Remote works perfectly (if you hit it just right). The owner is moving "very suddenly" and "needs it gone ASAP" which is totally normal and not suspicious at all.',
+        description_cs: 'Majitel tuhle televizi FAKT chce prodat. Určitě funguje! (Řekl třikrát, bez vyzvání). Používána pouze na "sledování TV" (uvozovky zahrnuty). Menší škrábance (a jedna záhadná skvrna o které nemluvíme). Ovladač funguje perfektně (když na něj udeříte správně). Majitel se stěhuje "velmi náhle" a "potřebuje se jí zbavit ASAP" což je totálně normální a vůbec ne podezřelé.',
+        specs: [
+            'Condition: "Good" (owner\'s words)',
+            'Previous Use: "Light" (questionable)',
+            'Scratches: Minimal (if you squint)',
+            'Mysterious Stains: 1 (don\'t ask)',
+            'Remote: Included (temperamental)',
+            'Seller Urgency: VERY HIGH',
+            'Reason for Selling: "Moving" (hmm)',
+            'Screen: Works (mostly)',
+            'Sound: Functional (occasional buzzing)',
+            'Smart Features: Maybe? Unsure.',
+            'Age: "Not that old" (vague)',
+            'Smell: Slight electronics + mystery',
+            'Pick Up: TODAY PLEASE',
+            'Questions: Please don\'t ask any'
+        ],
+        specs_cs: [
+            'Stav: "Dobrý" (slova majitele)',
+            'Předchozí použití: "Lehké" (pochybné)',
+            'Škrábance: Minimální (když zamhouříte)',
+            'Záhadné skvrny: 1 (neptejte se)',
+            'Ovladač: Součástí (vrtkavý)',
+            'Naléhavost prodejce: VELMI VYSOKÁ',
+            'Důvod prodeje: "Stěhování" (hmm)',
+            'Obrazovka: Funguje (většinou)',
+            'Zvuk: Funkční (občasné bzučení)',
+            'Chytré funkce: Možná? Nevím.',
+            'Věk: "Ne tak starý" (vágní)',
+            'Zápach: Mírná elektronika + záhada',
+            'Vyzvednutí: DNES PROSÍM',
+            'Otázky: Prosím neptejte se'
+        ]
     },
     {
         id: 10,
-        title: '2 Different Bowls - Literally Just 2 Bowls',
-        title_cs: '2 různé misky - Doslova jen 2 misky',
-        image: '../images/products/2bowls.jpg',
+        title: '2 Different Bowls',
+        title_cs: '2 různé misky',
+        image: 'https://i.imgur.com/K3WOCYl.jpeg',
         price: 199,
         originalPrice: 349,
         rating: 4.2,
@@ -1519,16 +1760,46 @@
         category: 'essential',
         badge: 'Practical',
         badge_cs: 'Praktické',
-        description: 'Two bowls. They\'re different sizes and colors. One is red, one is black. That\'s it. That\'s the product. What more do you want? They hold food. Background human not included.',
-        description_cs: 'Dvě misky. Mají různé velikosti a barvy. Jedna je červená, druhá černá. To je všechno. To je ten produkt. Co víc chcete? Drží jídlo. Člověk v pozadí není součástí balení.',
-        specs: ['Quantity: 2', 'Colors: Red & Black', 'Sizes: Different', 'Purpose: Holding stuff', 'Complexity: Very low', 'Background person: Not for sale'],
-        specs_cs: ['Množství: 2', 'Barvy: Červená a černá', 'Velikosti: Různé', 'Účel: Držení věcí', 'Složitost: Velmi nízká', 'Člověk v pozadí: Není na prodej']
+        description: 'Two bowls. Different colors. That\'s it. They hold things. Soup, cereal, sadness, regrets. Microwave safe (probably). Dishwasher safe (we hope). They\'re bowls. What more do you want? A description? Well, they\'re round, they\'re deep, they exist. Peak minimalism. Revolutionary bowl technology: they have an inside AND an outside.',
+        description_cs: 'Dvě misky. Různé barvy. To je všechno. Drží věci. Polévku, cereálie, smutek, lítost. Bezpečné do mikrovlnky (pravděpodobně). Bezpečné do myčky (doufáme). Jsou to misky. Co víc chcete? Popis? No, jsou kulaté, jsou hluboké, existují. Vrchol minimalismu. Revoluční technologie misek: mají vnitřek A vnějšek.',
+        specs: [
+            'Quantity: 2 (that\'s two)',
+            'Colors: Red & Black (fancy)',
+            'Shape: Round (groundbreaking)',
+            'Purpose: Holding stuff',
+            'Material: Ceramic (probably)',
+            'Size: Medium bowl size',
+            'Depth: Yes',
+            'Handles: No',
+            'Weight: Light enough',
+            'Stackable: If you believe',
+            'Microwave Safe: Should be',
+            'Dishwasher Safe: Hopefully',
+            'Uses: Literally anything bowl-related',
+            'Innovation: It\'s a bowl'
+        ],
+        specs_cs: [
+            'Množství: 2 (to jsou dvě)',
+            'Barvy: Červená a černá (luxusní)',
+            'Tvar: Kulatý (převratné)',
+            'Účel: Držet věci',
+            'Materiál: Keramika (pravděpodobně)',
+            'Velikost: Střední velikost misky',
+            'Hloubka: Ano',
+            'Rukojeti: Ne',
+            'Hmotnost: Dost lehké',
+            'Stohovatelné: Pokud věříte',
+            'Do mikrovlnky: Mělo by to jít',
+            'Do myčky: Doufejme',
+            'Použití: Doslova cokoli souvisejícího s miskami',
+            'Inovace: Je to miska'
+        ]
     },
     {
         id: 11,
-        title: 'Christmas Tree + 2 Strange White Girls (Bundle Deal)',
-        title_cs: 'Vánoční stromek + 2 divný bílý holky (Výhodný set)',
-        image: '../images/products/xmastree.jpg',
+        title: 'Christmas Tree + 2 Girls',
+        title_cs: 'Vánoční stromek + 2 holky',
+        image: 'https://i.imgur.com/lySUEsK.jpeg',
         price: 899,
         originalPrice: 1499,
         rating: 4.7,
@@ -1537,16 +1808,46 @@
         category: 'impulse',
         badge: '🎄 Festive',
         badge_cs: '🎄 Sváteční',
-        description: 'Beautiful LED Christmas tree for sale! Comes with 2 strange white girls wearing matching beanies who will stand next to it and drink from paper cups. Package deal only, cannot separate.',
-        description_cs: 'Krásný vánoční LED stromek na prodej! Součástí jsou 2 divné bílé holky ve stejných kulíšcích, které u něj budou stát a pít z papírových kelímků. Pouze jako komplet, nelze rozdělit.',
-        specs: ['Tree: Fully lit with RGB', 'Girls included: 2', 'Beanie color: Red & Blue', 'Drinks: Mulled wine (probably)', 'Separation: Not possible', 'Christmas spirit: Maximum'],
-        specs_cs: ['Stromek: Kompletně podsvícený RGB', 'Holky v ceně: 2', 'Barva kulichů: Červená a modrá', 'Pití: Svařák (asi)', 'Rozdělení: Nemožné', 'Vánoční nálada: Maximální']
+        description: 'LED Christmas tree with 2 girls included for scale/moral support! The tree lights up in multiple colors, the girls provide commentary and gift wrapping services (terms and conditions apply). Perfect for awkward family photos. Tree is 6 feet tall, girls are average height, vibes are immaculate. Warning: Girls may judge your decorating choices.',
+        description_cs: 'LED vánoční stromek s 2 holkami v ceně pro měřítko/morální podporu! Stromek svítí v různých barvách, holky poskytují komentář a služby balení dárků (platí podmínky). Perfektní pro trapné rodinné fotky. Stromek je 180cm vysoký, holky průměrné výšky, atmosféra je dokonalá. Varování: Holky mohou soudit vaše dekorační volby.',
+        specs: [
+            'Tree Height: 6 feet (182cm)',
+            'LED Colors: RGB multi-color',
+            'Lighting Modes: 8 settings',
+            'Girls Included: 2 (non-negotiable)',
+            'Girl Services: Commentary, judgment, photos',
+            'Assembly Required: Yes (girls help maybe)',
+            'Power: Electric plug',
+            'Ornaments: Sold separately',
+            'Star Topper: Not included',
+            'Decorating Advice: Free (unsolicited)',
+            'Photo Opportunities: Unlimited',
+            'Seasonal Use: Christmas obviously',
+            'Storage: Good luck',
+            'Returns: Tree yes, girls no'
+        ],
+        specs_cs: [
+            'Výška stromu: 182cm (6 stop)',
+            'LED barvy: RGB více barev',
+            'Světelné režimy: 8 nastavení',
+            'Holky v ceně: 2 (neměnné)',
+            'Služby holek: Komentáře, posuzování, fotky',
+            'Montáž nutná: Ano (holky možná pomohou)',
+            'Napájení: Elektrická zástrčka',
+            'Ozdoby: Prodávají se zvlášť',
+            'Hvězda na vrchol: Není součástí',
+            'Dekorační rady: Zdarma (nevyžádané)',
+            'Foto příležitosti: Neomezené',
+            'Sezónní použití: Vánoce samozřejmě',
+            'Skladování: Hodně štěstí',
+            'Vrácení: Stromek ano, holky ne'
+        ]
     },
     {
         id: 12,
-        title: 'Entire Albert Supermarket + Sleeping Homeless Guy',
-        title_cs: 'Celý supermarket Albert + spící bezdomovec',
-        image: '../images/products/albertstore.jpg',
+        title: 'Entire Albert Supermarket',
+        title_cs: 'Celý supermarket Albert',
+        image: 'https://i.imgur.com/80qyQ3M.jpeg',
         price: 12999999,
         originalPrice: 19999999,
         rating: 3.9,
@@ -1555,54 +1856,10 @@
         category: 'impulse',
         badge: 'Real Estate',
         badge_cs: 'Reality',
-        description: 'Why buy groceries when you can buy the WHOLE STORE? Includes building, inventory, and one sleeping homeless gentleman outside (non-negotiable). Open 24/7, harsh lighting included. Liminal space vibes guaranteed.',
-        description_cs: 'Proč kupovat potraviny, když si můžete koupit CELÝ KRÁM? Zahrnuje budovu, zásoby a jednoho spícího bezdomovce venku (v ceně, nelze odebrat). Otevřeno 24/7, ostré zářivky v ceně. Atmosféra liminálních prostor zaručena.',
-        specs: ['Size: Entire building', 'Inventory: Fully stocked', 'Lighting: Fluorescent hell', 'Hours: 24/7', 'Homeless guy: Included (feature, not bug)', 'Vibes: Deeply unsettling'],
-        specs_cs: ['Velikost: Celá budova', 'Zásoby: Kompletně naskladněno', 'Osvětlení: Zářivkové peklo', 'Otevíračka: 24/7', 'Bezdomovec: V ceně (jako bonus)', 'Vibe: Hluboce znepokojující']
-    },
-{
-        badge: 'Practical',
-        badge_cs: 'Praktické',
-        description: 'Just 2 bowls',
-        description_cs: 'Prostě 2 misky',
-        specs: ['Quantity: 2'],
-        specs_cs: ['Množství: 2']
-    },
-    {
-        id: 11,
-        title: 'Christmas Tree + 2 Strange White Girls',
-        title_cs: 'Vánoční stromek + 2 divné holky',
-        image: '../images/products/xmastree.jpg',
-        price: 899,
-        originalPrice: 1499,
-        rating: 4.7,
-        reviews: '6,789',
-        prime: false,
-        category: 'impulse',
-        badge: '🎄 Festive',
-        badge_cs: '🎄 Sváteční',
-        description: 'LED Christmas tree with girls',
-        description_cs: 'LED vánoční stromek s holkami',
-        specs: ['Tree: Fully lit'],
-        specs_cs: ['Stromek: Kompletně podsvícený']
-    },
-    {
-        id: 12,
-        title: 'Entire Albert Supermarket',
-        title_cs: 'Celý supermarket Albert',
-        image: '../images/products/albertstore.jpg',
-        price: 12999999,
-        originalPrice: 19999999,
-        rating: 3.9,
-        reviews: '23,456',
-        prime: false,
-        category: 'impulse',
-        badge: 'Real Estate',
-        badge_cs: 'Nemovitost',
-        description: 'Buy the whole store!',
-        description_cs: 'Kupte si celý krám!',
-        specs: ['Size: Entire building'],
-        specs_cs: ['Velikost: Celá budova']
+        description: 'Buy the WHOLE STORE! Homeless guy included.',
+        description_cs: 'Kupte si CELÝ OBCHOD! Bezdomovec v ceně.',
+        specs: ['Size: Entire building', 'Hours: 24/7'],
+        specs_cs: ['Velikost: Celá budova', 'Otevírací doba: 24/7']
     }
 ];
 
@@ -1626,12 +1883,7 @@
         let userBalance = 0;
         let currentFilter = 'all';
 
-        // Get currency symbol based on language
-        function getCurrency() {
-            return (I18N && I18N.currentLang === 'cs') ? 'Kč ' : 'R';
-        }
-
-        // Create product card HTML
+        // Create product card HTML with actual images
         function createProduct(product) {
             const starsHtml = '⭐'.repeat(Math.floor(product.rating));
             const delay = Math.random() * 0.4;
@@ -1688,11 +1940,11 @@
                     ${product.prime ? `<div class="prime-badge" style="margin-bottom: 20px;">${I18N ? I18N.t('amazon_prime_delivery') : '⚡ prime - FREE One-Day Delivery'}</div>` : ''}
                     <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
                         <h3 style="font-size: 1.2rem; margin-bottom: 12px; color: #0F1111;">${I18N ? I18N.t('amazon_product_description') : 'Product Description'}</h3>
-                        <p style="color: #555; line-height: 1.6; margin-bottom: 12px;">${description || 'An absolutely essential item that you definitely need in your life right now. Trust us on this one.'}</p>
+                        <p style="color: #555; line-height: 1.6;">${description}</p>
                     </div>
                     ${specs ? `
                         <div style="background: #f0f8ff; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #007185;">
-                            <h3 style="font-size: 1.2rem; margin-bottom: 12px; color: #0F1111;">${I18N ? I18N.t('amazon_specifications') : 'Technical Specifications'}</h3>
+                            <h3 style="font-size: 1.2rem; margin-bottom: 12px; color: #0F1111;">${I18N ? I18N.t('amazon_specifications') : 'Specifications'}</h3>
                             <ul style="list-style: none; padding: 0;">
                                 ${specs.map(spec => `<li style="padding: 8px 0; border-bottom: 1px solid #ddd; color: #555;">✓ ${spec}</li>`).join('')}
                             </ul>
@@ -1740,16 +1992,12 @@
             
             const messages = isCzech ? [
                 `✨ Přidáno "${title}" do košíku!`,
-                `🎉 Skvělá volba! Košík vypadá dobře!`,
-                `🛍️ Přidáno! Pokračuj v nákupu!`,
-                `💫 V košíku! Jdeš na to!`,
-                `🎊 Parádně! Tvůj košík se plní!`
+                `🎉 Skvělá volba!`,
+                `🛍️ Přidáno!`
             ] : [
                 `✨ Added "${title}" to cart!`,
-                `🎉 Great choice! Cart is looking good!`,
-                `🛍️ Added! Keep shopping!`,
-                `💫 In the cart! You're on a roll!`,
-                `🎊 Nice! Your cart is filling up!`
+                `🎉 Great choice!`,
+                `🛍️ Added!`
             ];
             showToast(messages[Math.floor(Math.random() * messages.length)]);
         }
@@ -1825,7 +2073,7 @@
             
             const isCzech = I18N && I18N.currentLang === 'cs';
             const title = isCzech && product.title_cs ? product.title_cs : product.title;
-            const message = isCzech ? `Odebráno "${title}" z košíku` : `Removed "${title}" from cart`;
+            const message = isCzech ? `Odebráno "${title}"` : `Removed "${title}"`;
             showToast(message);
         }
 
@@ -1858,7 +2106,7 @@
             }
             
             if (!paymentCodes.hasOwnProperty(code)) {
-                errorDiv.textContent = isCzech ? '❌ Neplatný kód! Zkuste: RICH, YOLO, 42, MONEY, nebo 1997' : '❌ Invalid code! Try: RICH, YOLO, 42, MONEY, or 1997';
+                errorDiv.textContent = isCzech ? '❌ Neplatný kód!' : '❌ Invalid code!';
                 errorDiv.classList.add('show');
                 return;
             }
@@ -1866,7 +2114,7 @@
             const codeBalance = paymentCodes[code];
             
             if (codeBalance < total) {
-                errorDiv.textContent = isCzech ? `💸 Nedostatek prostředků! Tento kód má pouze R${codeBalance}` : `💸 Insufficient funds! This code only has R${codeBalance}`;
+                errorDiv.textContent = isCzech ? `💸 Nedostatek prostředků!` : `💸 Insufficient funds!`;
                 errorDiv.classList.add('show');
                 return;
             }
@@ -1922,7 +2170,7 @@
 
         // Initialize on page load
         window.addEventListener('DOMContentLoaded', function() {
-            console.log('Amazon.za: Page loaded, current language:', I18N ? I18N.currentLang : 'unknown');
+            console.log('Amazon.za: Page loaded');
             
             // Load cart from localStorage
             const savedCart = localStorage.getItem('cart');
@@ -1940,15 +2188,6 @@
             const essentialProducts = products.filter(p => p.category === 'essential');
             const questionableProducts = products.filter(p => p.category === 'questionable');
             const impulseProducts = products.filter(p => p.category === 'impulse');
-            
-            console.log('Products found:', {
-                essential: essentialProducts.length,
-                questionable: questionableProducts.length,
-                impulse: impulseProducts.length,
-                total: products.length
-            });
-            
-            console.log('First product HTML:', essentialProducts.length > 0 ? createProduct(essentialProducts[0]) : 'No products');
             
             document.getElementById('products-essential').innerHTML = essentialProducts.map(createProduct).join('');
             document.getElementById('products-questionable').innerHTML = questionableProducts.map(createProduct).join('');

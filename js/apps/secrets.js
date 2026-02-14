@@ -2,6 +2,9 @@ const SECRETS = {
     init: function() {
         const container = document.getElementById('letters-content');
         if (!container) return;
+        
+        // Prevent double-loading if video is already there
+        if (container.querySelector('video')) return;
 
         const lang = (typeof I18N !== 'undefined' && I18N.currentLang === 'cs') ? 'cs' : 'en';
 
@@ -9,14 +12,20 @@ const SECRETS = {
         container.appendChild(this.buildVideoPlayer(lang));
 
         // Listen for language changes to swap video source
-        window.addEventListener('languageChanged', () => {
-            const newLang = (typeof I18N !== 'undefined' && I18N.currentLang === 'cs') ? 'cs' : 'en';
-            container.innerHTML = '';
-            container.appendChild(this.buildVideoPlayer(newLang));
-        });
+        // Remove old listener to prevent duplicates if init is called twice
+        window.removeEventListener('languageChanged', this.handleLangChange);
+        window.addEventListener('languageChanged', this.handleLangChange.bind(this));
     },
 
-    // Precise paths as requested
+    handleLangChange: function() {
+        const container = document.getElementById('letters-content');
+        if (!container) return;
+        
+        const newLang = (typeof I18N !== 'undefined' && I18N.currentLang === 'cs') ? 'cs' : 'en';
+        container.innerHTML = '';
+        container.appendChild(this.buildVideoPlayer(newLang));
+    },
+
     videos: {
         en: 'assets\\videos\\messageAng.mp4',
         cs: 'assets\\videos\\messageCz.mp4'
@@ -25,7 +34,6 @@ const SECRETS = {
     buildVideoPlayer: function(lang) {
         const videoSrc = this.videos[lang] || this.videos.en;
 
-        // Inject minimalist styles
         if (!document.getElementById('secrets-player-style')) {
             const style = document.createElement('style');
             style.id = 'secrets-player-style';
@@ -44,6 +52,8 @@ const SECRETS = {
                     position: relative;
                     overflow: hidden;
                     border-radius: 8px;
+                    /* Container Fade In */
+                    animation: containerFade 0.5s ease-out forwards;
                 }
                 .player-titlebar {
                     background: linear-gradient(90deg, #2b0a14, #1a0a10);
@@ -67,6 +77,9 @@ const SECRETS = {
                     display: block;
                     background: #000;
                     filter: contrast(1.1) brightness(1.1);
+                    /* VIDEO FADE FROM BLACK MAGIC */
+                    opacity: 0; 
+                    animation: videoFadeIn 4s ease-in forwards; 
                 }
                 .player-lang-status {
                     padding: 8px 16px;
@@ -76,11 +89,18 @@ const SECRETS = {
                     text-transform: uppercase;
                     display: flex; justify-content: space-between;
                 }
-                @keyframes fadeIn {
+                
+                @keyframes containerFade {
                     from { opacity: 0; transform: scale(0.98); }
                     to { opacity: 1; transform: scale(1); }
                 }
-                .player-container { animation: fadeIn 0.5s ease-out forwards; }
+
+                /* This handles the slow fade from black */
+                @keyframes videoFadeIn {
+                    0% { opacity: 0; }
+                    20% { opacity: 0; } /* Stay black for a moment */
+                    100% { opacity: 1; }
+                }
             `;
             document.head.appendChild(style);
         }
@@ -102,13 +122,13 @@ const SECRETS = {
         const videoEl = document.createElement('video');
         videoEl.className = 'video-screen';
         videoEl.autoplay = true;
-        videoEl.controls = true;
+        videoEl.controls = true; // Keep controls so they can replay/volume
         videoEl.playsInline = true;
         videoEl.src = videoSrc;
         
         player.appendChild(videoEl);
 
-        // Sub-bar showing language mode
+        // Sub-bar
         const statusBar = document.createElement('div');
         statusBar.className = 'player-lang-status';
         statusBar.innerHTML = `<span>MODE: ${lang.toUpperCase()}</span><span>CODEC: H.264</span>`;
@@ -119,18 +139,29 @@ const SECRETS = {
     }
 };
 
-// Same auto-init logic as before
-window.addEventListener('secretsUnlocked', () => {
-    setTimeout(() => SECRETS.init(), 100);
-});
+/* ---------------------------------------------------------
+   CRITICAL CHANGE: 
+   We removed the window.addEventListener('secretsUnlocked') 
+   block entirely. 
+   
+   We ONLY use the openApp override below.
+   ---------------------------------------------------------
+*/
 
+// Hook into the system opening logic
 const _origOpenApp = SYSTEM.openApp.bind(SYSTEM);
 SYSTEM.openApp = function(id) {
-    _origOpenApp(id);
+    _origOpenApp(id); // Open the window normally
+
+    // Only Initialize the video if the SPECIFIC window is opened
     if (id === 'win-letters') {
-        const container = document.getElementById('letters-content');
-        if (container && container.children.length === 0) {
-            SECRETS.init();
-        }
+        // Small timeout to ensure DOM is ready inside the window
+        setTimeout(() => {
+            const container = document.getElementById('letters-content');
+            // Only init if it hasn't been done yet (check for children)
+            if (container && container.children.length === 0) {
+                SECRETS.init();
+            }
+        }, 50);
     }
 };
