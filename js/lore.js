@@ -134,5 +134,23 @@ const LORE = {
             image: "assets/images/locations/olomouc.jpg",
             description: "Historic city with stunning churches and the famous astronomical clock ⏰"
         }
-    ]
+    ],
+
+    achievements: [
+        { id: "ach_login", title: "Booted Up", desc: "Logged into HeartOS for the first time." },
+        { id: "ach_terminal", title: "Terminal Gremlin", desc: "Opened the ADMIN_TERMINAL and tried a command." },
+        { id: "ach_map", title: "World Explorer", desc: "Opened the map and spun the globe." },
+        { id: "ach_photos", title: "Gallery Goblin", desc: "Opened Photos and browsed memories." },
+        { id: "ach_music", title: "HeartAmp DJ", desc: "Opened HeartAmp and played something." },
+
+        // ADD MORE BELOW (examples)
+        { id: "ach_midnight", title: "After Hours", desc: "Used HeartOS after midnight." },
+        { id: "ach_clickspam", title: "Clicky Fingers", desc: "Opened 5 apps in a row." },
+        { id: "ach_reboot", title: "Have You Tried Turning It Off", desc: "Restarted via Start Menu." },
+        { id: "ach_stickynote", title: "Sticky Situation", desc: "Created a sticky note." },
+        { id: "ach_browser", title: "Internet Person", desc: "Opened the Browser." },
+        { id: "ach_message", title: "Inbox Energy", desc: "Opened Message player." },
+        { id: "ach_secret_tease", title: "Vault Tease", desc: "Tried opening Secrets while locked." },
+        { id: "ach_heart", title: "Certified Softie", desc: "Stayed on the desktop for 60 seconds." }
+    ],
 };

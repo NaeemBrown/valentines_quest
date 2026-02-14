@@ -1,34 +1,86 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Amazon</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon.za - Your Premium Shopping Destination</title>
+    
+    <!-- Load i18n if available (when opened in HeartOS) -->
+    <script>
+        // Try to load parent window's I18N if opened in iframe/browser app
+        if (window.parent && window.parent.I18N) {
+            window.I18N = window.parent.I18N;
+            console.log('Loaded parent I18N, current language:', window.I18N.currentLang);
+        }
+        // Otherwise create minimal i18n stub for standalone use
+        if (typeof I18N === 'undefined') {
+            window.I18N = {
+                currentLang: localStorage.getItem('heartosLang') || 'en',
+                translations: { en: {}, cs: {} },
+                t: function(key) {
+                    const lang = this.translations[this.currentLang];
+                    return (lang && lang[key]) || this.translations.en[key] || key;
+                }
+            };
+        }
+        
+        // Listen for language changes from parent window
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'languageChanged') {
+                console.log('Amazon.za: Language changed to:', event.data.lang);
+                if (window.I18N) {
+                    window.I18N.currentLang = event.data.lang;
+                    applyTranslations();
+                }
+            }
+        });
+    </script>
+    
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
         
         body {
-            font-family: 'Amazon Ember', Arial, sans-serif;
+            font-family: 'Amazon Ember', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #eaeded;
+            overflow-x: hidden;
         }
 
         /* HEADER */
         .header {
-            background: #131921;
+            background: linear-gradient(180deg, #131921 0%, #1a2332 100%);
             color: #fff;
-            padding: 8px 16px;
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
 
         .header-top {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 20px;
+            padding: 12px 24px;
         }
 
         .logo {
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: bold;
-            padding: 8px 12px;
+            padding: 8px 16px;
             cursor: pointer;
+            transition: transform 0.2s;
+            background: linear-gradient(135deg, #ff9900, #ffb84d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
         }
 
         .logo span {
@@ -39,15 +91,21 @@
         .deliver-to {
             display: flex;
             align-items: center;
-            gap: 4px;
-            padding: 8px;
+            gap: 6px;
+            padding: 10px 12px;
             cursor: pointer;
-            border: 1px solid transparent;
-            border-radius: 2px;
+            border: 1.5px solid transparent;
+            border-radius: 4px;
+            transition: all 0.2s;
         }
 
         .deliver-to:hover {
             border-color: #fff;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .deliver-icon {
+            font-size: 1.2rem;
         }
 
         .deliver-text {
@@ -56,54 +114,76 @@
         }
 
         .location {
-            font-weight: bold;
+            font-weight: 700;
+            font-size: 0.95rem;
         }
 
         .search-bar {
             flex: 1;
             display: flex;
-            max-width: 800px;
+            max-width: 900px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            border-radius: 4px;
+            overflow: hidden;
         }
 
         .search-select {
-            padding: 8px;
+            padding: 12px 16px;
             background: #f3f3f3;
             border: none;
-            border-radius: 4px 0 0 4px;
             color: #333;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .search-select:hover {
+            background: #e8e8e8;
         }
 
         .search-input {
             flex: 1;
-            padding: 12px;
+            padding: 12px 16px;
             border: none;
             outline: none;
+            font-size: 0.95rem;
         }
 
         .search-btn {
-            padding: 0 20px;
+            padding: 0 24px;
             background: #febd69;
             border: none;
-            border-radius: 0 4px 4px 0;
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
+            transition: all 0.2s;
+        }
+
+        .search-btn:hover {
+            background: #f3a847;
+            transform: scale(1.05);
         }
 
         .header-nav {
             display: flex;
             align-items: center;
-            gap: 24px;
+            gap: 20px;
+            margin-left: auto;
         }
 
         .nav-item {
-            padding: 8px;
+            padding: 10px 12px;
             cursor: pointer;
-            border: 1px solid transparent;
-            border-radius: 2px;
+            border: 1.5px solid transparent;
+            border-radius: 4px;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
         }
 
         .nav-item:hover {
             border-color: #fff;
+            background: rgba(255,255,255,0.05);
         }
 
         .nav-label {
@@ -112,7 +192,8 @@
         }
 
         .nav-value {
-            font-weight: bold;
+            font-weight: 700;
+            font-size: 0.95rem;
         }
 
         .cart {
@@ -120,259 +201,883 @@
             align-items: center;
             gap: 8px;
             position: relative;
+            padding: 10px 16px;
+        }
+
+        .cart-icon {
+            font-size: 1.8rem;
         }
 
         .cart-count {
             position: absolute;
-            top: -8px;
-            right: 8px;
-            background: #ff9900;
-            color: #131921;
+            top: 2px;
+            left: 28px;
+            background: linear-gradient(135deg, #ff6b35, #ff9900);
+            color: #fff;
             border-radius: 50%;
-            width: 20px;
-            height: 20px;
+            min-width: 22px;
+            height: 22px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 0.75rem;
-            font-weight: bold;
+            font-weight: 700;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .balance-display {
+            background: linear-gradient(135deg, #146eb4, #1a8cd8);
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            border: 2px solid rgba(255,255,255,0.2);
+            transition: all 0.3s;
+        }
+
+        .balance-display:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
 
         /* SUB HEADER */
         .sub-header {
             background: #232f3e;
             color: #fff;
-            padding: 8px 16px;
+            padding: 10px 24px;
             display: flex;
-            gap: 20px;
+            gap: 24px;
             align-items: center;
+            overflow-x: auto;
         }
 
         .sub-nav-item {
-            padding: 4px 8px;
+            padding: 6px 12px;
             cursor: pointer;
+            white-space: nowrap;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            border-radius: 4px;
         }
 
         .sub-nav-item:hover {
-            text-decoration: underline;
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-1px);
         }
 
         /* MAIN CONTENT */
         .main {
-            max-width: 1500px;
+            max-width: 1600px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 24px;
         }
 
         /* HERO BANNER */
         .hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #4facfe);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
             color: #fff;
-            padding: 40px;
-            border-radius: 8px;
-            margin-bottom: 20px;
+            padding: 60px 40px;
+            border-radius: 12px;
+            margin-bottom: 32px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
         }
 
         .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 16px;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
         }
 
         .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
+            font-size: 1.3rem;
+            margin-bottom: 24px;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.2);
         }
 
         .hero-btn {
-            background: #ff9900;
+            background: linear-gradient(135deg, #ff9900, #ffb84d);
             color: #131921;
             border: none;
-            padding: 12px 32px;
-            font-size: 1rem;
-            font-weight: bold;
-            border-radius: 8px;
+            padding: 16px 40px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 50px;
             cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255,153,0,0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hero-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 6px 25px rgba(255,153,0,0.6);
+        }
+
+        .hero-btn:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        /* FILTERS */
+        .filters {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background: #fff;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            border-color: #ff9900;
+            color: #ff9900;
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: #ff9900;
+            color: #fff;
+            border-color: #ff9900;
         }
 
         /* PRODUCT GRID */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 32px 0 20px;
+        }
+
         .section-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin: 24px 0 16px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #131921;
+        }
+
+        .view-all {
+            color: #007185;
+            font-size: 0.95rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .view-all:hover {
+            color: #ff9900;
+            text-decoration: underline;
         }
 
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 16px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 48px;
         }
 
         .product-card {
             background: #fff;
-            border-radius: 8px;
-            padding: 16px;
+            border-radius: 12px;
+            padding: 20px;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            animation: fadeInUp 0.5s forwards;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff9900, #ffb84d);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .product-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: linear-gradient(135deg, #ff6b35, #ff9900);
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(255,107,53,0.4);
         }
 
         .product-image {
             width: 100%;
             aspect-ratio: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
+            object-fit: cover;
             border-radius: 8px;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
+            background: #f9f9f9;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.08) rotate(2deg);
         }
 
         .product-title {
-            font-size: 0.95rem;
-            font-weight: 500;
-            margin-bottom: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
             overflow: hidden;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             color: #0F1111;
+            min-height: 48px;
+            line-height: 1.4;
         }
 
         .product-rating {
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-size: 0.875rem;
         }
 
         .stars {
             color: #ff9900;
+            letter-spacing: 2px;
         }
 
         .rating-count {
             color: #007185;
+            font-weight: 600;
         }
 
         .product-price {
-            font-size: 1.5rem;
-            font-weight: bold;
+            font-size: 1.6rem;
+            font-weight: 700;
             color: #B12704;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
+        }
+
+        .product-price-small {
+            font-size: 0.85rem;
+            color: #565959;
+            text-decoration: line-through;
+            margin-left: 8px;
         }
 
         .prime-badge {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
             background: #00a8e1;
             color: #fff;
-            padding: 2px 8px;
-            border-radius: 2px;
+            padding: 4px 10px;
+            border-radius: 4px;
             font-size: 0.75rem;
-            font-weight: bold;
-            margin-bottom: 8px;
+            font-weight: 700;
+            margin-bottom: 12px;
         }
 
         .add-to-cart {
             width: 100%;
-            background: #ffd814;
+            background: linear-gradient(180deg, #f7dfa5, #ffd814);
             border: 1px solid #fcd200;
             border-radius: 8px;
-            padding: 8px 16px;
-            font-weight: 600;
+            padding: 10px 20px;
+            font-weight: 700;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-size: 0.95rem;
         }
 
         .add-to-cart:hover {
-            background: #f7ca00;
+            background: linear-gradient(180deg, #f7ca00, #f0c14b);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
-        /* CATEGORY CARDS */
-        .category-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 16px;
-            margin-bottom: 40px;
+        .add-to-cart:active {
+            transform: translateY(0);
         }
 
-        .category-card {
-            background: #fff;
-            padding: 24px;
+        /* TOAST NOTIFICATION */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: linear-gradient(135deg, #28a745, #34ce57);
+            color: #fff;
+            padding: 16px 24px;
             border-radius: 8px;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .category-card:hover {
-            transform: scale(1.05);
-        }
-
-        .category-icon {
-            font-size: 3rem;
-            margin-bottom: 12px;
-        }
-
-        .category-title {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
             font-weight: 600;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        /* CART MODAL */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.75);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .cart-modal.active {
+            display: flex;
+            animation: fadeIn 0.2s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .cart-content {
+            background: #fff;
+            padding: 0;
+            border-radius: 16px;
+            max-width: 700px;
+            width: 92%;
+            max-height: 85vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cart-header {
+            padding: 24px 32px;
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(180deg, #fff, #f9f9f9);
+        }
+
+        .cart-header h2 {
+            font-size: 1.8rem;
+            color: #131921;
+        }
+
+        .cart-items-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 32px;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 20px;
+            padding: 20px 0;
+            border-bottom: 1px solid #e7e7e7;
+            transition: background 0.2s;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 8px;
+        }
+
+        .cart-item:hover {
+            background: #f9f9f9;
+        }
+
+        .cart-item-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .cart-item-details {
+            flex: 1;
+        }
+
+        .cart-item-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 1rem;
             color: #0F1111;
         }
 
-        .footer {
-            background: #232f3e;
-            color: #ddd;
-            padding: 40px 20px;
-            margin-top: 40px;
+        .cart-item-price {
+            color: #B12704;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .cart-item-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .cart-item-remove {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            box-shadow: 0 2px 6px rgba(220,53,69,0.3);
+        }
+
+        .cart-item-remove:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220,53,69,0.4);
+        }
+
+        .cart-footer {
+            padding: 24px 32px;
+            background: #f9f9f9;
+            border-top: 2px solid #e7e7e7;
+        }
+
+        .cart-total {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: right;
+            color: #B12704;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #ff9900, #ffb84d);
+            color: #fff;
+            border: none;
+            padding: 18px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(255,153,0,0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,153,0,0.5);
+        }
+
+        .checkout-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .close-cart {
+            font-size: 2rem;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.2s;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .close-cart:hover {
+            background: #f0f0f0;
+            color: #000;
+            transform: rotate(90deg);
+        }
+
+        .empty-cart {
             text-align: center;
+            padding: 60px 32px;
+            color: #666;
+        }
+
+        .empty-cart-icon {
+            font-size: 5rem;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        /* PAYMENT MODAL */
+        .payment-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.75);
+            z-index: 1001;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .payment-modal.active {
+            display: flex;
+            animation: fadeIn 0.2s;
+        }
+
+        .payment-content {
+            background: #fff;
+            padding: 40px;
+            border-radius: 16px;
+            max-width: 550px;
+            width: 92%;
+            animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .payment-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .payment-header h2 {
+            font-size: 2rem;
+            color: #131921;
+            margin-bottom: 8px;
+        }
+
+        .code-hint {
+            text-align: center;
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .code-examples {
+            background: #f9f9f9;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ff9900;
+        }
+
+        .code-examples p {
+            font-size: 0.85rem;
+            color: #555;
+            margin-bottom: 4px;
+        }
+
+        .code-input {
+            width: 100%;
+            padding: 20px;
+            font-size: 1.8rem;
+            text-align: center;
+            border: 3px solid #ddd;
+            border-radius: 12px;
+            margin: 20px 0;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+
+        .code-input:focus {
+            outline: none;
+            border-color: #ff9900;
+            box-shadow: 0 0 0 4px rgba(255,153,0,0.1);
+        }
+
+        .pay-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #28a745, #34ce57);
+            color: #fff;
+            border: none;
+            padding: 18px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(40,167,69,0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .pay-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40,167,69,0.5);
+        }
+
+        .payment-error {
+            color: #dc3545;
+            text-align: center;
+            margin-top: 16px;
+            font-weight: 600;
+            padding: 12px;
+            background: #f8d7da;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .payment-error.show {
+            display: block;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .payment-success {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .success-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            animation: scaleIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .payment-success h2 {
+            color: #28a745;
+            font-size: 2.2rem;
+            margin-bottom: 16px;
+        }
+
+        .payment-success p {
+            font-size: 1.1rem;
+            margin: 12px 0;
+            color: #555;
+        }
+
+        .footer {
+            background: linear-gradient(180deg, #232f3e, #131921);
+            color: #ddd;
+            padding: 48px 24px;
+            margin-top: 60px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer p {
+            margin: 8px 0;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-link:hover {
+            color: #ff9900;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .cart.bounce .cart-icon {
+            animation: bounce 0.5s;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .header-top {
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .search-bar {
+                order: 3;
+                width: 100%;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 12px;
+            }
+
+            .section-title {
+                font-size: 1.4rem;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- TOAST NOTIFICATION -->
+    <div class="toast" id="toast">
+        <span id="toast-text"></span>
+    </div>
+
     <!-- HEADER -->
     <div class="header">
         <div class="header-top">
             <div class="logo">amazon<span>.za</span></div>
             
             <div class="deliver-to">
-                <div>📍</div>
+                <div class="deliver-icon">📍</div>
                 <div>
-                    <div class="deliver-text">Deliver to</div>
+                    <div class="deliver-text" data-i18n-key="amazon_deliver_to">Deliver to</div>
                     <div class="location">Cape Town</div>
                 </div>
             </div>
 
             <div class="search-bar">
                 <select class="search-select">
-                    <option>All</option>
-                    <option>Books</option>
-                    <option>Electronics</option>
-                    <option>Fashion</option>
+                    <option data-i18n-key="amazon_all_categories">All Categories</option>
+                    <option>Absolutely Useless</option>
+                    <option>Questionable Choices</option>
+                    <option>Why Though?</option>
+                    <option>Impulse Territory</option>
                 </select>
-                <input type="text" class="search-input" placeholder="Search Amazon">
+                <input type="text" class="search-input" data-i18n-key-placeholder="amazon_search_placeholder" placeholder="Search for amazing deals...">
                 <button class="search-btn">🔍</button>
             </div>
 
             <div class="header-nav">
-                <div class="nav-item">
-                    <div class="nav-label">Hello, Valentine</div>
-                    <div class="nav-value">Account & Lists</div>
+                <div class="balance-display">
+                    💰 R<span id="balance">0</span>
                 </div>
 
-                <div class="nav-item">
-                    <div class="nav-label">Returns</div>
-                    <div class="nav-value">& Orders</div>
-                </div>
-
-                <div class="nav-item cart">
-                    <div class="cart-count">0</div>
-                    <div>🛒</div>
-                    <div class="nav-value">Cart</div>
+                <div class="nav-item cart" onclick="toggleCart()">
+                    <div class="cart-count" id="cart-count">0</div>
+                    <div class="cart-icon">🛒</div>
+                    <div class="nav-value" data-i18n-key="amazon_cart">Cart</div>
                 </div>
             </div>
         </div>
@@ -380,306 +1085,913 @@
 
     <!-- SUB HEADER -->
     <div class="sub-header">
-        <div class="sub-nav-item">☰ All</div>
-        <div class="sub-nav-item">Today's Deals</div>
-        <div class="sub-nav-item">Customer Service</div>
-        <div class="sub-nav-item">Registry</div>
-        <div class="sub-nav-item">Gift Cards</div>
-        <div class="sub-nav-item">Sell</div>
+        <div class="sub-nav-item" data-i18n-key="amazon_all_categories">☰ All Categories</div>
+        <div class="sub-nav-item" data-i18n-key="amazon_todays_deals">🔥 Today's Deals</div>
+        <div class="sub-nav-item" data-i18n-key="amazon_gift_ideas">🎁 Gift Ideas</div>
+        <div class="sub-nav-item" data-i18n-key="amazon_flash_sale">⚡ Flash Sale</div>
+        <div class="sub-nav-item" data-i18n-key="amazon_gift_cards">💳 Gift Cards</div>
+        <div class="sub-nav-item" data-i18n-key="amazon_track_order">📦 Track Order</div>
     </div>
 
     <!-- MAIN CONTENT -->
     <div class="main">
         <!-- HERO -->
         <div class="hero">
-            <h1>Special Picks for You! 💕</h1>
-            <p>Curated with love - because you deserve the best</p>
-            <button class="hero-btn">Shop Your Favorites</button>
-        </div>
-
-        <!-- CATEGORIES -->
-        <h2 class="section-title">Shop by Category</h2>
-        <div class="category-grid">
-            <div class="category-card">
-                <div class="category-icon">📚</div>
-                <div class="category-title">Books & Fantasy</div>
-            </div>
-            <div class="category-card">
-                <div class="category-icon">💄</div>
-                <div class="category-title">Beauty & Skincare</div>
-            </div>
-            <div class="category-card">
-                <div class="category-icon">🏋️</div>
-                <div class="category-title">Sports & Fitness</div>
-            </div>
-            <div class="category-card">
-                <div class="category-icon">🐕</div>
-                <div class="category-title">Pet Supplies</div>
-            </div>
-            <div class="category-card">
-                <div class="category-icon">🏠</div>
-                <div class="category-title">Home & Living</div>
-            </div>
-            <div class="category-card">
-                <div class="category-icon">✈️</div>
-                <div class="category-title">Travel Essentials</div>
+            <div class="hero-content">
+                <h1 data-i18n-key="amazon_hero_title">Welcome to Shopping Paradise! 🎊</h1>
+                <p data-i18n-key="amazon_hero_subtitle">Discover amazing products you absolutely need (or maybe don't)</p>
+                <button class="hero-btn" onclick="scrollToProducts()" data-i18n-key="amazon_explore_deals">Explore Deals</button>
             </div>
         </div>
 
-        <!-- PRODUCTS: LOW-BUY FRIENDLY -->
-        <h2 class="section-title">Recommended for You (Low-Buy Approved! ✨)</h2>
-        <div class="product-grid" id="recommended-products"></div>
+        <!-- FILTERS -->
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterProducts('all')" data-i18n-key="amazon_all_products">All Products</button>
+            <button class="filter-btn" onclick="filterProducts('essential')" data-i18n-key="amazon_essential_items">Essential Items</button>
+            <button class="filter-btn" onclick="filterProducts('questionable')" data-i18n-key="amazon_questionable">Questionable</button>
+            <button class="filter-btn" onclick="filterProducts('impulse')" data-i18n-key="amazon_impulse_buys">Impulse Buys</button>
+            <button class="filter-btn" onclick="filterProducts('prime')" data-i18n-key="amazon_prime_only">Prime Only</button>
+        </div>
 
-        <!-- BOOKS FOR YOU -->
-        <h2 class="section-title">Books You'll Love 📚</h2>
-        <div class="product-grid" id="book-products"></div>
+        <!-- PRODUCTS SECTION 1 -->
+        <div class="section-header">
+            <h2 class="section-title" data-i18n-key="amazon_essential_title">✨ Absolutely Essential Items</h2>
+            <span class="view-all" data-i18n-key="amazon_view_all">View All →</span>
+        </div>
+        <div class="product-grid" id="products-essential"></div>
 
-        <!-- FITNESS & WELLNESS -->
-        <h2 class="section-title">Fitness & Wellness 💪</h2>
-        <div class="product-grid" id="fitness-products"></div>
+        <!-- PRODUCTS SECTION 2 -->
+        <div class="section-header">
+            <h2 class="section-title" data-i18n-key="amazon_questionable_title">🤔 Questionable Choices</h2>
+            <span class="view-all" data-i18n-key="amazon_view_all">View All →</span>
+        </div>
+        <div class="product-grid" id="products-questionable"></div>
 
-        <!-- PET SUPPLIES -->
-        <h2 class="section-title">For Your Future Whippet 🐕</h2>
-        <div class="product-grid" id="pet-products"></div>
+        <!-- PRODUCTS SECTION 3 -->
+        <div class="section-header">
+            <h2 class="section-title" data-i18n-key="amazon_impulse_title">😈 Impulse Buy Zone</h2>
+            <span class="view-all" data-i18n-key="amazon_view_all">View All →</span>
+        </div>
+        <div class="product-grid" id="products-impulse"></div>
+    </div>
 
-        <!-- TRAVEL -->
-        <h2 class="section-title">Prague Adventures ✈️</h2>
-        <div class="product-grid" id="travel-products"></div>
+    <!-- CART MODAL -->
+    <div class="cart-modal" id="cart-modal">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h2 data-i18n-key="amazon_shopping_cart">Shopping Cart 🛒</h2>
+                <span class="close-cart" onclick="toggleCart()">&times;</span>
+            </div>
+            <div class="cart-items-container" id="cart-items"></div>
+            <div class="cart-footer">
+                <div class="cart-total"><span data-i18n-key="amazon_total">Total</span>: R<span id="cart-total">0</span></div>
+                <button class="checkout-btn" onclick="proceedToCheckout()" data-i18n-key="amazon_checkout">Proceed to Checkout 💳</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAYMENT MODAL -->
+    <div class="payment-modal" id="payment-modal">
+        <div class="payment-content">
+            <div id="payment-form">
+                <div class="payment-header">
+                    <h2 data-i18n-key="amazon_secure_checkout">Secure Checkout 🔒</h2>
+                </div>
+                <div class="code-hint" data-i18n-key="amazon_code_hint">Enter your special payment code to complete the purchase</div>
+                <div class="code-examples">
+                    <p><strong data-i18n-key="amazon_try_codes">💡 Try these codes:</strong></p>
+                    <p>RICH • YOLO • 42 • MONEY • 1997 • 2025</p>
+                </div>
+                <input type="text" class="code-input" id="payment-code" data-i18n-key-placeholder="amazon_enter_code" placeholder="Enter Code" maxlength="10">
+                <button class="pay-btn" onclick="processPayment()" data-i18n-key="amazon_complete_payment">Complete Payment 💰</button>
+                <div class="payment-error" id="payment-error"></div>
+            </div>
+            <div id="payment-success" class="payment-success" style="display: none;">
+                <div class="success-icon">🎉</div>
+                <h2 data-i18n-key="amazon_payment_success">Payment Successful!</h2>
+                <p data-i18n-key="amazon_order_confirmed">Your order has been confirmed</p>
+                <p style="color: #666; font-size: 0.95rem; margin-top: 16px;"><span data-i18n-key="amazon_order_number">Order #AMZ-</span><span id="order-number"></span></p>
+                <p style="color: #666; font-size: 0.9rem;" data-i18n-key="amazon_delivery">Estimated delivery: 3-5 business days 📦</p>
+                <button class="checkout-btn" onclick="location.reload()" style="margin-top: 32px;" data-i18n-key="amazon_continue_shopping">Continue Shopping</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRODUCT DETAIL MODAL -->
+    <div class="payment-modal" id="product-modal">
+        <div class="payment-content" style="max-width: 800px; max-height: 90vh; overflow-y: auto;">
+            <span class="close-cart" onclick="closeProductModal()" style="position: absolute; top: 16px; right: 16px; z-index: 10;">&times;</span>
+            <div id="product-detail-content"></div>
+        </div>
     </div>
 
     <div class="footer">
-        <p>© 2025 Amazon.za - Made with 💕</p>
+        <div class="footer-content">
+            <p style="font-size: 1.2rem; font-weight: bold; margin-bottom: 16px;">amazon.za</p>
+            <div class="footer-links">
+                <a href="#" class="footer-link">About Us</a>
+                <a href="#" class="footer-link">Help Center</a>
+                <a href="#" class="footer-link">Returns</a>
+                <a href="#" class="footer-link">Careers</a>
+                <a href="#" class="footer-link">Privacy</a>
+                <a href="#" class="footer-link">Terms</a>
+            </div>
+            <p style="margin-top: 24px; font-size: 0.9rem;" data-i18n-key="amazon_footer_tagline">© 2025 Amazon.za - Your Premier Shopping Destination</p>
+            <p style="margin-top: 8px; font-size: 0.85rem; color: #999;" data-i18n-key="amazon_footer_trust">Shop with confidence • Fast delivery • Secure payments</p>
+        </div>
     </div>
 
     <script>
-        function createProduct(data) {
-            const starsHtml = '⭐'.repeat(Math.floor(data.rating));
+        // Add Czech translations to I18N if it exists
+        if (typeof I18N !== 'undefined') {
+            // English translations
+            Object.assign(I18N.translations.en, {
+                amazon_deliver_to: 'Deliver to',
+                amazon_search_placeholder: 'Search for amazing deals...',
+                amazon_cart: 'Cart',
+                amazon_all_categories: 'All Categories',
+                amazon_todays_deals: "Today's Deals",
+                amazon_gift_ideas: 'Gift Ideas',
+                amazon_flash_sale: 'Flash Sale',
+                amazon_gift_cards: 'Gift Cards',
+                amazon_track_order: 'Track Order',
+                amazon_hero_title: 'Welcome to Shopping Paradise! 🎊',
+                amazon_hero_subtitle: 'Discover amazing products you absolutely need (or maybe don\'t)',
+                amazon_explore_deals: 'Explore Deals',
+                amazon_all_products: 'All Products',
+                amazon_essential_items: 'Essential Items',
+                amazon_questionable: 'Questionable',
+                amazon_impulse_buys: 'Impulse Buys',
+                amazon_prime_only: 'Prime Only',
+                amazon_essential_title: '✨ Absolutely Essential Items',
+                amazon_questionable_title: '🤔 Questionable Choices',
+                amazon_impulse_title: '😈 Impulse Buy Zone',
+                amazon_view_all: 'View All →',
+                amazon_shopping_cart: 'Shopping Cart 🛒',
+                amazon_cart_empty: 'Your cart is empty!',
+                amazon_cart_empty_desc: 'Start adding some amazing items',
+                amazon_total: 'Total',
+                amazon_checkout: 'Proceed to Checkout 💳',
+                amazon_secure_checkout: 'Secure Checkout 🔒',
+                amazon_code_hint: 'Enter your special payment code to complete the purchase',
+                amazon_try_codes: '💡 Try these codes:',
+                amazon_enter_code: 'Enter Code',
+                amazon_complete_payment: 'Complete Payment 💰',
+                amazon_payment_success: 'Payment Successful!',
+                amazon_order_confirmed: 'Your order has been confirmed',
+                amazon_order_number: 'Order #AMZ-',
+                amazon_delivery: 'Estimated delivery: 3-5 business days 📦',
+                amazon_continue_shopping: 'Continue Shopping',
+                amazon_add_to_cart: 'Add to Cart',
+                amazon_remove: 'Remove',
+                amazon_product_description: 'Product Description',
+                amazon_specifications: 'Technical Specifications',
+                amazon_prime_delivery: '⚡ prime - FREE One-Day Delivery',
+                amazon_reviews: 'reviews',
+                amazon_footer_tagline: '© 2025 Amazon.za - Your Premier Shopping Destination',
+                amazon_footer_trust: 'Shop with confidence • Fast delivery • Secure payments'
+            });
+
+            // Czech translations
+            Object.assign(I18N.translations.cs, {
+                amazon_deliver_to: 'Doručit do',
+                amazon_search_placeholder: 'Hledat skvělé nabídky...',
+                amazon_cart: 'Košík',
+                amazon_all_categories: 'Všechny kategorie',
+                amazon_todays_deals: 'Dnešní nabídky',
+                amazon_gift_ideas: 'Dárkové nápady',
+                amazon_flash_sale: 'Bleskový výprodej',
+                amazon_gift_cards: 'Dárkové karty',
+                amazon_track_order: 'Sledovat objednávku',
+                amazon_hero_title: 'Vítejte v nákupním ráji! 🎊',
+                amazon_hero_subtitle: 'Objevte úžasné produkty, které absolutně potřebujete (nebo možná ne)',
+                amazon_explore_deals: 'Prozkoumat nabídky',
+                amazon_all_products: 'Všechny produkty',
+                amazon_essential_items: 'Nezbytné položky',
+                amazon_questionable: 'Pochybné',
+                amazon_impulse_buys: 'Impulzivní nákupy',
+                amazon_prime_only: 'Pouze Prime',
+                amazon_essential_title: '✨ Absolutně nezbytné položky',
+                amazon_questionable_title: '🤔 Pochybné volby',
+                amazon_impulse_title: '😈 Zóna impulzivních nákupů',
+                amazon_view_all: 'Zobrazit vše →',
+                amazon_shopping_cart: 'Nákupní košík 🛒',
+                amazon_cart_empty: 'Váš košík je prázdný!',
+                amazon_cart_empty_desc: 'Začněte přidávat úžasné položky',
+                amazon_total: 'Celkem',
+                amazon_checkout: 'Přejít k pokladně 💳',
+                amazon_secure_checkout: 'Zabezpečená pokladna 🔒',
+                amazon_code_hint: 'Zadejte svůj speciální platební kód pro dokončení nákupu',
+                amazon_try_codes: '💡 Zkuste tyto kódy:',
+                amazon_enter_code: 'Zadat kód',
+                amazon_complete_payment: 'Dokončit platbu 💰',
+                amazon_payment_success: 'Platba úspěšná!',
+                amazon_order_confirmed: 'Vaše objednávka byla potvrzena',
+                amazon_order_number: 'Objednávka #AMZ-',
+                amazon_delivery: 'Odhadované doručení: 3-5 pracovních dnů 📦',
+                amazon_continue_shopping: 'Pokračovat v nákupu',
+                amazon_add_to_cart: 'Přidat do košíku',
+                amazon_remove: 'Odebrat',
+                amazon_product_description: 'Popis produktu',
+                amazon_specifications: 'Technické specifikace',
+                amazon_prime_delivery: '⚡ prime - ZDARMA doručení další den',
+                amazon_reviews: 'recenzí',
+                amazon_footer_tagline: '© 2025 Amazon.za - Vaše prémiová nákupní destinace',
+                amazon_footer_trust: 'Nakupujte s důvěrou • Rychlé doručení • Zabezpečené platby'
+            });
+        }
+
+        // Function to apply translations to all elements
+        function applyTranslations() {
+            console.log('Applying translations, current language:', I18N.currentLang);
+            
+            // Translate all elements with data-i18n-key
+            document.querySelectorAll('[data-i18n-key]').forEach(element => {
+                const key = element.getAttribute('data-i18n-key');
+                const translation = I18N.t(key);
+                element.textContent = translation;
+            });
+            
+            // Translate placeholders
+            document.querySelectorAll('[data-i18n-key-placeholder]').forEach(element => {
+                const key = element.getAttribute('data-i18n-key-placeholder');
+                const translation = I18N.t(key);
+                element.placeholder = translation;
+            });
+            
+            // Update product titles and descriptions based on language
+            updateProductLanguage();
+            
+            // Re-render products with current language
+            const essentialProducts = products.filter(p => p.category === 'essential');
+            const questionableProducts = products.filter(p => p.category === 'questionable');
+            const impulseProducts = products.filter(p => p.category === 'impulse');
+            
+            document.getElementById('products-essential').innerHTML = essentialProducts.map(createProduct).join('');
+            document.getElementById('products-questionable').innerHTML = questionableProducts.map(createProduct).join('');
+            document.getElementById('products-impulse').innerHTML = impulseProducts.map(createProduct).join('');
+            
+            // Update cart display if open
+            if (document.getElementById('cart-modal').classList.contains('active')) {
+                updateCartDisplay();
+            }
+        }
+        
+        function updateProductLanguage() {
+            // This will be called when language changes
+            console.log('Updating product language to:', I18N.currentLang);
+        }
+
+        // Enhanced product database with Czech translations
+        const products = [
+    {
+        id: 1,
+        title: 'Psychopath Security Guard - Blonde Czech Edition',
+        title_cs: 'Psychopatická bezpečnostní hlídka - Blond česká edice',
+        image: '../images/products/psychopath.jpg',
+        price: 1499,
+        originalPrice: 2999,
+        rating: 2.3,
+        reviews: '666',
+        prime: false,
+        category: 'questionable',
+        badge: '⚠️ Danger',
+        badge_cs: '⚠️ Nebezpečí',
+        description: 'Hire this crazy white Czech girl who will chase intruders around at night with a glow stick! Acts like security but mostly just terrifies everyone. Highly effective but also highly unhinged. Not responsible for psychological damage to trespassers.',
+        description_cs: 'Najměte si tuto šílenou bílou českou holku, která bude pronásledovat narušitele v noci s fluorescenční tyčí! Chová se jako ostraha, ale většinou jen všechny terorizuje. Vysoce účinná, ale také vysoce nepříčetná. Neručíme za psychické škody vetřelců.',
+        specs: ['Nationality: Czech', 'Hair: Blonde', 'Sanity level: Questionable', 'Chase speed: Terrifying', 'Glow stick included: Yes', 'Background check: Failed'],
+        specs_cs: ['Národnost: Česká', 'Vlasy: Blond', 'Úroveň příčetnosti: Pochybná', 'Rychlost pronásledování: Děsivá', 'Fluorescenční tyč: Zahrnuto', 'Prověrka: Neprošla']
+    },
+    {
+        id: 2,
+        title: 'Mogu Mogu Lychee Drink - Exotic Refreshment',
+        title_cs: 'Mogu Mogu s příchutí liči - Exotické osvěžení',
+        image: '../images/products/mogumogu.jpg',
+        price: 45,
+        originalPrice: 89,
+        rating: 4.7,
+        reviews: '12,847',
+        prime: true,
+        category: 'essential',
+        badge: 'Refreshing',
+        badge_cs: 'Osvěžující',
+        description: 'A delicious lychee juice drink! Sweet, refreshing, and comes with those weird chewy bits that nobody asked for but everyone secretly loves. Perfect for pretending you\'re cultured.',
+        description_cs: 'Lahodný nápoj s liči džusem! Sladký, osvěžující a s těmi divnými žvýkacími kousky, o které se nikdo neprosil, ale všichni je tajně milují. Ideální pro předstírání, že jste světoví.',
+        specs: ['Volume: 320ml', 'Flavor: Lychee', 'Weird bits: Included', 'Cultural points: +50', 'Pronunciation difficulty: Medium'],
+        specs_cs: ['Objem: 320ml', 'Příchuť: Liči', 'Divné kousky: Zahrnuto', 'Kulturní body: +50', 'Obtížnost výslovnosti: Střední']
+    },
+    {
+        id: 3,
+        title: 'Emotional Support Donuts - For Baby Adults',
+        title_cs: 'Koblihy pro emocionální podporu - Pro dospělá mimina',
+        image: '../images/products/donuts.jpg',
+        price: 399,
+        originalPrice: 649,
+        rating: 5.0,
+        reviews: '23,456',
+        prime: true,
+        category: 'essential',
+        badge: 'Therapy',
+        badge_cs: 'Terapie',
+        description: 'Because adulting is hard and you need plush donuts to cope. These soft, squeezable emotional support donuts are here for baby adults who can\'t handle life. No judgment, just sprinkles and comfort.',
+        description_cs: 'Protože dospělost je těžká a vy potřebujete plyšové koblihy, abyste to zvládli. Tyto měkké, mačkací koblihy pro emocionální podporu jsou tu pro dospělá mimina, která nedávají život. Žádné odsuzování, jen posypka a pohodlí.',
+        specs: ['Target audience: Baby adults', 'Emotional support: Unlimited', 'Judgment: None', 'Calories: 0 (they\'re plush)', 'Comes with: Sunglasses donut for cool points'],
+        specs_cs: ['Cílovka: Dospělá mimina', 'Emoční podpora: Neomezená', 'Odsuzování: Žádné', 'Kalorie: 0 (jsou plyšové)', 'Obsahuje: Koblihu se slunečními brýlemi pro styl']
+    },
+    {
+        id: 4,
+        title: 'Black Bonnet - Satin Sleep Cap',
+        title_cs: 'Černý čepec - Saténová čepice na spaní',
+        image: '../images/products/bonnet.jpg',
+        price: 149,
+        originalPrice: 249,
+        rating: 4.6,
+        reviews: '8,765',
+        prime: true,
+        category: 'essential',
+        badge: 'Beauty Sleep',
+        badge_cs: 'Spánek krásy',
+        description: 'A simple black bonnet for protecting your hair while you sleep. Wake up looking less like you fought a tornado. Satin material keeps your hair smooth and your life together (kind of).',
+        description_cs: 'Jednoduchý černý čepec na ochranu vlasů během spánku. Probuďte se a vypadejte méně jako po bitvě s tornádem. Satén udrží vaše vlasy hladké a váš život pohromadě (tak nějak).',
+        specs: ['Color: Black', 'Material: Satin', 'Hair protection: Maximum', 'Morning disasters: Prevented', 'Looking fancy: Guaranteed'],
+        specs_cs: ['Barva: Černá', 'Materiál: Satén', 'Ochrana vlasů: Maximální', 'Ranní katastrofy: Odvráceny', 'Elegantní vzhled: Zaručen']
+    },
+    {
+        id: 5,
+        title: 'Brand New TV - 100% Works, Definitely Not Broken',
+        title_cs: 'Úplně nová TV - 100% funguje, rozhodně není rozbitá',
+        image: '../images/products/fixedtv.jpg',
+        price: 3999,
+        originalPrice: 6999,
+        rating: 4.9,
+        reviews: '15,234',
+        prime: true,
+        category: 'essential',
+        badge: '✅ Certified',
+        badge_cs: '✅ Certifikováno',
+        description: 'This TV is BRAND NEW and 100% FULLY FUNCTIONAL! It definitely works and is absolutely not broken in any way. The screen turns on and everything! Why would we lie? Trust us completely!',
+        description_cs: 'Tato televize je ÚPLNĚ NOVÁ a 100% PLNĚ FUNKČNÍ! Fakt funguje a rozhodně není nijak rozbitá. Obrazovka se normálně zapne a tak! Proč bychom lhali? Totálně nám věřte!',
+        specs: ['Condition: Brand new (we promise)', 'Screen status: Working perfectly', 'Trustworthiness: 110%', 'Previous repairs: None whatsoever', 'Warranty: Uh... about that...'],
+        specs_cs: ['Stav: Úplně nová (slibujeme)', 'Stav obrazovky: Funguje perfektně', 'Důvěryhodnost: 110%', 'Předchozí opravy: Vůbec žádné', 'Záruka: No... o tom potom...']
+    },
+    {
+        id: 6,
+        title: 'Glow-in-the-Dark Bear - Geometric Light-Up Friend',
+        title_cs: 'Svítící medvěd - Geometrický světelný kámoš',
+        image: '../images/products/glowbear.jpg',
+        price: 599,
+        originalPrice: 999,
+        rating: 4.8,
+        reviews: '9,234',
+        prime: true,
+        category: 'essential',
+        badge: 'Glows!',
+        badge_cs: 'Svítí!',
+        description: 'A bear that glows in the dark! This geometric LED bear will light up your room with rainbow RGB vibes. Perfect for people who think regular teddy bears are too boring and need more cyberpunk in their lives.',
+        description_cs: 'Medvěd, co svítí ve tmě! Tento geometrický LED méďa rozzáří váš pokoj duhovými RGB barvami. Ideální pro lidi, kterým přijdou normální plyšáci nudní a potřebují v životě víc cyberpunku.',
+        specs: ['Glows: Yes, obviously', 'RGB modes: All of them', 'Geometric: Very', 'Bear-shaped: Technically', 'Electricity required: Yes', 'Aesthetic level: Maximum'],
+        specs_cs: ['Svítí: Ano, očividně', 'RGB režimy: Všechny', 'Geometrický: Velmi', 'Tvar medvěda: Technicky vzato ano', 'Vyžaduje elektřinu: Ano', 'Úroveň estetiky: Maximální']
+    },
+    {
+        id: 7,
+        title: '2 Chihuahua Puppies - Tiny Dogs Available Now!',
+        title_cs: '2 štěňata čivavy - Malincí psi k mání!',
+        image: '../images/products/pups.jpg',
+        price: 8999,
+        originalPrice: 12999,
+        rating: 5.0,
+        reviews: '3,456',
+        prime: false,
+        category: 'questionable',
+        badge: '🐕 Live',
+        badge_cs: '🐕 Živé',
+        description: 'Two adorable chihuahua puppies for sale! Currently tiny potatoes wrapped in a pink blanket. Will eventually grow into professional ankle biters. Extreme cuteness warning! Handle with care.',
+        description_cs: 'Dvě roztomilá štěňátka čivavy na prodej! Momentálně jsou to jen malé brambory zabalené v růžové dece. Časem z nich vyrostou profesionální kousači kotníků. Varování: Extrémní roztomilost! Zacházejte opatrně.',
+        specs: ['Quantity: 2 puppies', 'Current size: Potato', 'Future size: Still small', 'Bark volume: TBD but probably loud', 'Blanket: Pink (included)', 'Cuteness: Lethal levels'],
+        specs_cs: ['Množství: 2 štěňata', 'Aktuální velikost: Brambora', 'Budoucí velikost: Pořád malá', 'Hlasitost štěkotu: Uvidíme, ale asi dost', 'Deka: Růžová (v ceně)', 'Roztomilost: Smrtící úroveň']
+    },
+    {
+        id: 8,
+        title: 'Plane Ticket to Cape Town - One Way Trip',
+        title_cs: 'Letenka do Kapského Města - Jednosměrná cesta',
+        image: '../images/products/ticket.jpg',
+        price: 4299,
+        originalPrice: 5999,
+        rating: 3.8,
+        reviews: '8,765',
+        prime: false,
+        category: 'questionable',
+        badge: '✈️ Travel',
+        badge_cs: '✈️ Cestování',
+        description: 'One plane ticket to Cape Town! Escape to South Africa and never look back. Warning: This is economy class, seat 32K. You\'ll be sitting between two strangers for hours. Good luck!',
+        description_cs: 'Jedna letenka do Kapského Města! Utečte do Jižní Afriky a už se neohlížejte. Varování: Tohle je ekonomická třída, sedadlo 32K. Budete sedět hodiny mezi dvěma cizinci. Hodně štěstí!',
+        specs: ['Destination: Cape Town', 'Class: Economy (sorry)', 'Seat: 32K (the worst one)', 'Legroom: What\'s that?', 'Snacks: Not included', 'Regret level: TBD'],
+        specs_cs: ['Cíl: Kapské Město', 'Třída: Ekonomická (sorry)', 'Sedadlo: 32K (to nejhorší)', 'Místo na nohy: Co to je?', 'Svačiny: Nejsou v ceně', 'Úroveň lítosti: Uvidíme']
+    },
+    {
+        id: 9,
+        title: 'Used TV - Owner Wants to Sell ASAP (Definitely Works)',
+        title_cs: 'Použitá TV - Majitel chce prodat ASAP (Fakt funguje)',
+        image: '../images/products/tv.jpg',
+        price: 2499,
+        originalPrice: 4999,
+        rating: 3.5,
+        reviews: '12,345',
+        prime: false,
+        category: 'questionable',
+        badge: 'Pre-Owned',
+        badge_cs: 'Z druhé ruky',
+        description: 'The owner REALLY wants to sell this TV. It definitely works fine. Ignore the software update screen. Ignore the suspicious urgency. Just buy it. PLEASE.',
+        description_cs: 'Majitel tuhle televizi FAKT chce prodat. Funguje úplně v pohodě. Ignorujte tu obrazovku s aktualizací. Ignorujte tu podezřelou naléhavost. Prostě to kupte. PROSÍM.',
+        specs: ['Condition: "Good"', 'Owner urgency: Very high', 'Reasons for selling: "Moving"', 'Software updates: Ongoing', 'Trust factor: Questionable'],
+        specs_cs: ['Stav: "Dobrý"', 'Naléhavost majitele: Velmi vysoká', 'Důvod prodeje: "Stěhování"', 'Aktualizace softwaru: Probíhají', 'Faktor důvěry: Pochybný']
+    },
+    {
+        id: 10,
+        title: '2 Different Bowls - Literally Just 2 Bowls',
+        title_cs: '2 různé misky - Doslova jen 2 misky',
+        image: '../images/products/2bowls.jpg',
+        price: 199,
+        originalPrice: 349,
+        rating: 4.2,
+        reviews: '5,432',
+        prime: true,
+        category: 'essential',
+        badge: 'Practical',
+        badge_cs: 'Praktické',
+        description: 'Two bowls. They\'re different sizes and colors. One is red, one is black. That\'s it. That\'s the product. What more do you want? They hold food. Background human not included.',
+        description_cs: 'Dvě misky. Mají různé velikosti a barvy. Jedna je červená, druhá černá. To je všechno. To je ten produkt. Co víc chcete? Drží jídlo. Člověk v pozadí není součástí balení.',
+        specs: ['Quantity: 2', 'Colors: Red & Black', 'Sizes: Different', 'Purpose: Holding stuff', 'Complexity: Very low', 'Background person: Not for sale'],
+        specs_cs: ['Množství: 2', 'Barvy: Červená a černá', 'Velikosti: Různé', 'Účel: Držení věcí', 'Složitost: Velmi nízká', 'Člověk v pozadí: Není na prodej']
+    },
+    {
+        id: 11,
+        title: 'Christmas Tree + 2 Strange White Girls (Bundle Deal)',
+        title_cs: 'Vánoční stromek + 2 divný bílý holky (Výhodný set)',
+        image: '../images/products/xmastree.jpg',
+        price: 899,
+        originalPrice: 1499,
+        rating: 4.7,
+        reviews: '6,789',
+        prime: false,
+        category: 'impulse',
+        badge: '🎄 Festive',
+        badge_cs: '🎄 Sváteční',
+        description: 'Beautiful LED Christmas tree for sale! Comes with 2 strange white girls wearing matching beanies who will stand next to it and drink from paper cups. Package deal only, cannot separate.',
+        description_cs: 'Krásný vánoční LED stromek na prodej! Součástí jsou 2 divné bílé holky ve stejných kulíšcích, které u něj budou stát a pít z papírových kelímků. Pouze jako komplet, nelze rozdělit.',
+        specs: ['Tree: Fully lit with RGB', 'Girls included: 2', 'Beanie color: Red & Blue', 'Drinks: Mulled wine (probably)', 'Separation: Not possible', 'Christmas spirit: Maximum'],
+        specs_cs: ['Stromek: Kompletně podsvícený RGB', 'Holky v ceně: 2', 'Barva kulichů: Červená a modrá', 'Pití: Svařák (asi)', 'Rozdělení: Nemožné', 'Vánoční nálada: Maximální']
+    },
+    {
+        id: 12,
+        title: 'Entire Albert Supermarket + Sleeping Homeless Guy',
+        title_cs: 'Celý supermarket Albert + spící bezdomovec',
+        image: '../images/products/albertstore.jpg',
+        price: 12999999,
+        originalPrice: 19999999,
+        rating: 3.9,
+        reviews: '23,456',
+        prime: false,
+        category: 'impulse',
+        badge: 'Real Estate',
+        badge_cs: 'Reality',
+        description: 'Why buy groceries when you can buy the WHOLE STORE? Includes building, inventory, and one sleeping homeless gentleman outside (non-negotiable). Open 24/7, harsh lighting included. Liminal space vibes guaranteed.',
+        description_cs: 'Proč kupovat potraviny, když si můžete koupit CELÝ KRÁM? Zahrnuje budovu, zásoby a jednoho spícího bezdomovce venku (v ceně, nelze odebrat). Otevřeno 24/7, ostré zářivky v ceně. Atmosféra liminálních prostor zaručena.',
+        specs: ['Size: Entire building', 'Inventory: Fully stocked', 'Lighting: Fluorescent hell', 'Hours: 24/7', 'Homeless guy: Included (feature, not bug)', 'Vibes: Deeply unsettling'],
+        specs_cs: ['Velikost: Celá budova', 'Zásoby: Kompletně naskladněno', 'Osvětlení: Zářivkové peklo', 'Otevíračka: 24/7', 'Bezdomovec: V ceně (jako bonus)', 'Vibe: Hluboce znepokojující']
+    },
+{
+        badge: 'Practical',
+        badge_cs: 'Praktické',
+        description: 'Just 2 bowls',
+        description_cs: 'Prostě 2 misky',
+        specs: ['Quantity: 2'],
+        specs_cs: ['Množství: 2']
+    },
+    {
+        id: 11,
+        title: 'Christmas Tree + 2 Strange White Girls',
+        title_cs: 'Vánoční stromek + 2 divné holky',
+        image: '../images/products/xmastree.jpg',
+        price: 899,
+        originalPrice: 1499,
+        rating: 4.7,
+        reviews: '6,789',
+        prime: false,
+        category: 'impulse',
+        badge: '🎄 Festive',
+        badge_cs: '🎄 Sváteční',
+        description: 'LED Christmas tree with girls',
+        description_cs: 'LED vánoční stromek s holkami',
+        specs: ['Tree: Fully lit'],
+        specs_cs: ['Stromek: Kompletně podsvícený']
+    },
+    {
+        id: 12,
+        title: 'Entire Albert Supermarket',
+        title_cs: 'Celý supermarket Albert',
+        image: '../images/products/albertstore.jpg',
+        price: 12999999,
+        originalPrice: 19999999,
+        rating: 3.9,
+        reviews: '23,456',
+        prime: false,
+        category: 'impulse',
+        badge: 'Real Estate',
+        badge_cs: 'Nemovitost',
+        description: 'Buy the whole store!',
+        description_cs: 'Kupte si celý krám!',
+        specs: ['Size: Entire building'],
+        specs_cs: ['Velikost: Celá budova']
+    }
+];
+
+        // Payment codes with balances
+        const paymentCodes = {
+            'RICH': 999999,
+            'BROKE': 0,
+            'YOLO': 5000,
+            '1337': 13370,
+            '42': 424242,
+            'MONEY': 10000,
+            'HELP': 100,
+            'PLEASE': 50,
+            '1997': 19970,
+            '2025': 20250,
+            'LUCKY': 7777,
+            'WINNER': 50000
+        };
+
+        let cart = [];
+        let userBalance = 0;
+        let currentFilter = 'all';
+
+        // Get currency symbol based on language
+        function getCurrency() {
+            return (I18N && I18N.currentLang === 'cs') ? 'Kč ' : 'R';
+        }
+
+        // Create product card HTML
+        function createProduct(product) {
+            const starsHtml = '⭐'.repeat(Math.floor(product.rating));
+            const delay = Math.random() * 0.4;
+            
+            const isCzech = I18N && I18N.currentLang === 'cs';
+            const title = isCzech && product.title_cs ? product.title_cs : product.title;
+            const badge = isCzech && product.badge_cs ? product.badge_cs : product.badge;
             
             return `
-                <div class="product-card">
-                    <div class="product-image" style="background: ${data.bg};">
-                        ${data.emoji}
-                    </div>
-                    <div class="product-title">${data.title}</div>
+                <div class="product-card" style="animation-delay: ${delay}s" data-category="${product.category}" data-prime="${product.prime}" onclick="showProductDetail(${product.id})">
+                    ${badge ? `<div class="product-badge">${badge}</div>` : ''}
+                    <img src="${product.image}" alt="${title}" class="product-image">
+                    <div class="product-title">${title}</div>
                     <div class="product-rating">
                         <span class="stars">${starsHtml}</span>
-                        <span>${data.rating}</span>
-                        <span class="rating-count">(${data.reviews})</span>
+                        <span>${product.rating}</span>
+                        <span class="rating-count">(${product.reviews})</span>
                     </div>
-                    <div class="product-price">${data.price}</div>
-                    ${data.prime ? '<div class="prime-badge">prime</div>' : ''}
-                    <button class="add-to-cart" onclick="addToCart('${data.title}')">Add to Cart</button>
+                    <div>
+                        <span class="product-price">R${product.price}</span>
+                        ${product.originalPrice ? `<span class="product-price-small">R${product.originalPrice}</span>` : ''}
+                    </div>
+                    ${product.prime ? `<div class="prime-badge">${I18N ? I18N.t('amazon_prime_delivery') : '⚡ prime'}</div>` : ''}
+                    <button class="add-to-cart" onclick="event.stopPropagation(); addToCart(${product.id})" data-i18n-key="amazon_add_to_cart">${I18N ? I18N.t('amazon_add_to_cart') : 'Add to Cart'}</button>
                 </div>
             `;
         }
 
-        function addToCart(item) {
-            alert('Added to cart: ' + item + ' 🛒');
-            const cartCount = document.querySelector('.cart-count');
-            cartCount.innerText = parseInt(cartCount.innerText) + 1;
+        // Show product detail modal
+        function showProductDetail(productId) {
+            const product = products.find(p => p.id === productId);
+            const starsHtml = '⭐'.repeat(Math.floor(product.rating));
+            
+            const isCzech = I18N && I18N.currentLang === 'cs';
+            const title = isCzech && product.title_cs ? product.title_cs : product.title;
+            const badge = isCzech && product.badge_cs ? product.badge_cs : product.badge;
+            const description = isCzech && product.description_cs ? product.description_cs : product.description;
+            const specs = isCzech && product.specs_cs ? product.specs_cs : product.specs;
+            
+            const detailHTML = `
+                <div style="padding: 20px;">
+                    <img src="${product.image}" alt="${title}" style="width: 100%; max-height: 400px; object-fit: contain; border-radius: 12px; margin-bottom: 20px;">
+                    <h2 style="font-size: 1.8rem; margin-bottom: 12px; color: #0F1111;">${title}</h2>
+                    ${badge ? `<div class="product-badge" style="position: relative; display: inline-block; margin-bottom: 16px;">${badge}</div>` : ''}
+                    <div class="product-rating" style="margin-bottom: 16px;">
+                        <span class="stars">${starsHtml}</span>
+                        <span>${product.rating}</span>
+                        <span class="rating-count">(${product.reviews} ${I18N ? I18N.t('amazon_reviews') : 'reviews'})</span>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <span class="product-price" style="font-size: 2.2rem;">R${product.price}</span>
+                        ${product.originalPrice ? `<span class="product-price-small" style="font-size: 1.2rem;">R${product.originalPrice}</span>` : ''}
+                    </div>
+                    ${product.prime ? `<div class="prime-badge" style="margin-bottom: 20px;">${I18N ? I18N.t('amazon_prime_delivery') : '⚡ prime - FREE One-Day Delivery'}</div>` : ''}
+                    <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                        <h3 style="font-size: 1.2rem; margin-bottom: 12px; color: #0F1111;">${I18N ? I18N.t('amazon_product_description') : 'Product Description'}</h3>
+                        <p style="color: #555; line-height: 1.6; margin-bottom: 12px;">${description || 'An absolutely essential item that you definitely need in your life right now. Trust us on this one.'}</p>
+                    </div>
+                    ${specs ? `
+                        <div style="background: #f0f8ff; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #007185;">
+                            <h3 style="font-size: 1.2rem; margin-bottom: 12px; color: #0F1111;">${I18N ? I18N.t('amazon_specifications') : 'Technical Specifications'}</h3>
+                            <ul style="list-style: none; padding: 0;">
+                                ${specs.map(spec => `<li style="padding: 8px 0; border-bottom: 1px solid #ddd; color: #555;">✓ ${spec}</li>`).join('')}
+                            </ul>
+                        </div>
+                    ` : ''}
+                    <button class="checkout-btn" onclick="event.stopPropagation(); addToCart(${product.id}); closeProductModal();" style="margin-top: 16px;">
+                        ${I18N ? I18N.t('amazon_add_to_cart') : 'Add to Cart'} 🛒
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('product-detail-content').innerHTML = detailHTML;
+            document.getElementById('product-modal').classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
 
-        // Populate products when page loads
+        // Close product detail modal
+        function closeProductModal() {
+            document.getElementById('product-modal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Show toast notification
+        function showToast(message, duration = 3000) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-text').textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), duration);
+        }
+
+        // Add to cart
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            cart.push(product);
+            
+            const cartElement = document.querySelector('.cart');
+            cartElement.classList.add('bounce');
+            setTimeout(() => cartElement.classList.remove('bounce'), 500);
+            
+            document.getElementById('cart-count').innerText = cart.length;
+            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            const isCzech = I18N && I18N.currentLang === 'cs';
+            const title = isCzech && product.title_cs ? product.title_cs : product.title;
+            
+            const messages = isCzech ? [
+                `✨ Přidáno "${title}" do košíku!`,
+                `🎉 Skvělá volba! Košík vypadá dobře!`,
+                `🛍️ Přidáno! Pokračuj v nákupu!`,
+                `💫 V košíku! Jdeš na to!`,
+                `🎊 Parádně! Tvůj košík se plní!`
+            ] : [
+                `✨ Added "${title}" to cart!`,
+                `🎉 Great choice! Cart is looking good!`,
+                `🛍️ Added! Keep shopping!`,
+                `💫 In the cart! You're on a roll!`,
+                `🎊 Nice! Your cart is filling up!`
+            ];
+            showToast(messages[Math.floor(Math.random() * messages.length)]);
+        }
+
+        // Toggle cart modal
+        function toggleCart() {
+            const modal = document.getElementById('cart-modal');
+            modal.classList.toggle('active');
+            
+            if (modal.classList.contains('active')) {
+                updateCartDisplay();
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Update cart display
+        function updateCartDisplay() {
+            const cartItemsDiv = document.getElementById('cart-items');
+            
+            if (cart.length === 0) {
+                const emptyText = I18N ? I18N.t('amazon_cart_empty') : 'Your cart is empty!';
+                const emptyDesc = I18N ? I18N.t('amazon_cart_empty_desc') : 'Start adding some amazing items';
+                
+                cartItemsDiv.innerHTML = `
+                    <div class="empty-cart">
+                        <div class="empty-cart-icon">🛒</div>
+                        <h3>${emptyText}</h3>
+                        <p style="margin-top: 12px; color: #666;">${emptyDesc}</p>
+                    </div>
+                `;
+                document.getElementById('cart-total').innerText = '0';
+                return;
+            }
+            
+            let total = 0;
+            let html = '';
+            
+            const isCzech = I18N && I18N.currentLang === 'cs';
+            const removeText = I18N ? I18N.t('amazon_remove') : 'Remove';
+            
+            cart.forEach((product, index) => {
+                total += product.price;
+                const title = isCzech && product.title_cs ? product.title_cs : product.title;
+                
+                html += `
+                    <div class="cart-item">
+                        <img src="${product.image}" alt="${title}" class="cart-item-image">
+                        <div class="cart-item-details">
+                            <div class="cart-item-title">${title}</div>
+                            <div class="cart-item-price">R${product.price}</div>
+                            ${product.prime ? `<div class="prime-badge" style="margin-top: 8px;">${I18N ? I18N.t('amazon_prime_delivery') : '⚡ prime'}</div>` : ''}
+                        </div>
+                        <div class="cart-item-actions">
+                            <button class="cart-item-remove" onclick="removeFromCart(${index})">${removeText}</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            cartItemsDiv.innerHTML = html;
+            document.getElementById('cart-total').innerText = total.toFixed(0);
+        }
+
+        // Remove from cart
+        function removeFromCart(index) {
+            const product = cart[index];
+            cart.splice(index, 1);
+            document.getElementById('cart-count').innerText = cart.length;
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartDisplay();
+            
+            const isCzech = I18N && I18N.currentLang === 'cs';
+            const title = isCzech && product.title_cs ? product.title_cs : product.title;
+            const message = isCzech ? `Odebráno "${title}" z košíku` : `Removed "${title}" from cart`;
+            showToast(message);
+        }
+
+        // Proceed to checkout
+        function proceedToCheckout() {
+            if (cart.length === 0) {
+                const message = (I18N && I18N.currentLang === 'cs') ? '⚠️ Váš košík je prázdný!' : '⚠️ Your cart is empty!';
+                showToast(message);
+                return;
+            }
+            
+            document.getElementById('cart-modal').classList.remove('active');
+            document.getElementById('payment-modal').classList.add('active');
+            document.getElementById('payment-code').focus();
+        }
+
+        // Process payment
+        function processPayment() {
+            const code = document.getElementById('payment-code').value.trim().toUpperCase();
+            const errorDiv = document.getElementById('payment-error');
+            const total = cart.reduce((sum, product) => sum + product.price, 0);
+            const isCzech = I18N && I18N.currentLang === 'cs';
+            
+            errorDiv.classList.remove('show');
+            
+            if (!code) {
+                errorDiv.textContent = isCzech ? '⚠️ Prosím zadejte platební kód!' : '⚠️ Please enter a payment code!';
+                errorDiv.classList.add('show');
+                return;
+            }
+            
+            if (!paymentCodes.hasOwnProperty(code)) {
+                errorDiv.textContent = isCzech ? '❌ Neplatný kód! Zkuste: RICH, YOLO, 42, MONEY, nebo 1997' : '❌ Invalid code! Try: RICH, YOLO, 42, MONEY, or 1997';
+                errorDiv.classList.add('show');
+                return;
+            }
+            
+            const codeBalance = paymentCodes[code];
+            
+            if (codeBalance < total) {
+                errorDiv.textContent = isCzech ? `💸 Nedostatek prostředků! Tento kód má pouze R${codeBalance}` : `💸 Insufficient funds! This code only has R${codeBalance}`;
+                errorDiv.classList.add('show');
+                return;
+            }
+            
+            // Success!
+            userBalance = codeBalance - total;
+            document.getElementById('balance').innerText = userBalance.toLocaleString();
+            
+            // Generate random order number
+            const orderNumber = Math.floor(100000 + Math.random() * 900000);
+            document.getElementById('order-number').textContent = orderNumber;
+            
+            document.getElementById('payment-form').style.display = 'none';
+            document.getElementById('payment-success').style.display = 'block';
+            
+            // Clear cart after delay
+            setTimeout(() => {
+                cart = [];
+                document.getElementById('cart-count').innerText = '0';
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }, 2000);
+        }
+
+        // Filter products
+        function filterProducts(filter) {
+            currentFilter = filter;
+            
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Show/hide products
+            document.querySelectorAll('.product-card').forEach(card => {
+                const category = card.getAttribute('data-category');
+                const isPrime = card.getAttribute('data-prime') === 'true';
+                
+                if (filter === 'all') {
+                    card.style.display = 'block';
+                } else if (filter === 'prime') {
+                    card.style.display = isPrime ? 'block' : 'none';
+                } else {
+                    card.style.display = category === filter ? 'block' : 'none';
+                }
+            });
+        }
+
+        // Scroll to products
+        function scrollToProducts() {
+            document.querySelector('.filters').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Initialize on page load
         window.addEventListener('DOMContentLoaded', function() {
-            // Recommended Products
-            document.getElementById('recommended-products').innerHTML = [
-                createProduct({
-                    title: 'Fourth Wing by Rebecca Yarros - Hardcover',
-                    emoji: '📖',
-                    bg: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)',
-                    price: 'R 349',
-                    rating: 4.9,
-                    reviews: '12,458',
-                    prime: true
-                }),
-                createProduct({
-                    title: 'Iron Flame (Empyrean Series Book 2)',
-                    emoji: '🔥',
-                    bg: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-                    price: 'R 389',
-                    rating: 4.8,
-                    reviews: '8,234',
-                    prime: true
-                }),
-                createProduct({
-                    title: 'The Ordinary Niacinamide 10% + Zinc 1%',
-                    emoji: '🧴',
-                    bg: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
-                    price: 'R 120',
-                    rating: 4.7,
-                    reviews: '45,789',
-                    prime: true
-                }),
-                createProduct({
-                    title: 'Yoga Mat - Extra Thick Non-Slip',
-                    emoji: '🧘‍♀️',
-                    bg: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)',
-                    price: 'R 299',
-                    rating: 4.6,
-                    reviews: '3,456',
-                    prime: true
-                })
-            ].join('');
+            console.log('Amazon.za: Page loaded, current language:', I18N ? I18N.currentLang : 'unknown');
+            
+            // Load cart from localStorage
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+                document.getElementById('cart-count').innerText = cart.length;
+            }
+            
+            // Apply translations
+            if (typeof applyTranslations === 'function') {
+                applyTranslations();
+            }
+            
+            // Populate products by category
+            const essentialProducts = products.filter(p => p.category === 'essential');
+            const questionableProducts = products.filter(p => p.category === 'questionable');
+            const impulseProducts = products.filter(p => p.category === 'impulse');
+            
+            console.log('Products found:', {
+                essential: essentialProducts.length,
+                questionable: questionableProducts.length,
+                impulse: impulseProducts.length,
+                total: products.length
+            });
+            
+            console.log('First product HTML:', essentialProducts.length > 0 ? createProduct(essentialProducts[0]) : 'No products');
+            
+            document.getElementById('products-essential').innerHTML = essentialProducts.map(createProduct).join('');
+            document.getElementById('products-questionable').innerHTML = questionableProducts.map(createProduct).join('');
+            document.getElementById('products-impulse').innerHTML = impulseProducts.map(createProduct).join('');
+        });
 
-            // Book Products
-            document.getElementById('book-products').innerHTML = [
-                createProduct({
-                    title: 'A Court of Thorns and Roses Series Box Set',
-                    emoji: '🌹',
-                    bg: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-                    price: 'R 899',
-                    rating: 4.9,
-                    reviews: '23,456',
-                    prime: true
-                }),
-                createProduct({
-                    title: 'The Shadow and Bone Trilogy',
-                    emoji: '⚡',
-                    bg: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-                    price: 'R 750',
-                    rating: 4.8,
-                    reviews: '18,234',
-                    prime: true
-                }),
-                createProduct({
-                    title: 'Legendborn by Tracy Deonn',
-                    emoji: '✨',
-                    bg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                    price: 'R 329',
-                    rating: 4.7,
-                    reviews: '9,876',
-                    prime: true
-                }),
-                createProduct({
-                    title: 'Crescent City Series by Sarah J. Maas',
-                    emoji: '🌙',
-                    bg: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)',
-                    price: 'R 699',
-                    rating: 4.9,
-                    reviews: '15,678',
-                    prime: true
-                })
-            ].join('');
+        // Enter key to submit payment
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('payment-code').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    processPayment();
+                }
+            });
+        });
 
-            // Fitness Products
-            document.getElementById('fitness-products').innerHTML = [
-                createProduct({
-                    title: 'Floorball Stick - Professional Grade',
-                    emoji: '🏑',
-                    bg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                    price: 'R 450',
-                    rating: 4.5,
-                    reviews: '234',
-                    prime: false
-                }),
-                createProduct({
-                    title: 'Resistance Bands Set - 5 Levels',
-                    emoji: '💪',
-                    bg: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-                    price: 'R 199',
-                    rating: 4.6,
-                    reviews: '5,678',
-                    prime: true
-                }),
-                createProduct({
-                    title: 'Foam Roller for Muscle Recovery',
-                    emoji: '🎯',
-                    bg: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-                    price: 'R 249',
-                    rating: 4.7,
-                    reviews: '3,456',
-                    prime: true
-                }),
-                createProduct({
-                    title: 'Water Bottle - 1L Motivational',
-                    emoji: '💧',
-                    bg: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)',
-                    price: 'R 129',
-                    rating: 4.8,
-                    reviews: '12,345',
-                    prime: true
-                })
-            ].join('');
+        // Close modals on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.getElementById('cart-modal').classList.remove('active');
+                document.getElementById('payment-modal').classList.remove('active');
+                document.getElementById('product-modal').classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
 
-            // Pet Products
-            document.getElementById('pet-products').innerHTML = [
-                createProduct({
-                    title: 'Whippet Training Guide Book',
-                    emoji: '📘',
-                    bg: 'linear-gradient(135deg, #d4a5a5 0%, #e9defa 100%)',
-                    price: 'R 279',
-                    rating: 4.9,
-                    reviews: '892',
-                    prime: true
-                }),
-                createProduct({
-                    title: 'Dog Bed - Orthopedic Memory Foam',
-                    emoji: '🛏️',
-                    bg: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
-                    price: 'R 799',
-                    rating: 4.8,
-                    reviews: '4,567',
-                    prime: true
-                }),
-                createProduct({
-                    title: 'Adjustable Dog Collar & Leash Set',
-                    emoji: '🦴',
-                    bg: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
-                    price: 'R 189',
-                    rating: 4.7,
-                    reviews: '8,901',
-                    prime: true
-                }),
-                createProduct({
-                    title: 'Puppy Chew Toys - 10 Pack',
-                    emoji: '🎾',
-                    bg: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)',
-                    price: 'R 159',
-                    rating: 4.6,
-                    reviews: '23,456',
-                    prime: true
-                })
-            ].join('');
+        // Close modal when clicking outside
+        document.getElementById('cart-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                toggleCart();
+            }
+        });
 
-            // Travel Products
-            document.getElementById('travel-products').innerHTML = [
-                createProduct({
-                    title: 'Lonely Planet Prague Travel Guide',
-                    emoji: '🗺️',
-                    bg: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-                    price: 'R 349',
-                    rating: 4.8,
-                    reviews: '2,345',
-                    prime: true
-                }),
-                createProduct({
-                    title: 'Travel Backpack - 40L Carry-On',
-                    emoji: '🎒',
-                    bg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                    price: 'R 899',
-                    rating: 4.7,
-                    reviews: '12,678',
-                    prime: true
-                }),
-                createProduct({
-                    title: 'Czech Phrasebook & Dictionary',
-                    emoji: '📚',
-                    bg: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)',
-                    price: 'R 189',
-                    rating: 4.5,
-                    reviews: '567',
-                    prime: true
-                }),
-                createProduct({
-                    title: 'Travel Adapter - Universal European',
-                    emoji: '🔌',
-                    bg: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-                    price: 'R 149',
-                    rating: 4.9,
-                    reviews: '34,567',
-                    prime: true
-                })
-            ].join('');
+        document.getElementById('payment-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        document.getElementById('product-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeProductModal();
+            }
         });
     </script>
 </body>

@@ -317,6 +317,155 @@
         }
 
     </style>
+
+<!-- HeartOS i18n -->
+<script>
+window.__translations = {
+    en: {
+        search: "Search videos...",
+        home: "Home",
+        shorts: "Shorts",
+        subscriptions: "Subscriptions",
+        library: "Library",
+        history: "History",
+
+        all: "All",
+        skincare: "Skincare",
+        books: "Books",
+        fitness: "Fitness",
+        czech_language: "Czech Language",
+        red_pandas: "Red Pandas",
+        travel: "Travel",
+        whippets: "Whippets",
+        minimalism: "Minimalism",
+
+        recommended: "Recommended",
+        views: "views",
+        ago: "ago",
+
+        // video i18n keys
+        v1_title: "My Low-Buy Year: 2 Month Update | Saved $400!",
+        v2_title: "Fourth Wing Book Review (NO SPOILERS!) 🐉",
+        v3_title: "Full Body Workout at Home | 30 Minutes",
+        v4_title: "Learn Czech in 10 Minutes - Basic Phrases 🇨🇿",
+        v5_title: "Red Panda Compilation - Cutest Moments! 🐼",
+        v6_title: "Prague Travel Guide 2025 | Hidden Gems",
+        v7_title: "Whippet Puppy Training | First 8 Weeks",
+        v8_title: "10 Step Korean Skincare Routine Explained",
+        v9_title: "Floorball Tips & Tricks for Beginners",
+        v10_title: "Book Haul February 2025 | Fantasy Romance",
+        v11_title: "Minimalist Home Tour 2025 | Less is More",
+        v12_title: "That Girl Morning Routine | Productive & Healthy"
+    },
+    cs: {
+        search: "Hledat videa...",
+        home: "Domů",
+        shorts: "Shorts",
+        subscriptions: "Odběry",
+        library: "Knihovna",
+        history: "Historie",
+
+        all: "Vše",
+        skincare: "Péče o pleť",
+        books: "Knihy",
+        fitness: "Cvičení",
+        czech_language: "Čeština",
+        red_pandas: "Pandy červené",
+        travel: "Cestování",
+        whippets: "Whippeti",
+        minimalism: "Minimalismus",
+
+        recommended: "Doporučené",
+        views: "zhlédnutí",
+        ago: "před",
+
+        // video i18n keys
+        v1_title: "Low-buy rok: 2měsíční update | Ušetřila jsem 400 $!",
+        v2_title: "Recenze Fourth Wing (bez spoilerů!) 🐉",
+        v3_title: "Full body cvičení doma | 30 minut",
+        v4_title: "Čeština za 10 minut – základní fráze 🇨🇿",
+        v5_title: "Kompilace pandy červené – nejroztomilejší momenty! 🐼",
+        v6_title: "Průvodce Prahou 2025 | Skryté tipy",
+        v7_title: "Výcvik whippet štěněte | Prvních 8 týdnů",
+        v8_title: "Korejská skincare rutina v 10 krocích – vysvětleno",
+        v9_title: "Florbalf: tipy a triky pro začátečníky",
+        v10_title: "Book haul únor 2025 | Fantasy romance",
+        v11_title: "Minimalistická prohlídka domu 2025 | Méně je víc",
+        v12_title: "That Girl ranní rutina | Produktivní & zdravá"
+    }
+};
+</script>
+
+<script>
+// i18n bridge - reads language from parent localStorage
+(function() {
+    const LANG = localStorage.getItem('heartosLang') || 'en';
+    window.__lang = LANG;
+
+    window.__t = function(key) {
+        const dict = window.__translations;
+        if (!dict) return key;
+        const lang = dict[LANG] || dict['en'];
+        return (lang && lang[key]) || (dict['en'] && dict['en'][key]) || key;
+    };
+
+    // Auto-translate elements with data-i18n after DOM loads
+    window.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('[data-i18n]').forEach(function(el) {
+            var key = el.getAttribute('data-i18n');
+            var translated = window.__t(key);
+            if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                el.placeholder = translated;
+            } else {
+                el.textContent = translated;
+            }
+        });
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+            el.placeholder = window.__t(el.getAttribute('data-i18n-placeholder'));
+        });
+        if (typeof window.__translateSite === 'function') {
+            window.__translateSite();
+        }
+    });
+
+    // Optional: live update if HeartOS changes language while this page is open
+    window.addEventListener('storage', function(e){
+        if(e.key === 'heartosLang'){
+            location.reload();
+        }
+    });
+})();
+</script>
+
+<script>
+    window.__translateSite = function() {
+        var t = window.__t;
+
+        // Search placeholder
+        var si = document.querySelector('.search-input');
+        if (si) si.placeholder = t('search');
+
+        // Sidebar items (by data-key)
+        document.querySelectorAll('[data-nav]').forEach(function(el){
+            var key = el.getAttribute('data-nav');
+            var label = el.querySelector('.nav-label');
+            if (label) label.textContent = t(key);
+        });
+
+        // Chips
+        document.querySelectorAll('.chip').forEach(function(chip){
+            var key = chip.getAttribute('data-chip');
+            if (key) chip.textContent = t(key);
+        });
+
+        // Section title if present
+        document.querySelectorAll('.section-title, h2').forEach(function(el){
+            if (el.getAttribute('data-i18n') === 'recommended') el.textContent = t('recommended');
+        });
+    };
+</script>
+<!-- /HeartOS i18n -->
+
 </head>
 <body>
     <!-- HEADER -->
@@ -330,7 +479,7 @@
         </div>
         <div class="header-center">
             <div class="search-container">
-                <input type="text" class="search-input" placeholder="Search">
+                <input type="text" class="search-input" placeholder="Search videos...">
                 <button class="search-btn">🔍</button>
             </div>
         </div>
@@ -343,17 +492,17 @@
 
     <!-- SIDEBAR -->
     <div class="sidebar">
-        <div class="sidebar-item active">
+        <div class="sidebar-item active" data-nav="home">
             <span class="sidebar-icon">🏠</span>
-            <span>Home</span>
+            <span class="nav-label">Home</span>
         </div>
-        <div class="sidebar-item">
+        <div class="sidebar-item" data-nav="shorts">
             <span class="sidebar-icon">🎬</span>
-            <span>Shorts</span>
+            <span class="nav-label">Shorts</span>
         </div>
-        <div class="sidebar-item">
+        <div class="sidebar-item" data-nav="subscriptions">
             <span class="sidebar-icon">📺</span>
-            <span>Subscriptions</span>
+            <span class="nav-label">Subscriptions</span>
         </div>
         
         <div class="sidebar-divider"></div>
@@ -362,18 +511,18 @@
             <span class="sidebar-icon">🎵</span>
             <span>YouTube Music</span>
         </div>
-        <div class="sidebar-item">
+        <div class="sidebar-item" data-nav="library">
             <span class="sidebar-icon">📚</span>
-            <span>Library</span>
+            <span class="nav-label">Library</span>
         </div>
-        <div class="sidebar-item">
+        <div class="sidebar-item" data-nav="history">
             <span class="sidebar-icon">🕒</span>
-            <span>History</span>
+            <span class="nav-label">History</span>
         </div>
         
         <div class="sidebar-divider"></div>
         
-        <div class="sidebar-title">Subscriptions</div>
+        <div class="sidebar-title" data-i18n="subscriptions">Subscriptions</div>
         
         <div class="subscription-item">
             <div class="sub-pic" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);">D</div>
@@ -400,19 +549,18 @@
     <!-- MAIN CONTENT -->
     <div class="main-content">
         <div class="chips">
-            <div class="chip active">All</div>
-            <div class="chip">Skincare</div>
-            <div class="chip">Books</div>
-            <div class="chip">Fitness</div>
-            <div class="chip">Czech Language</div>
-            <div class="chip">Red Pandas</div>
-            <div class="chip">Travel</div>
-            <div class="chip">Whippets</div>
-            <div class="chip">Minimalism</div>
+            <div class="chip active" data-chip="all">All</div>
+            <div class="chip" data-chip="skincare">Skincare</div>
+            <div class="chip" data-chip="books">Books</div>
+            <div class="chip" data-chip="fitness">Fitness</div>
+            <div class="chip" data-chip="czech_language">Czech Language</div>
+            <div class="chip" data-chip="red_pandas">Red Pandas</div>
+            <div class="chip" data-chip="travel">Travel</div>
+            <div class="chip" data-chip="whippets">Whippets</div>
+            <div class="chip" data-chip="minimalism">Minimalism</div>
         </div>
 
-        <div class="video-grid" id="video-grid">
-        </div>
+        <div class="video-grid" id="video-grid"></div>
     </div>
 
     <script>
@@ -428,151 +576,184 @@
                             ${data.channelEmoji}
                         </div>
                         <div class="video-details">
-                            <div class="video-title">${data.title}</div>
-                            <div class="video-channel">${data.channel}</div>
-                            <div class="video-meta">${data.views} views • ${data.time}</div>
+                            <div class="video-title">${escapeHtml(data.title)}</div>
+                            <div class="video-channel">${escapeHtml(data.channel)}</div>
+                            <div class="video-meta">${escapeHtml(data.views)} ${window.__t('views')} • ${escapeHtml(data.time)}</div>
                         </div>
                     </div>
                 </div>
             `;
         }
 
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replaceAll('&', '&amp;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
+                .replaceAll('"', '&quot;')
+                .replaceAll("'", '&#039;');
+        }
+
+        function localizedTime(enString) {
+            // expects "X day(s) ago", "X week(s) ago", "X month(s) ago"
+            // We'll translate only the trailing "ago" for now, keeping your original phrase structure.
+            // If you want proper Czech declensions later, we can do it.
+            if (!enString) return enString;
+            if (window.__lang === 'cs') {
+                return enString.replace(/\sago$/i, ' ' + window.__t('ago'));
+            }
+            return enString;
+        }
+
         window.addEventListener('DOMContentLoaded', function() {
-            const videos = [
-                createVideo({
-                    title: 'My Low-Buy Year: 2 Month Update | Saved $400!',
+            const videosRaw = [
+                {
+                    titleKey: 'v1_title',
                     channel: 'The Daily Glow',
                     channelEmoji: '✨',
                     channelBg: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)',
                     views: '127K',
-                    time: '2 days ago',
+                    timeEn: '2 days ago',
                     duration: '12:45',
                     thumbEmoji: '💄',
                     thumbBg: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)'
-                }),
-                createVideo({
-                    title: 'Fourth Wing Book Review (NO SPOILERS!) 🐉',
+                },
+                {
+                    titleKey: 'v2_title',
                     channel: 'BookTube Reviews',
                     channelEmoji: '📚',
                     channelBg: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)',
                     views: '89K',
-                    time: '1 week ago',
+                    timeEn: '1 week ago',
                     duration: '15:22',
                     thumbEmoji: '🐉',
                     thumbBg: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)'
-                }),
-                createVideo({
-                    title: 'Full Body Workout at Home | 30 Minutes',
+                },
+                {
+                    titleKey: 'v3_title',
                     channel: 'Viky Fitness',
                     channelEmoji: '💪',
                     channelBg: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
                     views: '234K',
-                    time: '3 days ago',
+                    timeEn: '3 days ago',
                     duration: '30:12',
                     thumbEmoji: '🏋️',
                     thumbBg: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
-                }),
-                createVideo({
-                    title: 'Learn Czech in 10 Minutes - Basic Phrases 🇨🇿',
+                },
+                {
+                    titleKey: 'v4_title',
                     channel: 'Czech for Beginners',
                     channelEmoji: '🇨🇿',
                     channelBg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                     views: '456K',
-                    time: '2 weeks ago',
+                    timeEn: '2 weeks ago',
                     duration: '10:34',
                     thumbEmoji: '🗣️',
                     thumbBg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-                }),
-                createVideo({
-                    title: 'Red Panda Compilation - Cutest Moments! 🐼',
+                },
+                {
+                    titleKey: 'v5_title',
                     channel: 'Wildlife Wonders',
                     channelEmoji: '🐾',
                     channelBg: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
                     views: '2.3M',
-                    time: '1 month ago',
+                    timeEn: '1 month ago',
                     duration: '8:45',
                     thumbEmoji: '🐼',
                     thumbBg: 'linear-gradient(135deg, #ff6b6b 0%, #feca57 100%)'
-                }),
-                createVideo({
-                    title: 'Prague Travel Guide 2025 | Hidden Gems',
+                },
+                {
+                    titleKey: 'v6_title',
                     channel: 'Travel Prague',
                     channelEmoji: '🏰',
                     channelBg: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
                     views: '567K',
-                    time: '3 weeks ago',
+                    timeEn: '3 weeks ago',
                     duration: '18:30',
                     thumbEmoji: '🌉',
                     thumbBg: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
-                }),
-                createVideo({
-                    title: 'Whippet Puppy Training | First 8 Weeks',
+                },
+                {
+                    titleKey: 'v7_title',
                     channel: 'Dog Training Basics',
                     channelEmoji: '🐕',
                     channelBg: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)',
                     views: '178K',
-                    time: '1 week ago',
+                    timeEn: '1 week ago',
                     duration: '14:20',
                     thumbEmoji: '🦌',
                     thumbBg: 'linear-gradient(135deg, #d4a5a5 0%, #e9defa 100%)'
-                }),
-                createVideo({
-                    title: '10 Step Korean Skincare Routine Explained',
+                },
+                {
+                    titleKey: 'v8_title',
                     channel: 'The Daily Glow',
                     channelEmoji: '✨',
                     channelBg: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)',
                     views: '892K',
-                    time: '2 months ago',
+                    timeEn: '2 months ago',
                     duration: '16:45',
                     thumbEmoji: '🧴',
                     thumbBg: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)'
-                }),
-                createVideo({
-                    title: 'Floorball Tips & Tricks for Beginners',
+                },
+                {
+                    titleKey: 'v9_title',
                     channel: 'Sport Skills',
                     channelEmoji: '🏑',
                     channelBg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                     views: '45K',
-                    time: '2 weeks ago',
+                    timeEn: '2 weeks ago',
                     duration: '11:20',
                     thumbEmoji: '🏑',
                     thumbBg: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
-                }),
-                createVideo({
-                    title: 'Book Haul February 2025 | Fantasy Romance',
+                },
+                {
+                    titleKey: 'v10_title',
                     channel: 'BookTube Reviews',
                     channelEmoji: '📚',
                     channelBg: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)',
                     views: '123K',
-                    time: '1 week ago',
+                    timeEn: '1 week ago',
                     duration: '9:15',
                     thumbEmoji: '📖',
                     thumbBg: 'linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%)'
-                }),
-                createVideo({
-                    title: 'Minimalist Home Tour 2025 | Less is More',
+                },
+                {
+                    titleKey: 'v11_title',
                     channel: 'Simple Living',
                     channelEmoji: '🏡',
                     channelBg: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
                     views: '678K',
-                    time: '3 weeks ago',
+                    timeEn: '3 weeks ago',
                     duration: '13:50',
                     thumbEmoji: '🌿',
                     thumbBg: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)'
-                }),
-                createVideo({
-                    title: 'That Girl Morning Routine | Productive & Healthy',
+                },
+                {
+                    titleKey: 'v12_title',
                     channel: 'Aesthetic Life',
                     channelEmoji: '☀️',
                     channelBg: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)',
                     views: '1.2M',
-                    time: '1 month ago',
+                    timeEn: '1 month ago',
                     duration: '10:30',
                     thumbEmoji: '🌅',
                     thumbBg: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
-                })
+                }
             ];
-            
+
+            const videos = videosRaw.map(v => createVideo({
+                title: window.__t(v.titleKey),
+                channel: v.channel,
+                channelEmoji: v.channelEmoji,
+                channelBg: v.channelBg,
+                views: v.views,
+                time: localizedTime(v.timeEn),
+                duration: v.duration,
+                thumbEmoji: v.thumbEmoji,
+                thumbBg: v.thumbBg
+            }));
+
             document.getElementById('video-grid').innerHTML = videos.join('');
         });
     </script>

@@ -113,7 +113,21 @@
         }
         
         .chat-item.active {
+            border-left: 4px solid #00a884;
             background: #f0f2f5;
+        }
+
+        .chat-header, .sidebar-header {
+            backdrop-filter: blur(12px);
+            background: rgba(240, 242, 245, 0.8) !important;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        @keyframes messageIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .chat-item-pic {
@@ -258,6 +272,7 @@
         .msg-wrapper {
             display: flex;
             margin-bottom: 4px;
+            animation: messageIn 0.3s ease-out forwards;
         }
         
         .msg-wrapper.in {
@@ -271,12 +286,34 @@
         .msg { 
             max-width: 65%; 
             padding: 6px 7px 8px 9px; 
-            border-radius: 8px; 
+            border-radius:7.5px; 
             font-size: 14.2px; 
             line-height: 1.4; 
             position: relative; 
-            box-shadow: 0 1px 0.5px rgba(0,0,0,.13);
+            box-shadow: 0 1px 1px rgba(11,20,26,.13);
             word-wrap: break-word;
+        }
+
+        .msg.in::before {
+            content: "";
+            position: absolute;
+            left: -8px;
+            top: 0;
+            width: 8px;
+            height: 13px;
+            background: #fff;
+            clip-path: polygon(100% 0, 0 0, 100% 100%);
+        }
+
+        .msg.out::before {
+            content: "";
+            position: absolute;
+            right: -8px;
+            top: 0;
+            width: 8px;
+            height: 13px;
+            background: #d9fdd3;
+            clip-path: polygon(0 0, 100% 0, 0 100%);
         }
         
         .msg.in { 
@@ -305,9 +342,39 @@
         }
         
         .double-check {
-            color: #53bdeb;
+            color: #8696a0; /* Gray check initially */
             font-size: 16px;
             line-height: 1;
+        }
+        
+        .double-check.read {
+            color: #53bdeb; /* Blue check when "read" */
+        }
+
+        .chat-item {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chat-item::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: #00a884;
+            transform: scaleY(0);
+            transition: transform 0.2s ease;
+        }
+
+        .chat-item.active::after {
+            transform: scaleY(1);
+        }
+
+        /* 4. Soft Shadows for depth */
+        .app-container {
+            border-radius: 0; /* Or 20px if you want a floating window look */
+            overflow: hidden;
         }
         
         .footer { 
@@ -452,10 +519,120 @@
             30% { transform: translateY(-10px); opacity: 1; }
         }
     </style>
+
+<script>
+window.__translations = {
+    en: {
+        search: "Search or start new chat",
+        type_message: "Type a message",
+        online: "online",
+        typing: "typing...",
+        chats: "Chats",
+        send: "Send",
+        delivered: "Delivered",
+        read: "Read",
+        select_chat: "Select a chat to start messaging",
+        contact: "Contact",
+        whatsapp_web: "WhatsApp Web",
+        last_seen_today: "last seen today at",
+        last_seen_yesterday: "last seen yesterday at",
+        always_with_you: "always with you",
+        you: "You"
+    },
+    cs: {
+        search: "Hledat nebo začít nový chat",
+        type_message: "Napiš zprávu",
+        online: "online",
+        typing: "píše...",
+        chats: "Chaty",
+        send: "Odeslat",
+        delivered: "Doručeno",
+        read: "Přečteno",
+        select_chat: "Vyber chat pro zahájení konverzace",
+        contact: "Kontakt",
+        whatsapp_web: "WhatsApp Web",
+        last_seen_today: "naposledy viděn/a dnes v",
+        last_seen_yesterday: "naposledy viděn/a včera v",
+        always_with_you: "vždy s tebou",
+        you: "Ty"
+    }
+};
+</script>
+
+<script>
+// i18n bridge - reads language from parent localStorage
+(function() {
+    const getLang = () => localStorage.getItem('heartosLang') || 'en';
+
+    window.__lang = getLang();
+
+    window.__t = function(key) {
+        const dict = window.__translations;
+        const LANG = getLang();
+        const lang = dict[LANG] || dict['en'];
+        return (lang && lang[key]) || (dict['en'] && dict['en'][key]) || key;
+    };
+
+    // Apply translations to elements with data-i18n / data-i18n-placeholder
+    window.__applyI18n = function() {
+        document.querySelectorAll('[data-i18n]').forEach(function(el) {
+            var key = el.getAttribute('data-i18n');
+            var translated = window.__t(key);
+            if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                el.placeholder = translated;
+            } else {
+                el.textContent = translated;
+            }
+        });
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+            el.placeholder = window.__t(el.getAttribute('data-i18n-placeholder'));
+        });
+        if (typeof window.__translateSite === 'function') {
+            window.__translateSite();
+        }
+    };
+
+    window.addEventListener('DOMContentLoaded', function() {
+        window.__applyI18n();
+    });
+
+    // Live update if HeartOS changes language while this page is open
+    window.addEventListener('storage', function(e) {
+        if (e && e.key === 'heartosLang') {
+            window.__lang = getLang();
+            window.__applyI18n();
+            // Re-render chat list and messages with new language
+            if (typeof window.refreshAllContent === 'function') {
+                window.refreshAllContent();
+            }
+        }
+    });
+})();
+</script>
+
+<script>
+window.__translateSite = function() {
+    var t = window.__t;
+
+    // Search input
+    var si = document.querySelector('.search-input');
+    if (si) si.placeholder = t('search');
+
+    // Message input
+    var mi = document.getElementById('msg-input');
+    if (mi) mi.placeholder = t('type_message');
+
+    // Empty state
+    var emptyP = document.querySelector('#empty-state p');
+    if (emptyP) emptyP.textContent = t('select_chat');
+
+    var wTitle = document.querySelector('#empty-state h2');
+    if (wTitle) wTitle.textContent = t('whatsapp_web');
+};
+</script>
 </head>
 <body>
     <div class="app-container">
-        <!-- SIDEBAR -->
         <div class="sidebar">
             <div class="sidebar-header">
                 <div class="profile-pic" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">A</div>
@@ -469,21 +646,20 @@
             <div class="search-box">
                 <div class="search-wrapper">
                     <span class="search-icon">&#128269;</span>
-                    <input type="text" class="search-input" placeholder="Search or start new chat" id="search" onkeyup="searchChats()">
+                    <input type="text" class="search-input" data-i18n="search" placeholder="" id="search" onkeyup="searchChats()">
                 </div>
             </div>
             
             <div class="chat-list" id="chat-list"></div>
         </div>
 
-        <!-- MAIN CHAT AREA -->
         <div class="main-chat">
             <div class="chat-bg"></div>
             
             <div id="empty-state" class="empty-chat">
                 <div class="empty-chat-icon">&#128172;</div>
-                <h2>WhatsApp Web</h2>
-                <p>Select a chat to start messaging</p>
+                <h2 data-i18n="whatsapp_web">WhatsApp Web</h2>
+                <p data-i18n="select_chat">Select a chat to start messaging</p>
             </div>
             
             <div id="active-chat" style="display: none; flex-direction: column; height: 100%;">
@@ -491,8 +667,8 @@
                     <div class="chat-header-left">
                         <div class="profile-pic" id="header-pic" style="background: #ccc;"></div>
                         <div class="chat-header-info">
-                            <h3 id="header-name">Contact</h3>
-                            <p id="header-status">online</p>
+                            <h3 id="header-name" data-i18n="contact">Contact</h3>
+                            <p id="header-status" data-i18n="online">online</p>
                         </div>
                     </div>
                     <div class="header-icons">
@@ -506,7 +682,7 @@
                 <div class="footer">
                     <span class="footer-icon">&#128522;</span>
                     <span class="footer-icon">&#128206;</span>
-                    <input type="text" class="input-box" id="msg-input" placeholder="Type a message" onkeypress="if(event.key==='Enter') sendMsg()">
+                    <input type="text" class="input-box" id="msg-input" data-i18n="type_message" placeholder="" onkeypress="if(event.key==='Enter') sendMsg()">
                     <button class="send-btn" onclick="sendMsg()">
                         <svg viewBox="0 0 24 24" width="24" height="24">
                             <path fill="currentColor" d="M1.101 21.757L23.8 12.028 1.101 2.3l.011 7.912 13.623 1.816-13.623 1.817-.011 7.912z"></path>
@@ -518,150 +694,219 @@
     </div>
 
     <script>
-        // CHAT DATA
-        const chatData = {
+        // BILINGUAL CHAT DATA - messages have both en and cs versions
+        const chatDataRaw = {
             naeem: {
-                name: "Naeem \u2764\uFE0F",
-                status: "online",
+                name: "Naeem ❤️",
+                status: { en: "online", cs: "online" },
                 pic: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
                 letter: "N",
-                lastMessage: "Love you! See you tonight \uD83D\uDE18",
                 time: "14:23",
                 unread: 0,
                 messages: [
-                    { type: 'in', text: 'HELLOOOO, I just wanted to remind you that I love you soooo much!', time: '08:15' },
-                    { type: 'out', text: 'Yes thank you I am so loved, i love you more \u2764\uFE0F', time: '08:17' },
-                    { type: 'in', text: 'What time are you going to olomouc later?', time: '10:32' },
-                    { type: 'out', text: "11 \u2019 Then go to lidl to get a snack.", time: '10:34' },
-                    { type: 'out', text: "Im lazy tho \u2019 my one free day and i have to go to a 1 hour class.", time: '10:35' },
-                    { type: 'in', text: 'Yeahhh but hopefully it goes fast yk?', time: '10:40' },
-                    { type: 'in', text: 'maybe we can play peak later?', time: '12:15' },
-                    { type: 'out', text: 'yeah that would be nice, hopefully we beat the game lol', time: '12:20' },
-                    { type: 'in', text: 'we can if you stop falling all the time', time: '14:23' }
+                    { type: 'in', en: 'HELLOOOO, I just wanted to remind you that I love you soooo much!', cs: 'HALÓ, chtěl jsem ti jen připomenout, že tě strašně moc miluju!', time: '08:15' },
+                    { type: 'out', en: 'Yes thank you I am so loved, i love you more ❤️', cs: 'Ano díky jsem tak milovaná, miluju tě víc ❤️', time: '08:17', read: true },
+                    { type: 'in', en: 'What time are you going to olomouc later?', cs: 'V kolik jedeš do olomouce dneska?', time: '10:32' },
+                    { type: 'out', en: "11 ' Then go to lidl to get a snack.", cs: "V 11 ' Pak půjdu do lidlu pro svačinu.", time: '10:34', read: true },
+                    { type: 'out', en: "Im lazy tho ' my one free day and i have to go to a 1 hour class.", cs: "Ale jsem líná ' můj jeden volný den a musím jít na hodinovou výuku.", time: '10:35', read: true },
+                    { type: 'in', en: 'Yeahhh but hopefully it goes fast yk?', cs: 'Joooo, ale doufejme že to rychle uběhne, víš?', time: '10:40' },
+                    { type: 'in', en: 'maybe we can play peak later?', cs: 'možná bychom mohli hrát peak později?', time: '12:15' },
+                    { type: 'out', en: 'yeah that would be nice, hopefully we beat the game lol', cs: 'jo to by bylo fajn, doufejme že tu hru porazíme lol', time: '12:20', read: true },
+                    { type: 'in', en: 'we can if you stop falling all the time', cs: 'můžeme, když přestaneš pořád padat', time: '14:23' }
                 ]
             },
             mom: {
                 name: "Mom",
-                status: "last seen today at 13:45",
+                status: { en: "last seen today at 13:45", cs: "naposledy viděna dnes ve 13:45" },
                 pic: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
                 img: "../images/profile-pics/monmon.jpg",
                 letter: "M",
-                lastMessage: "he just left for the pub now",
                 time: "13:45",
                 unread: 1,
                 messages: [
-                    { type: 'in', text: 'Hi, do you want to come with me and thomas to granny later?', time: '10:00' },
-                    { type: 'out', text: 'Hi, yeah I will come after a bit. I need to work on my assignment a bit', time: '10:15' },
-                    { type: 'in', text: 'yes thats good, we will meet you there', time: '10:16' },
-                    { type: 'out', text: 'super', time: '10:20' },
-                    { type: 'in', text: 'before i forget, please remind me to lock my door so your dad doesnt snoop', time: '10:22' },
-                    { type: 'out', text: 'i will remind you, its annoying when he does', time: '10:25' },
-                    { type: 'in', text: 'very, you see why i left? GOD', time: '13:40' },
-                    { type: 'in', text: 'he just left for the pub now', time: '13:45' }
+                    { type: 'in', en: 'Hi, do you want to come with me and thomas to granny later?', cs: 'Ahoj, chceš jet se mnou a Thomasem k babičce později?', time: '10:00' },
+                    { type: 'out', en: 'Hi, yeah I will come after a bit. I need to work on my assignment a bit', cs: 'Ahoj, jo přijedu za chvíli. Musím ještě trochu pracovat na úkolu', time: '10:15', read: true },
+                    { type: 'in', en: 'yes thats good, we will meet you there', cs: 'jo to je dobré, uvidíme se tam', time: '10:16' },
+                    { type: 'out', en: 'super', cs: 'super', time: '10:20', read: true },
+                    { type: 'in', en: 'before i forget, please remind me to lock my door so your dad doesnt snoop', cs: 'než to zapomenu, připomeň mi zamknout moje dveře, aby tvůj táta nešmejdil', time: '10:22' },
+                    { type: 'out', en: 'i will remind you, its annoying when he does', cs: 'připomenu ti to, je to otravný když to dělá', time: '10:25', read: true },
+                    { type: 'in', en: 'very, you see why i left? GOD', cs: 'moc, teď vidíš proč jsem odešla? BOŽE', time: '13:40' },
+                    { type: 'in', en: 'he just left for the pub now', cs: 'právě odešel do hospody', time: '13:45' },
+                    { type: 'in', en: 'Agi, I am serious. He is already back and he smells like a literal brewery. It is only 2pm!', cs: 'Agi, myslím to vážně. Už je zpátky a smrdí jako doslova pivovar. Jsou teprve dvě odpoledne!', time: '14:00' },
+                    { type: 'in', en: 'He just sits there mumbling to himself. I can\'t stand the drinking. He is so smelly and annoying.', cs: 'Jen tam sedí a mumlá si pro sebe. To pití už nemůžu vystát. Je tak cítit a je otravnej.', time: '14:05' }
                 ]
             },
             granny: {
-                name: "Granny \uD83D\uDC75",
-                status: "last seen yesterday at 19:20",
+                name: "Granny 👵",
+                status: { en: "last seen yesterday at 19:20", cs: "naposledy viděna včera v 19:20" },
                 pic: "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)",
                 img: "../images/profile-pics/zdeni.jpg",
                 letter: "G",
-                lastMessage: "You: I'll visit this weekend! \u2764\uFE0F",
-                time: "Yesterday",
+                time: { en: "Yesterday", cs: "Včera" },
                 unread: 0,
                 messages: [
-                    { type: 'in', text: 'Helloooo Agatko, are you coming to see me as well with thomas and mom? \uD83D\uDC96', time: '11:30' },
-                    { type: 'out', text: 'Yes im going to come after a bit. I will bring my laptop too', time: '11:45' },
-                    { type: 'in', text: 'perfect, also the dogs will be here today for a few hours \uD83C\uDF39', time: '11:50' },
-                    { type: 'out', text: 'THEY WILL?', time: '11:52' },
-                    { type: 'in', text: 'You should come visit sooner than later. They want to play', time: '11:55' },
-                    { type: 'out', text: 'Ill play with them alot', time: '12:00' },
-                    { type: 'out', text: 'They need my caring touch \u2764\uFE0F', time: '12:01' },
-                    { type: 'in', text: 'Good, ill be waiting for you \uD83D\uDE0A', time: '12:05' }
+                    { type: 'in', en: 'Helloooo Agatko, are you coming to see me as well with thomas and mom? 💖', cs: 'Haló Agatko, přijdeš mě taky navštívit s Thomasem a mámou? 💖', time: '11:30' },
+                    { type: 'out', en: 'Yes im going to come after a bit. I will bring my laptop too', cs: 'Ano přijdu za chvíli. Vezmu si i notebook', time: '11:45', read: true },
+                    { type: 'in', en: 'perfect, also the dogs will be here today for a few hours 🌹', cs: 'perfektní, také pejsci tu dnes budou na pár hodin 🌹', time: '11:50' },
+                    { type: 'out', en: 'THEY WILL?', cs: 'BUDOU?', time: '11:52', read: true },
+                    { type: 'in', en: 'You should come visit sooner than later. They want to play', cs: 'Měla bys přijít spíš dřív než později. Chtějí si hrát', time: '11:55' },
+                    { type: 'out', en: 'Ill play with them alot', cs: 'Budu si s nimi hodně hrát', time: '12:00', read: true },
+                    { type: 'out', en: 'They need my caring touch ❤️', cs: 'Potřebují můj láskyplný dotek ❤️', time: '12:01', read: true },
+                    { type: 'in', en: 'Good, ill be waiting for you 😊', cs: 'Dobře, budu na tebe čekat 😊', time: '12:05' },
+                    { type: 'in', en: 'Agatko, what food should I make when everyone comes? Should I make Svíčková or Schnitzel?', cs: 'Agatko, jaké jídlo mám udělat, až všichni přijdete? Mám udělat svíčkovou nebo řízky?', time: '12:10' }
                 ]
             },
             tina: {
                 name: "Tina",
-                status: "last seen today at 07:30",
+                status: { en: "last seen today at 07:30", cs: "naposledy viděna dnes v 07:30" },
                 pic: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
                 img: "../images/profile-pics/tina.jpg",
                 letter: "T",
-                lastMessage: "Just finished night shift, exhausted \uD83D\uDE34",
                 time: "07:30",
                 unread: 2,
                 messages: [
-                    { type: 'out', text: 'hey how was the shift', time: 'Yesterday 22:00' },
-                    { type: 'in', text: 'omg so long, some drunk guy tried to get into h&m at 2am', time: 'Yesterday 23:20' },
-                    { type: 'out', text: 'WHAT lmao', time: 'Yesterday 23:22' },
-                    { type: 'in', text: 'yeah just standing there banging on the door', time: 'Yesterday 23:25' },
-                    { type: 'in', text: 'me and jarda had to deal with him for like 20 mins', time: 'Yesterday 23:27' },
-                    { type: 'out', text: 'that sounds exhausting, are you okay?', time: 'Yesterday 23:35' },
-                    { type: 'in', text: 'yeah just tired lol, another one tonight too', time: '07:15' },
-                    { type: 'in', text: 'just finished, absolutely done \uD83D\uDE34', time: '07:30' }
+                    { type: 'out', en: 'hey how was the shift', cs: 'ahoj jak byla šichta', time: { en: 'Yesterday 22:00', cs: 'Včera 22:00' }, read: true },
+                    { type: 'in', en: 'omg so long, some drunk guy tried to get into h&m at 2am', cs: 'ježiš tak dlouhá, nějakej opilec se snažil dostat do h&m ve 2 ráno', time: { en: 'Yesterday 23:20', cs: 'Včera 23:20' } },
+                    { type: 'out', en: 'WHAT lmao', cs: 'CO lmao', time: { en: 'Yesterday 23:22', cs: 'Včera 23:22' }, read: true },
+                    { type: 'in', en: 'yeah just standing there banging on the door', cs: 'jo jen tam stál a bušil do dveří', time: { en: 'Yesterday 23:25', cs: 'Včera 23:25' } },
+                    { type: 'in', en: 'me and jarda had to deal with him for like 20 mins', cs: 'já a jarda jsme se s ním museli vypořádat asi 20 minut', time: { en: 'Yesterday 23:27', cs: 'Včera 23:27' } },
+                    { type: 'out', en: 'that sounds exhausting, are you okay?', cs: 'to zní vyčerpávajícně, jsi v pohodě?', time: { en: 'Yesterday 23:35', cs: 'Včera 23:35' }, read: true },
+                    { type: 'in', en: 'yeah just tired lol, another one tonight too', cs: 'jo jen unavená lol, dnes další taky', time: '07:15' },
+                    { type: 'in', en: 'just finished, absolutely done 😴', cs: 'právě skončila, úplně hotová 😴', time: '07:30' },
+                    { type: 'in', en: 'BUT!!! I have news! I finally got the two new puppies! 🐶🐶', cs: 'ALE!!! Mám novinky! Konečně mám ty dvě nová štěňátka! 🐶🐶', time: '08:00' },
+                    { type: 'in', en: 'One is Bruno and the other is I dont know. They are so tiny and fluffy, I am going to explode.', cs: 'Jeden je Ginger a druhá nevim. Jsou tak malinký a huňatý, že asi vybuchnu.', time: '08:05' },
+                    { type: 'in', en: 'Ginger already chewed my slipper. They are literally the best things ever.', cs: 'Ginger mi už rozkousal pantofli. Jsou to doslova ty nejlepší věci na světě.', time: '08:10' }
                 ]
             },
             viky: {
-                name: "Viky \uD83C\uDFC3\u200D\u2640\uFE0F",
-                status: "online",
+                name: "Viky 🏃‍♀️",
+                status: { en: "online", cs: "online" },
                 pic: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
                 img: "../images/profile-pics/viky.jpg",
                 letter: "V",
-                lastMessage: "we go early like 7am before it gets too busy",
                 time: "15:10",
                 unread: 3,
                 messages: [
-                    { type: 'in', text: 'are you going to floorball tonight?', time: '09:10' },
-                    { type: 'out', text: 'yes finally, havent been in like 2 weeks', time: '09:15' },
-                    { type: 'in', text: 'same lol my legs are going to die', time: '09:20' },
-                    { type: 'out', text: 'worth it tho', time: '09:22' },
-                    { type: 'in', text: 'also are you free saturday?', time: '15:00' },
-                    { type: 'out', text: 'i think so why', time: '15:05' },
-                    { type: 'in', text: 'pustevny? been wanting to go for ages, the wooden buildings up there look so cool', time: '15:08' },
-                    { type: 'in', text: 'we go early like 7am before it gets too busy', time: '15:10' }
+                    { type: 'in', en: 'are you going to floorball tonight?', cs: 'jdeš dnes večer na florbal?', time: '09:10' },
+                    { type: 'out', en: 'yes finally, havent been in like 2 weeks', cs: 'jo konečně, nebyla jsem asi 2 týdny', time: '09:15', read: true },
+                    { type: 'in', en: 'same lol my legs are going to die', cs: 'stejně lol moje nohy budou umírat', time: '09:20' },
+                    { type: 'out', en: 'worth it tho', cs: 'ale stojí to za to', time: '09:22', read: true },
+                    { type: 'in', en: 'also are you free saturday?', cs: 'také máš v sobotu volno?', time: '15:00' },
+                    { type: 'out', en: 'i think so why', cs: 'myslím že jo proč', time: '15:05', read: true },
+                    { type: 'in', en: 'pustevny? been wanting to go for ages, the wooden buildings up there look so cool', cs: 'pustevny? už dlouho tam chci, ty dřevěné budovy nahoře vypadají super', time: '15:08' },
+                    { type: 'in', en: 'we go early like 7am before it gets too busy', cs: 'jedeme brzy jako v 7 ráno než se to moc zaplní', time: '15:10' },
+                    { type: 'in', en: 'Gym was insane today too. I did double cardio. I am becoming a machine lol.', cs: 'Fitko bylo dneska taky šílený. Dala jsem si dvojitý kardio. Stává se ze mě stroj lol.', time: '15:15' },
+                    { type: 'in', en: 'We need to do more hikes. I found a trail that is 20km! We have to do it.', cs: 'Musíme víc chodit na túry. Našla jsem stezku, co má 20km! Musíme ji dát.', time: '15:20' }
                 ]
             },
             thomas: {
                 name: "Thomas",
-                status: "last seen today at 14:00",
+                status: { en: "last seen today at 14:00", cs: "naposledy viděn dnes ve 14:00" },
                 pic: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
                 img: "../images/profile-pics/thomas.jpg",
                 letter: "T",
-                lastMessage: "You: Can't wait! \uD83D\uDE0A",
                 time: "14:05",
                 unread: 0,
                 messages: [
-                    { type: 'in', text: 'Hi agi, is your mom awake?', time: '11:00' },
-                    { type: 'out', text: 'No no she is sleeping right now', time: '11:30' },
-                    { type: 'in', text: 'Ok ok just remind her that I will come pick her up around 2pm', time: '11:35' },
-                    { type: 'out', text: 'Yep i will tell her', time: '11:40' },
-                    { type: 'in', text: 'are you coming too?', time: '11:42' },
-                    { type: 'out', text: 'yes im coming after a little bit', time: '11:50' },
-                    { type: 'in', text: 'Ah ok perfect I will see you there', time: '14:00' },
-                    { type: 'out', text: 'bye bye!', time: '14:05' }
+                    { type: 'in', en: 'Hi agi, is your mom awake?', cs: 'Ahoj agi, je tvoje máma vzhůru?', time: '11:00' },
+                    { type: 'out', en: 'No no she is sleeping right now', cs: 'Ne ne právě teď spí', time: '11:30', read: true },
+                    { type: 'in', en: 'Ok ok just remind her that I will come pick her up around 2pm', cs: 'Ok ok jen jí připomeň, že si pro ni přijedu kolem 14:00', time: '11:35' },
+                    { type: 'out', en: 'Yep i will tell her', cs: 'Jo řeknu jí to', time: '11:40', read: true },
+                    { type: 'in', en: 'are you coming too?', cs: 'ty taky přijdeš?', time: '11:42' },
+                    { type: 'out', en: 'yes im coming after a little bit', cs: 'jo přijedu za chvíli', time: '11:50', read: true },
+                    { type: 'in', en: 'Ah ok perfect I will see you there', cs: 'Aha ok perfektní uvidíme se tam', time: '14:00' },
+                    { type: 'out', en: 'bye bye!', cs: 'ahoj ahoj!', time: '14:05', read: true },
+                    { type: 'in', en: 'By the way, how is the car? Did you check the oil after that long trip?', cs: 'Mimochodem, co auto? Kontrolovala jsi olej po té dlouhé cestě?', time: '14:10' },
+                    { type: 'in', en: 'I hope it\'s running smooth. Let me know if you need help with the maintenance.', cs: 'Doufám, že jezdí hladce. Dej vědět, kdybys potřebovala pomoct s údržbou.', time: '14:15' }
                 ]
             },
             nella: {
-                name: "Nela \uD83D\uDC31\uD83E\uDD0D",
-                status: "always with you",
+                name: "Nela 🐱🦭",
+                status: { en: "always with you", cs: "vždy s tebou" },
                 pic: "linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)",
                 img: "../images/profile-pics/nela.jpg",
                 letter: "N",
-                lastMessage: "i am always with you and monmon \u2764\uFE0F",
                 time: "11:20",
                 unread: 1,
                 messages: [
-                    { type: 'in', text: 'hi agi, its me, your nela \uD83D\uDC31\n\ni just wanted to say thank you. thank you for being the best owner i could have ever asked for. you gave me the happiest life, full of cuddles and warm spots on the couch and all the treats i could dream of. you always knew when i needed extra love, and you never ever let me feel alone.\n\ni remember everything. the way you would talk to me like i understood every word (i did, by the way). the way you would let me sleep right next to you. the way you would pick me up even when i pretended i didnt want it. i loved every second of it.\n\ni know you miss me, and i know some days are harder than others. but please dont be sad for too long. i had the most beautiful life because of you, and i wouldnt change a single thing.\n\nplease give monmon extra treats and cuddles from me ok? tell her i love her so much and to be a good girl. she is lucky to have you, just like i was.\n\nyou were the best thing that ever happened to me agi. thank you for choosing me, thank you for loving me, and thank you for giving me a home.\n\ni am always with you and monmon, even if you cant see me. i am right there, purring next to you \u2764\uFE0F', time: '11:20' }
+                   { 
+                    type: 'in', 
+                    en: 'hi agi, its me, nela 🐱\n\ni just wanted to say thank you. thank you for being the best owner i could have ever asked for. you gave me the happiest life, full of cuddles and warm spots on the bed and all the treats i could dream of. you always knew when i needed extra love, and you never ever let me feel alone.\n\ni remember everything. the way you would talk to me like i understood every word (i did, by the way). the way you would let me sleep right next to you. the way you would pick me up even when i pretended i didnt want it. i loved every second of it.\n\ni know you miss me, and i know some days are harder than others. but please dont be sad for too long. i had the most beautiful life because of you guys, and i wouldnt change a single thing.\n\nplease give monmon extra treats and cuddles from me ok? tell her i love her so much and to be a good. she is lucky to have you, and you are lucky to have her. Just like i am.\n\nyou two were the best thing that ever happened to me agi. thank you for choosing me, thank you for loving me, and thank you for giving me a home.\n\ni am always with you and monmon, even if you cant see me. i am right there, purring next to you ❤️',
+                    cs: 'ahoj agi, to jsem já, nela 🐱\n\nchtěla jsem jen říct děkuji. děkuji, že jsi byla nejlepší majitelka, jakou jsem si mohla přát. dala jsi mi nejšťastnější život, plný mazlení a teplých míst na posteli a všech laskomin, o kterých jsem mohla snít. vždycky jsi věděla, kdy potřebuju extra lásku, a nikdy jsi nedovolila, abych se cítila sama.\n\npamatuju si všechno. jak jsi ke mně mluvila, jako bych rozuměla každému slovu (mimochodem rozuměla). jak jsi mě nechala spát přímo vedle sebe. jak jsi mě vzala do náruče, i když jsem předstírala, že nechci. milovala jsem každou sekundu.\n\nvím, že mi chybíš, a vím, že některé dny jsou těžší než jiné. ale prosím nebuď smutná moc dlouho. měla jsem nejkrásnější život díky vám, a nic bych nezměnila.\n\nprosím dej monmon extra pamlsky a mazlení ode mě ok? řekni jí, že ji moc miluju a ať je hodná. má štěstí, že tě má, a ty máš štěstí, že máš ji. stejně jako já.\n\nvy dvě jste byly to nejlepší, co se mi kdy stalo agi. děkuji, že sis mě vybrala, děkuji, že jsi mě milovala, a děkuji, že jsi mi dala domov.\n\njsem vždycky s tebou a monmon, i když mě nevidíte. jsem tam hned, předu vedle tebe ❤️',
+                    time: '11:20' 
+                }
                 ]
             }
         };
 
         let currentChat = null;
-        let allChats = Object.keys(chatData);
+        let allChats = Object.keys(chatDataRaw);
+        
+        // Get current language
+        function getLang() {
+            return localStorage.getItem('heartosLang') || 'en';
+        }
+
+        // Get text in current language
+        function getText(obj) {
+            const lang = getLang();
+            if (typeof obj === 'string') return obj;
+            return obj[lang] || obj.en || obj;
+        }
+
+        // Process chat data with current language
+        function getChatData() {
+            const lang = getLang();
+            const processed = {};
+            
+            for (let chatId in chatDataRaw) {
+                const raw = chatDataRaw[chatId];
+                processed[chatId] = {
+                    ...raw,
+                    status: getText(raw.status),
+                    time: getText(raw.time),
+                    messages: raw.messages.map(msg => ({
+                        type: msg.type,
+                        text: getText(msg),
+                        time: getText(msg.time),
+                        read: msg.read || false
+                    }))
+                };
+                
+                // Calculate last message
+                const lastMsg = processed[chatId].messages[processed[chatId].messages.length - 1];
+                if (lastMsg.type === 'out') {
+                    const youText = window.__t('you');
+                    processed[chatId].lastMessage = `${youText}: ${lastMsg.text}`;
+                } else {
+                    processed[chatId].lastMessage = lastMsg.text;
+                }
+                
+                // Truncate if too long
+                if (processed[chatId].lastMessage.length > 50) {
+                    processed[chatId].lastMessage = processed[chatId].lastMessage.substring(0, 47) + '...';
+                }
+            }
+            
+            return processed;
+        }
 
         // Initialize
         renderChatList();
 
+        // Refresh all content when language changes
+        window.refreshAllContent = function() {
+            renderChatList();
+            if (currentChat) {
+                const chatData = getChatData();
+                const chat = chatData[currentChat];
+                document.getElementById('header-status').innerText = chat.status;
+                renderMessages();
+            }
+        };
+
         function renderChatList(filter = '') {
+            const chatData = getChatData();
             const listEl = document.getElementById('chat-list');
             listEl.innerHTML = '';
 
@@ -704,11 +949,12 @@
         }
 
         function openChat(chatId) {
+            const chatData = getChatData();
             currentChat = chatId;
             const chat = chatData[chatId];
             
             // Mark as read
-            chat.unread = 0;
+            chatDataRaw[chatId].unread = 0;
             
             // Update UI
             document.getElementById('empty-state').style.display = 'none';
@@ -734,11 +980,12 @@
         }
 
         function renderMessages() {
+            const chatData = getChatData();
             const chat = chatData[currentChat];
             const msgArea = document.getElementById('msg-area');
             msgArea.innerHTML = '';
 
-            // Spacer pushes messages to bottom when there aren't enough to fill
+            // Spacer pushes messages to bottom
             const spacer = document.createElement('div');
             spacer.className = 'messages-spacer';
             msgArea.appendChild(spacer);
@@ -752,14 +999,10 @@
                 
                 let content = msg.text.replace(/\n/g, '<br>');
                 
-                // Add sender name for group chats
-                if (msg.sender && msg.type === 'in') {
-                    content = `<strong style="color: #06cf9c;">${msg.sender}</strong><br>${msg.text}`;
-                }
-                
-                // Add time
+                // Add time and checkmarks for outgoing messages
+                let checkClass = msg.read ? 'double-check read' : 'double-check';
                 const timeHtml = msg.type === 'out' 
-                    ? `<div class="msg-time">${msg.time} <span class="double-check">\u2713\u2713</span></div>`
+                    ? `<div class="msg-time">${msg.time} <span class="${checkClass}">✓✓</span></div>`
                     : `<div class="msg-time">${msg.time}</div>`;
                 
                 msgDiv.innerHTML = content + timeHtml;
@@ -777,20 +1020,18 @@
             const text = input.value.trim();
             if (!text) return;
 
-            const chat = chatData[currentChat];
             const now = new Date();
             const time = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
 
-            // Add message
-            chat.messages.push({
+            chatDataRaw[currentChat].messages.push({
                 type: 'out',
-                text: text,
-                time: time
+                en: text,
+                cs: text,
+                time: time,
+                read: false
             });
 
-            // Update last message
-            chat.lastMessage = text.length > 50 ? text.substring(0, 47) + '...' : text;
-            chat.time = time;
+            chatDataRaw[currentChat].time = time;
 
             input.value = '';
             renderMessages();
@@ -802,6 +1043,10 @@
                 setTimeout(() => {
                     hideTyping();
                     sendAutoReply();
+                    chatDataRaw[currentChat].messages.forEach(m => {
+                        if(m.type === 'out') m.read = true;
+                    });
+                    renderMessages();
                 }, 2000);
             }, 1000);
         }
@@ -827,66 +1072,53 @@
         }
 
         function sendAutoReply() {
-            const chat = chatData[currentChat];
             const now = new Date();
             const time = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
 
             const replies = {
-                naeem: [
-                    "love you too \u2764\uFE0F",
-                    "miss you already",
-                    "cant wait to see you later",
-                    "you're the best lol"
-                ],
-                mom: [
-                    "ok ill remind you",
-                    "lol yeah i get it now",
-                    "call me when you're free",
-                    "ok on my way now"
-                ],
-                granny: [
-                    "coming soon!",
-                    "ill be there in a bit",
-                    "i miss you so much",
-                    "saving you the biggest hug"
-                ],
-                tina: [
-                    "omg that sounds hectic",
-                    "get some rest when you can",
-                    "coffee o clock",
-                    "we need to catch up soon"
-                ],
-                viky: [
-                    "im in!!",
-                    "yes lets gooo",
-                    "cant wait to see the wooden chapels up there",
-                    "ok but we better not die on this hike"
-                ],
-                thomas: [
-                    "see you sunday!",
-                    "that sounds so good",
-                    "cant wait for the malva pudding",
-                    "thanks thomas!"
-                ],
-                nella: [
-                    "i love you so much agi \u2764\uFE0F",
-                    "give monmon a cuddle from me",
-                    "im purring right next to you, you just cant hear me",
-                    "you were the best owner in the whole world"
-                ]
+                naeem: {
+                    en: ["love you too ❤️", "miss you already", "cant wait to see you later", "you're the best lol"],
+                    cs: ["taky tě miluju ❤️", "už mi chybíš", "nemůžu se dočkat až tě později uvidím", "jsi nejlepší lol"]
+                },
+                mom: {
+                    en: ["ok ill remind you", "lol yeah i get it now", "call me when you're free", "ok on my way now"],
+                    cs: ["ok připomenu ti to", "lol jo už to chápu", "zavolej mi až budeš mít čas", "ok už jsem na cestě"]
+                },
+                granny: {
+                    en: ["coming soon!", "ill be there in a bit", "i miss you so much", "saving you the biggest hug"],
+                    cs: ["už brzy přijedu!", "budu tam za chvíli", "tak moc mi chybíš", "schovávám ti největší objetí"]
+                },
+                tina: {
+                    en: ["omg that sounds hectic", "get some rest when you can", "coffee o clock", "we need to catch up soon"],
+                    cs: ["ježiš to zní hekticky", "odpočiň si až budeš moct", "čas na kafe", "brzy se musíme sejít"]
+                },
+                viky: {
+                    en: ["im in!!", "yes lets gooo", "cant wait to see the wooden chapels up there", "ok but we better not die on this hike"],
+                    cs: ["jdu do toho!!", "jo tak pojďme", "nemůžu se dočkat až uvidím ty dřevěné kapličky nahoře", "ok ale radši na té túře neumřeme"]
+                },
+                thomas: {
+                    en: ["see you sunday!", "that sounds so good", "cant wait for the malva pudding", "thanks thomas!"],
+                    cs: ["uvidíme se v neděli!", "to zní tak dobře", "nemůžu se dočkat na malva pudding", "díky thomasi!"]
+                },
+                nella: {
+                    en: ["i love you so much agi ❤️", "give monmon a cuddle from me", "im purring right next to you, you just cant hear me", "you were the best owner in the whole world"],
+                    cs: ["moc tě miluju agi ❤️", "dej monmon ode mě pusu", "předu hned vedle tebe, jen mě neslyšíš", "byla jsi nejlepší majitelka na celém světě"]
+                }
             };
 
-            const replyList = replies[currentChat] || ["Sounds good!", "Cool!", "Awesome!", "Nice!"];
+            const lang = getLang();
+            const replyList = (replies[currentChat] && replies[currentChat][lang]) || 
+                            (lang === 'cs' ? ["Zní to dobře!", "Cool!", "Super!", "Fajn!"] : ["Sounds good!", "Cool!", "Awesome!", "Nice!"]);
             const reply = replyList[Math.floor(Math.random() * replyList.length)];
 
-            chat.messages.push({
+            chatDataRaw[currentChat].messages.push({
                 type: 'in',
-                text: reply,
+                en: reply,
+                cs: reply,
                 time: time
             });
-            chat.lastMessage = reply;
 
-            chat.time = time;
+            chatDataRaw[currentChat].time = time;
 
             renderMessages();
             renderChatList();

@@ -1,9 +1,123 @@
 // js/new-features.js
 
+window.ACHIEVEMENTS = {
+    key: 'heartos_achievements_v1',
+    items: [
+        { id: 'login',           key: 'ach_login',          fallback: 'Logged in' },
+        { id: 'open_achievements', key: 'ach_open_ach',     fallback: 'Opened Achievements' },
+        { id: 'open_heartamp',   key: 'ach_open_heartamp',  fallback: 'Opened HeartAmp' },
+        { id: 'open_terminal',   key: 'ach_open_terminal',  fallback: 'Opened Terminal' },
+        { id: 'unlock_secrets',  key: 'ach_unlock_secrets', fallback: 'Unlocked Secrets' },
+        { id: 'open_map',        key: 'ach_open_map',       fallback: 'Opened Map' },
+        { id: 'open_message',    key: 'ach_open_message',   fallback: 'Opened Message' },
+        { id: 'open_browser',    key: 'ach_open_browser',   fallback: 'Opened Browser' },
+        { id: 'open_photos',     key: 'ach_open_photos',    fallback: 'Opened Photos' }
+    ],
+
+    _load() {
+        try { return JSON.parse(localStorage.getItem(this.key) || '{}'); }
+        catch { return {}; }
+    },
+
+    _save(state) {
+        localStorage.setItem(this.key, JSON.stringify(state));
+    },
+
+    init() {
+        this.render();
+        window.addEventListener('languageChanged', () => this.render());
+        window.addEventListener('languageChanged', () => this._rerenderIfOpen());
+    },
+
+    _rerenderIfOpen() {
+        const win = document.getElementById('win-timeline');
+        if (win && !win.classList.contains('hidden')) this.render();
+    },
+
+    mark(id) {
+        const state = this._load();
+        state[id] = true;
+        this._save(state);
+        this.render();
+    },
+
+    toggle(id) {
+        const state = this._load();
+        state[id] = !state[id];
+        this._save(state);
+        this.render();
+    },
+
+    render() {
+        const container = document.getElementById('timeline-content');
+        if (!container) return;
+
+        const t = (typeof I18N !== 'undefined' && I18N.t) ? I18N.t.bind(I18N) : (k) => k;
+        const state = this._load();
+
+        const title = (t('achievements_title') !== 'achievements_title')
+            ? t('achievements_title')
+            : 'Achievements';
+
+        container.innerHTML = `
+            <div style="padding:16px;">
+                <div style="font-family:'VT323',monospace;font-size:2rem;color:var(--accent);margin-bottom:10px;">
+                    🏆 ${title}
+                </div>
+                <div id="ach-list" style="display:flex;flex-direction:column;gap:10px;"></div>
+                <div style="margin-top:14px;opacity:0.7;font-size:0.95rem;">
+                    Click an item to tick/untick it.
+                </div>
+            </div>
+        `;
+
+        const list = container.querySelector('#ach-list');
+
+        this.items.forEach(item => {
+            const done = !!state[item.id];
+            const label = (t(item.key) !== item.key) ? t(item.key) : item.fallback;
+
+            const row = document.createElement('div');
+            row.setAttribute('data-ach', item.id);
+            row.style.cssText = `
+                border:1px solid rgba(255,77,109,0.35);
+                background: rgba(0,0,0,0.25);
+                padding:12px 14px;
+                cursor:pointer;
+                display:flex;
+                align-items:center;
+                justify-content:space-between;
+                gap:12px;
+                transition: 0.15s ease;
+                opacity: ${done ? '1' : '0.45'};
+                filter: ${done ? 'none' : 'grayscale(0.7)'};
+            `;
+
+            row.onmouseenter = () => row.style.transform = 'translateY(-1px)';
+            row.onmouseleave = () => row.style.transform = 'translateY(0px)';
+
+            row.onclick = () => this.toggle(item.id);
+
+            row.innerHTML = `
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <div style="width:22px;text-align:center;font-size:1.2rem;">
+                        ${done ? '✅' : '⬜'}
+                    </div>
+                    <div style="font-size:1.15rem;">${label}</div>
+                </div>
+                <div style="font-family:monospace;opacity:0.75;">${done ? 'UNLOCKED' : 'LOCKED'}</div>
+            `;
+
+            list.appendChild(row);
+        });
+    }
+};
+
 window.NEW_FEATURES = {
     init() {
         console.log("\uD83D\uDE80 HeartOS New Features Module Loaded");
         this.createCountdownWidget();
+        if (window.ACHIEVEMENTS) ACHIEVEMENTS.init();
     },
 
     createCountdownWidget() {

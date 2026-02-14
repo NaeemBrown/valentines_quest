@@ -3,601 +3,826 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HeartReddit - Front Page of Our World</title>
+    <title>HeartReddit - The Front Page of Our World</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+        /* Modern, Smooth Typography */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         
+        :root {
+            --bg-body: #0f0f0f;
+            --bg-card: #1a1a1b;
+            --bg-hover: #272729;
+            --text-main: #e4e6eb;
+            --text-muted: #818384;
+            --accent: #ff4500;
+            --accent-glow: rgba(255, 69, 0, 0.15);
+            --border: #343536;
+            --heart-gradient: linear-gradient(135deg, #ff4500, #ff8717);
+            --glass: rgba(26, 26, 27, 0.85);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'VT323', monospace;
+            font-family: 'Inter', sans-serif;
         }
         
         body {
-            background: #030303;
-            color: #d7dadc;
+            background: var(--bg-body);
+            color: var(--text-main);
+            overflow-x: hidden;
         }
         
+        /* HEADER */
         .reddit-header {
-            background: #1a1a1b;
-            border-bottom: 3px solid #ff4500;
-            padding: 12px 40px;
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 8px 30px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         
         .header-left {
             display: flex;
             align-items: center;
-            gap: 30px;
+            gap: 20px;
         }
         
         .logo {
-            font-size: 2.5rem;
-            color: #ff4500;
-            font-weight: bold;
-            animation: wiggle 3s ease-in-out infinite;
+            font-size: 1.8rem;
+            color: var(--text-main);
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: var(--accent);
         }
         
-        @keyframes wiggle {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(-5deg); }
-            75% { transform: rotate(5deg); }
+        .search-wrapper {
+            position: relative;
         }
-        
+
         .search-bar {
             background: #272729;
-            border: 2px solid #343536;
-            padding: 10px 20px;
-            border-radius: 20px;
-            color: #d7dadc;
-            font-size: 1.3rem;
-            width: 500px;
-            transition: all 0.3s;
+            border: 1px solid var(--border);
+            padding: 10px 20px 10px 45px;
+            border-radius: 50px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            width: 450px;
+            transition: all 0.2s ease;
         }
         
+        .search-wrapper::before {
+            content: '🔍';
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.9rem;
+            opacity: 0.5;
+        }
+
         .search-bar:focus {
             outline: none;
-            border-color: #ff4500;
+            border-color: var(--text-main);
             background: #1a1a1b;
-            box-shadow: 0 0 0 3px rgba(255, 69, 0, 0.2);
-        }
-        
-        .search-bar::placeholder {
-            color: #818384;
         }
         
         .header-btn {
-            background: #ff4500;
-            color: #fff;
+            background: var(--text-main);
+            color: #000;
             border: none;
-            padding: 10px 25px;
-            border-radius: 20px;
-            font-size: 1.3rem;
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-size: 0.95rem;
             cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
-            box-shadow: 0 4px 12px rgba(255, 69, 0, 0.3);
+            font-weight: 700;
+            transition: all 0.2s;
         }
         
         .header-btn:hover {
-            background: #ff5722;
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(255, 69, 0, 0.5);
+            background: #fff;
+            transform: scale(1.02);
         }
         
+        /* LAYOUT */
         .main-layout {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 20px auto;
             display: grid;
-            grid-template-columns: 1fr 350px;
-            gap: 20px;
+            grid-template-columns: 1fr 320px;
+            gap: 24px;
             padding: 0 20px;
         }
         
-        .post-card {
-            background: #1a1a1b;
-            border: 2px solid #343536;
-            border-radius: 8px;
-            margin-bottom: 15px;
+        /* CARDS */
+        .post-card, .sidebar-card, .create-post-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
             overflow: hidden;
-            transition: all 0.3s;
+            transition: transform 0.2s, border-color 0.2s;
         }
         
-        .post-card:hover {
-            border-color: #ff4500;
-            box-shadow: 0 4px 20px rgba(255, 69, 0, 0.2);
-        }
-        
-        .post-container {
+        .post-card {
+            margin-bottom: 16px;
             display: flex;
         }
+
+        .post-card:hover {
+            border-color: #4a4a4b;
+        }
         
+        /* VOTING */
         .vote-section {
-            background: #161617;
-            width: 50px;
+            background: #151516;
+            width: 45px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 10px 0;
-            gap: 5px;
+            padding: 12px 0;
+            gap: 4px;
+            border-right: 1px solid rgba(255,255,255,0.02);
         }
         
         .vote-btn {
-            color: #818384;
-            font-size: 1.8rem;
+            color: var(--text-muted);
+            font-size: 1.2rem;
             cursor: pointer;
-            transition: all 0.3s;
-            user-select: none;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: background 0.2s;
         }
         
         .vote-btn:hover {
-            color: #ff4500;
-            transform: scale(1.2);
+            background: rgba(255,255,255,0.1);
+            color: var(--accent);
         }
         
-        .vote-btn.upvoted {
-            color: #ff4500;
-        }
-        
-        .vote-btn.downvoted {
-            color: #7193ff;
-        }
+        .vote-btn.upvoted { color: var(--accent); }
+        .vote-btn.downvoted { color: #7193ff; }
         
         .vote-count {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #d7dadc;
-            transition: all 0.3s;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-main);
         }
         
-        .vote-count.positive {
-            color: #ff4500;
-        }
+        .vote-count.positive { color: var(--accent); }
+        .vote-count.negative { color: #7193ff; }
         
-        .vote-count.negative {
-            color: #7193ff;
-        }
-        
+        /* CONTENT */
         .post-content {
             flex: 1;
-            padding: 15px 20px;
+            padding: 12px 16px;
         }
         
         .post-header {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-            color: #818384;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
         }
         
         .subreddit {
-            color: #d7dadc;
-            font-weight: bold;
+            color: var(--text-main);
+            font-weight: 700;
             cursor: pointer;
         }
         
-        .subreddit:hover {
-            text-decoration: underline;
-        }
+        .subreddit:hover { text-decoration: underline; }
         
         .subreddit-icon {
-            width: 30px;
-            height: 30px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #ff4500;
-            font-size: 1.2rem;
-        }
-        
-        .post-author {
-            color: #818384;
-        }
-        
-        .post-time {
-            color: #818384;
+            font-size: 0.9rem;
         }
         
         .post-title {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #d7dadc;
-            margin-bottom: 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            line-height: 1.4;
             cursor: pointer;
-            line-height: 1.3;
-            transition: color 0.2s;
-        }
-        
-        .post-title:hover {
-            color: #ff4500;
         }
         
         .post-text {
-            font-size: 1.3rem;
+            font-size: 0.95rem;
             line-height: 1.6;
-            color: #d7dadc;
-            margin-bottom: 15px;
+            color: #d1d1d1;
+            margin-bottom: 12px;
+            font-weight: 400;
         }
         
         .post-flair {
-            background: rgba(255, 69, 0, 0.2);
-            color: #ff4500;
-            padding: 4px 10px;
+            background: rgba(255,255,255,0.1);
+            color: var(--text-main);
+            padding: 2px 8px;
             border-radius: 12px;
-            font-size: 1.1rem;
+            font-size: 0.75rem;
+            font-weight: 500;
             display: inline-block;
-            margin-right: 10px;
-            border: 1px solid rgba(255, 69, 0, 0.3);
+            margin-right: 8px;
         }
         
         .post-actions {
             display: flex;
-            gap: 15px;
-            font-size: 1.3rem;
+            gap: 4px;
+            margin-top: 8px;
         }
         
         .action-btn {
-            color: #818384;
+            color: var(--text-muted);
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 12px;
+            gap: 6px;
+            padding: 6px 10px;
             border-radius: 4px;
-            transition: all 0.3s;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: background 0.2s;
         }
         
         .action-btn:hover {
-            background: #272729;
-            color: #d7dadc;
+            background: rgba(255,255,255,0.05);
+            color: var(--text-main);
         }
         
+        /* SIDEBAR */
         .sidebar {
             position: sticky;
-            top: 20px;
-            height: fit-content;
+            top: 80px;
         }
         
         .sidebar-card {
-            background: #1a1a1b;
-            border: 2px solid #343536;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 15px;
-            transition: all 0.3s;
-        }
-        
-        .sidebar-card:hover {
-            border-color: #ff4500;
-            box-shadow: 0 4px 20px rgba(255, 69, 0, 0.2);
+            padding: 16px;
+            margin-bottom: 16px;
         }
         
         .sidebar-title {
-            font-size: 1.6rem;
-            font-weight: bold;
-            color: #d7dadc;
-            margin-bottom: 15px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
         }
         
         .community-item {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 12px;
-            margin: 8px 0;
-            border-radius: 8px;
+            padding: 8px 0;
             cursor: pointer;
-            transition: all 0.3s;
         }
         
-        .community-item:hover {
-            background: #272729;
-            transform: translateX(5px);
-        }
-        
-        .community-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-        
-        .community-info {
-            flex: 1;
-        }
+        .community-info { flex: 1; }
         
         .community-name {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #d7dadc;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-main);
         }
         
         .community-members {
-            font-size: 1.1rem;
-            color: #818384;
+            font-size: 0.8rem;
+            color: var(--text-muted);
         }
         
         .join-btn {
-            background: #0079d3;
-            color: #fff;
+            background: var(--text-main);
+            color: #000;
             border: none;
-            padding: 6px 15px;
-            border-radius: 20px;
-            font-size: 1.2rem;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
         }
         
-        .join-btn:hover {
-            background: #0060a8;
-        }
+        .join-btn:hover { opacity: 0.9; }
         
         .join-btn.joined {
             background: transparent;
-            border: 1px solid #0079d3;
-            color: #0079d3;
+            border: 1px solid var(--text-main);
+            color: var(--text-main);
         }
         
+        /* CREATE POST */
         .create-post-card {
-            background: #1a1a1b;
-            border: 2px solid #343536;
-            border-radius: 8px;
-            padding: 15px 20px;
-            margin-bottom: 20px;
+            padding: 8px;
+            margin-bottom: 16px;
             display: flex;
-            flex-direction: column;
-            gap: 15px;
+            align-items: center;
+            gap: 10px;
+            cursor: text;
         }
         
         .create-avatar {
-            width: 50px;
-            height: 50px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #ff4500, #ff8717);
+            background: var(--heart-gradient);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 1.2rem;
+            margin-left: 8px;
         }
         
-        .create-input {
+        .fake-input {
             flex: 1;
             background: #272729;
-            border: 2px solid #343536;
+            border: 1px solid var(--border);
             border-radius: 4px;
-            padding: 12px 15px;
-            color: #d7dadc;
-            font-size: 1.3rem;
-            font-family: 'VT323', monospace;
-            transition: all 0.3s;
-            resize: vertical;
-            min-height: 60px;
+            padding: 10px 16px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            transition: all 0.2s;
         }
         
+        .fake-input:hover {
+            background: #1a1a1b;
+            border-color: #4a4a4b;
+        }
+
+        /* MODAL (hidden by default) */
+        .create-modal {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .create-input {
+            background: #272729;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 12px;
+            color: var(--text-main);
+            font-size: 1rem;
+            resize: vertical;
+            width: 100%;
+        }
+
         .create-input:focus {
             outline: none;
-            border-color: #ff4500;
-            background: #1a1a1b;
+            border-color: var(--text-main);
         }
-        
-        .create-input::placeholder {
-            color: #818384;
+
+        .animation-award {
+            animation: bounce 0.5s;
         }
-        
-        .award-animation {
-            animation: awardPop 0.5s ease-out;
-        }
-        
-        @keyframes awardPop {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.3) rotate(10deg); }
-            100% { transform: scale(1); }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
         }
     </style>
+
+<script>
+window.__translations = {
+    en: {
+        search: "Search HeartReddit...", 
+        create_post: "Create Post", 
+        create_placeholder: "Vent Here",
+        comments: "Comments", 
+        share: "Share", 
+        save: "Save", 
+        posted_by: "Posted by",
+        award: "Award",
+        join: "Join",
+        joined: "Joined",
+        communities: "Support Groups",
+        trending: "Trending Dramas",
+        about_title: "About HeartReddit",
+        about_text: "A safe space for discussing bad dates, emotionally unavailable men, and why dads love cheap beer."
+    },
+    cs: {
+        search: "Hledat na HeartRedditu...", 
+        create_post: "Vytvořit příspěvek", 
+        create_placeholder: "Vylít si srdce",
+        comments: "Komentáře", 
+        share: "Sdílet",
+        save: "Uložit", 
+        posted_by: "Napsala",
+        award: "Ocenění",
+        join: "Připojit se",
+        joined: "Člen",
+        communities: "Podpůrné Skupiny",
+        trending: "Dnešní Dramata",
+        about_title: "O HeartRedditu",
+        about_text: "Bezpečné místo pro probírání špatných rande, emočně nedostupných mužů a proč tátové milují levné pivo."
+    }
+};
+</script>
+
+<script>
+// i18n bridge
+(function() {
+    const LANG = localStorage.getItem('heartosLang') || 'en';
+    window.__lang = LANG;
+    
+    window.__t = function(key) {
+        const dict = window.__translations;
+        if (!dict) return key;
+        const lang = dict[LANG] || dict['en'];
+        return (lang && lang[key]) || (dict['en'] && dict['en'][key]) || key;
+    };
+    
+    window.addEventListener('DOMContentLoaded', function() {
+        const searchBar = document.querySelector('.search-bar');
+        if (searchBar) searchBar.placeholder = window.__t('search');
+        
+        const createBtn = document.querySelector('.header-btn');
+        if (createBtn) createBtn.textContent = '+ ' + window.__t('create_post');
+
+        const fakeInput = document.querySelector('.fake-input');
+        if (fakeInput) fakeInput.textContent = window.__t('create_placeholder');
+
+        const sidebarTitles = document.querySelectorAll('.sidebar-title');
+        if(sidebarTitles[0]) sidebarTitles[0].textContent = window.__t('communities');
+        if(sidebarTitles[1]) sidebarTitles[1].textContent = window.__t('trending');
+        if(sidebarTitles[2]) sidebarTitles[2].textContent = window.__t('about_title');
+
+        const aboutText = document.querySelector('#about-text');
+        if(aboutText) aboutText.textContent = window.__t('about_text');
+        
+        if (typeof window.__translateSite === 'function') {
+            window.__translateSite();
+        }
+    });
+})();
+</script>
+
+<script>
+    window.__translateSite = function() {
+        var t = window.__t;
+        
+        document.querySelectorAll('.action-btn').forEach(function(el) {
+            var html = el.innerHTML;
+            if (html.includes('💬')) {
+                var num = html.match(/\d+/);
+                el.innerHTML = '💬 ' + (num ? num[0] + ' ' : '') + t('comments');
+            } else if (html.includes('↗️')) {
+                el.innerHTML = '↗️ ' + t('share');
+            } else if (html.includes('🔖')) {
+                el.innerHTML = '🔖 ' + t('save');
+            } else if (html.includes('🎁')) {
+                var award = html.match(/\((\d+)\)/);
+                el.innerHTML = '🎁 ' + t('award') + (award ? ' (' + award[1] + ')' : '');
+            }
+        });
+        
+        document.querySelectorAll('.post-author').forEach(function(el) {
+            var username = el.textContent.replace(/Posted by |Napsala /g, '').trim();
+            el.textContent = t('posted_by') + ' ' + username;
+        });
+        
+        document.querySelectorAll('.join-btn').forEach(function(btn) {
+            if (btn.classList.contains('joined')) {
+                btn.textContent = t('joined');
+            } else {
+                btn.textContent = t('join');
+            }
+        });
+    };
+</script>
 </head>
 <body>
     <div class="reddit-header">
         <div class="header-left">
-            <div class="logo">👽 HeartReddit</div>
-            <input type="text" class="search-bar" placeholder="Search communities and posts...">
+            <div class="logo"><span>♥</span> HeartReddit</div>
+            <div class="search-wrapper">
+                <input type="text" class="search-bar" placeholder="Search communities...">
+            </div>
         </div>
         <div class="header-right">
-            <button class="header-btn" onclick="createNewPost()">💕 Create Post</button>
+            <button class="header-btn" onclick="createNewPost()">+ Create Post</button>
         </div>
     </div>
     
     <div class="main-layout">
         <div class="feed">
-            <div class="create-post-card" id="createPostBox" style="display: none;">
-                <textarea class="create-input" id="postTitle" placeholder="Post title..." rows="1"></textarea>
-                <textarea class="create-input" id="postContent" placeholder="What's on your mind?" rows="5"></textarea>
-                <div style="display: flex; gap: 10px;">
-                    <button class="header-btn" onclick="submitPost()">Post</button>
-                    <button class="header-btn" style="background: #272729;" onclick="cancelPost()">Cancel</button>
+            <div class="create-post-card" onclick="createNewPost()">
+                <div class="create-avatar">👤</div>
+                <div class="fake-input">Vent Here</div>
+                <div style="margin: 0 10px; opacity: 0.5;">🖼️</div>
+                <div style="margin: 0 10px; opacity: 0.5;">🔗</div>
+            </div>
+
+            <div class="create-modal" id="createPostBox">
+                <input class="create-input" id="postTitle" placeholder="Title" style="font-weight: 600;">
+                <textarea class="create-input" id="postContent" placeholder="Text (optional)" rows="4"></textarea>
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    <button class="header-btn" style="background: transparent; color: var(--text-main); border: 1px solid var(--border);" onclick="cancelPost()">Cancel</button>
+                    <button class="header-btn" style="background: var(--text-main); color: black;" onclick="submitPost()">Post</button>
                 </div>
             </div>
             
-            <div class="post-card">
-                <div class="post-container">
-                    <div class="vote-section">
-                        <div class="vote-btn" onclick="vote(this, 1, 'up')">▲</div>
-                        <div class="vote-count" data-score="2300">2.3k</div>
-                        <div class="vote-btn" onclick="vote(this, 1, 'down')">▼</div>
-                    </div>
-                    <div class="post-content">
-                        <div class="post-header">
-                            <div class="subreddit-icon" style="background: linear-gradient(135deg, #667eea, #764ba2);">🇨🇿</div>
-                            <span class="subreddit">r/Prague</span>
-                            <span>•</span>
-                            <span class="post-author">Posted by u/castle_wanderer</span>
-                            <span>•</span>
-                            <span class="post-time">3 hours ago</span>
-                        </div>
-                        <div class="post-title">Just moved here from South Africa - Prague has completely stolen my heart!</div>
-                        <div class="post-text">
-                            Honestly didn't expect to fall this hard for a city. The architecture, the history, the vibe - everything is incredible. Spent the afternoon just walking around Staré Město and I'm already planning my next exploration. 
-                            <br><br>
-                            Any hidden gems you locals recommend? Especially looking for cozy cafes and romantic spots! 💕
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            <span class="post-flair">🏰 Local Tips</span>
-                        </div>
-                        <div class="post-actions">
-                            <div class="action-btn">💬 127 Comments</div>
-                            <div class="action-btn">↗️ Share</div>
-                            <div class="action-btn">🔖 Save</div>
-                            <div class="action-btn" onclick="giveAward(this)">🎁 Award</div>
-                        </div>
-                    </div>
+            <div id="posts-container">
                 </div>
-            </div>
-            
-            <div class="post-card">
-                <div class="post-container">
-                    <div class="vote-section">
-                        <div class="vote-btn" onclick="vote(this, 2, 'up')">▲</div>
-                        <div class="vote-count" data-score="4700">4.7k</div>
-                        <div class="vote-btn" onclick="vote(this, 2, 'down')">▼</div>
-                    </div>
-                    <div class="post-content">
-                        <div class="post-header">
-                            <div class="subreddit-icon" style="background: linear-gradient(135deg, #f093fb, #f5576c);">🇿🇦</div>
-                            <span class="subreddit">r/CapeTown</span>
-                            <span>•</span>
-                            <span class="post-author">Posted by u/mountain_lover_ct</span>
-                            <span>•</span>
-                            <span class="post-time">6 hours ago</span>
-                        </div>
-                        <div class="post-title">The penguins at Boulders Beach never get old 🐧</div>
-                        <div class="post-text">
-                            Took my partner there yesterday (they're visiting from Europe) and their face absolutely lit up. We've lived here our whole lives and sometimes forget how lucky we are to have these little guys in our backyard.
-                            <br><br>
-                            Bonus: The weather was perfect and we got some amazing photos! If you haven't been in a while, highly recommend a visit.
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            <span class="post-flair">🐧 Wildlife</span>
-                        </div>
-                        <div class="post-actions">
-                            <div class="action-btn">💬 89 Comments</div>
-                            <div class="action-btn">↗️ Share</div>
-                            <div class="action-btn">🔖 Save</div>
-                            <div class="action-btn" onclick="giveAward(this)">🎁 Award</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="post-card">
-                <div class="post-container">
-                    <div class="vote-section">
-                        <div class="vote-btn upvoted" onclick="vote(this, 3, 'up')">▲</div>
-                        <div class="vote-count positive" data-score="8900">8.9k</div>
-                        <div class="vote-btn" onclick="vote(this, 3, 'down')">▼</div>
-                    </div>
-                    <div class="post-content">
-                        <div class="post-header">
-                            <div class="subreddit-icon" style="background: linear-gradient(135deg, #fa709a, #fee140);">💕</div>
-                            <span class="subreddit">r/LongDistance</span>
-                            <span>•</span>
-                            <span class="post-author">Posted by u/hearts_across_miles</span>
-                            <span>•</span>
-                            <span class="post-time">1 day ago</span>
-                        </div>
-                        <div class="post-title">[Success Story] 9,500km apart but we made it work! Just closed the distance! 🎉</div>
-                        <div class="post-text">
-                            After 2 years of timezone struggles, missed calls, and way too many airport goodbyes, I'm finally moving to be with my person! Prague to Cape Town flights are NO JOKE but every single one was worth it.
-                            <br><br>
-                            To everyone still in the struggle: it's hard, but it's so worth it. The video calls, the countdown apps, the care packages - it all matters. Don't give up! 💪
-                            <br><br>
-                            Thank you to this community for keeping me sane through all the hard days. You're all amazing! ❤️
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            <span class="post-flair">✨ Success Story</span>
-                            <span class="post-flair">💕 Wholesome</span>
-                        </div>
-                        <div class="post-actions">
-                            <div class="action-btn">💬 456 Comments</div>
-                            <div class="action-btn">↗️ Share</div>
-                            <div class="action-btn">🔖 Save</div>
-                            <div class="action-btn" onclick="giveAward(this)">🎁 Award (3)</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         
         <div class="sidebar">
             <div class="sidebar-card">
-                <div class="sidebar-title">💕 Your Communities</div>
+                <div class="sidebar-title">Support Groups</div>
                 
                 <div class="community-item">
-                    <div class="community-icon" style="background: #667eea;">🇨🇿</div>
+                    <div class="subreddit-icon" style="background: #ef5350;">🚩</div>
                     <div class="community-info">
-                        <div class="community-name">r/Prague</div>
-                        <div class="community-members">234K members</div>
+                        <div class="community-name">r/BadBoyfriends</div>
+                        <div class="community-members">2.4M members</div>
                     </div>
                 </div>
                 
                 <div class="community-item">
-                    <div class="community-icon" style="background: #f093fb;">🇿🇦</div>
+                    <div class="subreddit-icon" style="background: #ab47bc;">🍺</div>
                     <div class="community-info">
-                        <div class="community-name">r/CapeTown</div>
-                        <div class="community-members">187K members</div>
+                        <div class="community-name">r/MeanDads</div>
+                        <div class="community-members">800K members</div>
                     </div>
                 </div>
                 
                 <div class="community-item">
-                    <div class="community-icon" style="background: #fa709a;">💕</div>
+                    <div class="subreddit-icon" style="background: #29b6f6;">🤡</div>
                     <div class="community-info">
-                        <div class="community-name">r/LongDistance</div>
-                        <div class="community-members">521K members</div>
+                        <div class="community-name">r/ICanFixHim</div>
+                        <div class="community-members">5M members</div>
+                    </div>
+                </div>
+                
+                <div class="community-item">
+                    <div class="subreddit-icon" style="background: #ef9a9a;">😤</div>
+                    <div class="community-info">
+                        <div class="community-name">r/DadRants</div>
+                        <div class="community-members">1M members</div>
                     </div>
                 </div>
             </div>
             
             <div class="sidebar-card">
-                <div class="sidebar-title">🔥 Trending</div>
+                <div class="sidebar-title">Trending Today</div>
                 
                 <div class="community-item">
-                    <div class="community-icon" style="background: #4facfe;">✈️</div>
+                    <div class="subreddit-icon" style="background: #ff7043;">🏠</div>
                     <div class="community-info">
-                        <div class="community-name">r/travel</div>
-                        <div class="community-members">8.9M members</div>
+                        <div class="community-name">r/MaleLivingSpace</div>
+                        <div class="community-members">1.5M members</div>
                     </div>
                     <button class="join-btn" onclick="toggleJoin(this)">Join</button>
                 </div>
                 
                 <div class="community-item">
-                    <div class="community-icon" style="background: #43e97b;">🏔️</div>
+                    <div class="subreddit-icon" style="background: #26a69a;">💅</div>
                     <div class="community-info">
-                        <div class="community-name">r/EarthPorn</div>
-                        <div class="community-members">23M members</div>
+                        <div class="community-name">r/PettyRevenge</div>
+                        <div class="community-members">3M members</div>
+                    </div>
+                    <button class="join-btn" onclick="toggleJoin(this)">Join</button>
+                </div>
+
+                <div class="community-item">
+                    <div class="subreddit-icon" style="background: #7e57c2;">💸</div>
+                    <div class="community-info">
+                        <div class="community-name">r/GirlMath</div>
+                        <div class="community-members">900K members</div>
                     </div>
                     <button class="join-btn" onclick="toggleJoin(this)">Join</button>
                 </div>
             </div>
             
             <div class="sidebar-card">
-                <div class="sidebar-title">ℹ️ About</div>
-                <div style="font-size: 1.2rem; line-height: 1.6; color: #818384;">
-                    Your personal corner of the internet for sharing adventures, memories, and connection across continents. 💕
+                <div class="sidebar-title">About HeartReddit</div>
+                <div id="about-text" style="font-size: 0.85rem; line-height: 1.6; color: #d7dadc;">
+                    A safe space for discussing bad dates, emotionally unavailable men, and why dads love cheap beer.
                 </div>
             </div>
         </div>
     </div>
     
     <script>
+        // BILINGUAL POST DATA
+        const postsData = {
+            1: {
+                subreddit: "r/MeanDads",
+                author: "u/daddy_issues_99",
+                time: "2 hours ago",
+                title: {
+                    en: "My dad ruined Christmas because we didn't have his specific brand of cheap beer 🍺😤",
+                    cs: "Táta zničil Vánoce, protože jsme neměli jeho specifickou značku levného piva 🍺😤"
+                },
+                text: {
+                    en: "Honestly, I can't do this anymore. We sat down for a nice meal, and he starts complaining that there isn't enough beer. It's CHRISTMAS. We have wine, we have water, we have juice. But no, he needs his specific brand of cheap lager or the world ends.\n\nHe spent the whole dinner sulking and making mean comments about my mom's cooking just because he was sober for 20 minutes. Why are they like this?",
+                    cs: "Upřímně, už to nezvládám. Sedli jsme si k hezkému jídlu a on si začal stěžovat, že není dost piva. Jsou VÁNOCE. Máme víno, vodu, džus. Ale ne, on potřebuje svoje levné pivo, jinak skončí svět.\n\nCelou večeři trucoval a měl hnusné poznámky o mámině vaření jen proto, že byl 20 minut střízlivý. Proč jsou takoví?"
+                },
+                comments: 342,
+                score: 8700,
+                awards: 7,
+                flair: { en: "🍺 Mean Dad Energy", cs: "🍺 Hnusnej Táta" }
+            },
+            2: {
+                subreddit: "r/BadBoyfriends",
+                author: "u/clown_shoes",
+                time: "5 hours ago",
+                title: {
+                    en: "He broke up with me via a Spotify playlist. I am 24 years old. 🤡",
+                    cs: "Rozešel se se mnou přes Spotify playlist. Je mi 24 let. 🤡"
+                },
+                text: {
+                    en: "I wish I was joking. He sent me a link titled 'Moving On'. The first song was 'Bye Bye Bye'.\n\nI drove to his house to scream at him but his mom answered the door and said he was 'napping'. I need to lie down on the highway.",
+                    cs: "Kéž by to byl vtip. Poslal mi odkaz s názvem 'Jdu dál'. První písnička byla 'Bye Bye Bye'.\n\nJela jsem k němu domů, abych na něj křičela, ale otevřela jeho máma a řekla, že 'spinká'. Potřebuju si lehnout na dálnici."
+                },
+                comments: 890,
+                score: 15400,
+                awards: 22,
+                flair: { en: "🚩 The Audacity", cs: "🚩 Ta Drzost" }
+            },
+            3: {
+                subreddit: "r/DadRants",
+                author: "u/branik_hater",
+                time: "1 day ago",
+                title: {
+                    en: "Why is every dad in this country obsessed with Braník? 🍺",
+                    cs: "Proč je každý táta v téhle zemi posedlý Braníkem? 🍺"
+                },
+                text: {
+                    en: "It tastes like rusty water. But my dad defends it like it's the elixir of life. He gets so mean if we buy anything else.\n\n'You're wasting money on that fancy stuff!' Sir, it costs 3 crowns more. Please calm down and stop yelling at the dog.",
+                    cs: "Chutná to jako rezavá voda. Ale můj táta to brání, jako by to byl elixír života. Je tak protivný, když koupíme cokoliv jiného.\n\n'Vyhazujete peníze za ty nóbl věci!' Panebože, stojí to o 3 koruny víc. Prosím, uklidni se a přestaň řvát na psa."
+                },
+                comments: 567,
+                score: 12300,
+                awards: 12,
+                flair: { en: "🍺 Dad Rants", cs: "🍺 Tátovo kecy" }
+            },
+            4: {
+                subreddit: "r/ICanFixHim",
+                author: "u/delulu_queen",
+                time: "3 hours ago",
+                title: {
+                    en: "Found his ex's hair tie in his car and he said it was his sister's. He doesn't have a sister. 🚩",
+                    cs: "Našla jsem v jeho autě gumičku jeho ex a on řekl, že je jeho sestry. Nemá sestru. 🚩"
+                },
+                text: {
+                    en: "The gaslighting is honestly impressive at this point. I asked 'Since when do you have a sister?' and he looked me dead in the eye and said 'Since always, you just never listen'.\n\nI questioned my own sanity for a solid 5 minutes before I remembered I've known his parents for 3 years. Men are terrifying.",
+                    cs: "Ten gaslighting je v tomhle bodě fakt impozantní. Zeptala jsem se 'Odkdy máš sestru?' a on se mi podíval do očí a řekl 'Odjakživa, ty mě jen nikdy neposloucháš'.\n\nZpochybňovala jsem vlastní příčetnost asi 5 minut, než mi došlo, že znám jeho rodiče 3 roky. Chlapi jsou děsiví."
+                },
+                comments: 194,
+                score: 6900,
+                awards: 5,
+                flair: { en: "🤥 Pathological Liar", cs: "🤥 Patologický lhář" }
+            },
+            5: {
+                subreddit: "r/MeanDads",
+                author: "u/tired_daughter",
+                time: "8 hours ago",
+                title: {
+                    en: "Dad logic: Yell at everyone for 2 hours, then ask why nobody wants to watch TV with him. 📺",
+                    cs: "Tátova logika: 2 hodiny na všechny řvát, a pak se ptát, proč s ním nikdo nechce koukat na televizi. 📺"
+                },
+                text: {
+                    en: "He comes home, slams doors, yells about the dishes, yells about the government, yells about the weather.\n\nThen at 8pm he sits on the couch with a beer and goes 'Why is everyone in their rooms? This family isn't close anymore.' GEE I WONDER WHY DAD. MAYBE BECAUSE YOU'RE MEAN.",
+                    cs: "Přijde domů, tříská dveřmi, řve kvůli nádobí, řve na vládu, řve na počasí.\n\nPak si v 8 večer sedne na gauč s pivem a říká 'Proč jsou všichni zalezlí v pokojích? Tahle rodina už nedrží pohromadě.' FAKT NEVÍM TATI. MOŽNÁ PROTOŽE JSI ZLEJ."
+                },
+                comments: 423,
+                score: 9800,
+                awards: 8,
+                flair: { en: "😤 Angry Dad", cs: "😤 Naštvanej Táta" }
+            },
+            6: {
+                subreddit: "r/DadRants",
+                author: "u/cycle_breaker",
+                time: "12 hours ago",
+                title: {
+                    en: "The cycle of a mean dad: Drink -> Get Mean -> Sleep -> Pretend nothing happened 🔄",
+                    cs: "Koloběh zlého táty: Pít -> Být hnusný -> Spát -> Předstírat, že se nic nestalo 🔄"
+                },
+                text: {
+                    en: 'Does anyone else\'s dad do this? He says the most hurtful things imaginable at 9pm when he\'s had a few.\n\nThen the next morning he\'s making eggs and whistling like he didn\'t just destroy my self-esteem. And if I bring it up, I\'m "too sensitive". I\'m so tired.',
+                    cs: 'Dělá to taky něčí táta? V 9 večer, když má upito, říká ty nejhnusnější věci.\n\nA druhý den ráno dělá vajíčka a píská si, jako by mi právě nezničil sebevědomí. A když to zmíním, jsem "moc citlivá". Jsem tak unavená.'
+                },
+                comments: 87,
+                score: 3200,
+                awards: 2,
+                flair: { en: "🍺 Exhausting", cs: "🍺 Vyčerpávající" }
+            }
+        };
+
         const userVotes = {};
+        
+        function getLang() {
+            return localStorage.getItem('heartosLang') || 'en';
+        }
+        
+        function getText(obj) {
+            const lang = getLang();
+            if (typeof obj === 'string') return obj;
+            return obj[lang] || obj.en || obj;
+        }
+        
+        // Render all posts
+        function renderPosts() {
+            const container = document.getElementById('posts-container');
+            container.innerHTML = '';
+            
+            Object.keys(postsData).forEach(postId => {
+                const post = postsData[postId];
+                const postCard = createPostElement(postId, post);
+                container.appendChild(postCard);
+            });
+        }
+        
+        function createPostElement(postId, post) {
+            const div = document.createElement('div');
+            div.className = 'post-card';
+            
+            const t = window.__t;
+            const title = getText(post.title);
+            const text = getText(post.text).replace(/\n/g, '<br><br>');
+            const flair = getText(post.flair);
+            
+            const gradients = {
+                1: 'linear-gradient(135deg, #ef5350, #ffcdd2)',
+                2: 'linear-gradient(135deg, #ef5350, #ffcdd2)',
+                3: 'linear-gradient(135deg, #ab47bc, #e1bee7)',
+                4: 'linear-gradient(135deg, #29b6f6, #b3e5fc)',
+                5: 'linear-gradient(135deg, #ef5350, #ffcdd2)',
+                6: 'linear-gradient(135deg, #ab47bc, #e1bee7)'
+            };
+
+            const icons = {
+                1: '🍺', 2: '🚩', 3: '🍺', 4: '🤡', 5: '😤', 6: '🔄'
+            };
+            
+            div.innerHTML = `
+                <div class="vote-section">
+                    <div class="vote-btn ${userVotes[postId] === 1 ? 'upvoted' : ''}" onclick="vote(this, ${postId}, 'up')">▲</div>
+                    <div class="vote-count ${userVotes[postId] === 1 ? 'positive' : (userVotes[postId] === -1 ? 'negative' : '')}" data-score="${post.score}">${post.score >= 1000 ? (post.score / 1000).toFixed(1) + 'k' : post.score}</div>
+                    <div class="vote-btn ${userVotes[postId] === -1 ? 'downvoted' : ''}" onclick="vote(this, ${postId}, 'down')">▼</div>
+                </div>
+                <div class="post-content">
+                    <div class="post-header">
+                        <div class="subreddit-icon" style="background: ${gradients[postId] || '#333'}; width: 20px; height: 20px; font-size: 0.7rem;">${icons[postId] || '💬'}</div>
+                        <span class="subreddit">${post.subreddit}</span>
+                        <span>•</span>
+                        <span class="post-author">${t('posted_by')} ${post.author}</span>
+                        <span>•</span>
+                        <span class="post-time">${post.time}</span>
+                    </div>
+                    <div class="post-title">${title}</div>
+                    <div class="post-text">${text}</div>
+                    <div style="margin-bottom: 12px;">
+                        <span class="post-flair">${flair}</span>
+                    </div>
+                    <div class="post-actions">
+                        <div class="action-btn">💬 ${post.comments} ${t('comments')}</div>
+                        <div class="action-btn">↗️ ${t('share')}</div>
+                        <div class="action-btn">🔖 ${t('save')}</div>
+                        <div class="action-btn" onclick="giveAward(this)">🎁 ${t('award')} (${post.awards})</div>
+                    </div>
+                </div>
+            `;
+            
+            return div;
+        }
+        
+        // Initial render
+        document.addEventListener('DOMContentLoaded', function() {
+            renderPosts();
+        });
+        
+        // Re-render when language changes
+        window.addEventListener('storage', function(e) {
+            if (e && e.key === 'heartosLang') {
+                renderPosts();
+            }
+        });
         
         function vote(btn, postId, direction) {
             const voteSection = btn.parentElement;
@@ -629,25 +854,28 @@
         }
         
         function giveAward(btn) {
-            btn.classList.add('award-animation');
+            btn.classList.add('animation-award');
             const match = btn.textContent.match(/\((\d+)\)/);
             const count = match ? parseInt(match[1]) + 1 : 1;
-            btn.innerHTML = `🎁 Award (${count})`;
-            setTimeout(() => btn.classList.remove('award-animation'), 500);
+            const t = window.__t;
+            btn.innerHTML = `🎁 ${t('award')} (${count})`;
+            setTimeout(() => btn.classList.remove('animation-award'), 500);
         }
         
         function toggleJoin(btn) {
+            const t = window.__t;
             if (btn.classList.contains('joined')) {
                 btn.classList.remove('joined');
-                btn.textContent = 'Join';
+                btn.textContent = t('join');
             } else {
                 btn.classList.add('joined');
-                btn.textContent = 'Joined';
+                btn.textContent = t('joined');
             }
         }
         
         function createNewPost() {
             document.getElementById('createPostBox').style.display = 'flex';
+            document.getElementById('postTitle').focus();
         }
         
         function cancelPost() {
@@ -659,45 +887,44 @@
         function submitPost() {
             const title = document.getElementById('postTitle').value.trim();
             const content = document.getElementById('postContent').value.trim();
+            const t = window.__t;
             
-            if (!title || !content) {
-                alert('Please fill in both title and content!');
+            if (!title) {
+                alert('Please add a title!');
                 return;
             }
             
-            const feed = document.querySelector('.feed');
+            const container = document.getElementById('posts-container');
             const newPost = document.createElement('div');
             newPost.className = 'post-card';
             newPost.innerHTML = `
-                <div class="post-container">
-                    <div class="vote-section">
-                        <div class="vote-btn upvoted" onclick="vote(this, ${Date.now()}, 'up')">▲</div>
-                        <div class="vote-count positive" data-score="1">1</div>
-                        <div class="vote-btn" onclick="vote(this, ${Date.now()}, 'down')">▼</div>
+                <div class="vote-section">
+                    <div class="vote-btn upvoted" onclick="vote(this, ${Date.now()}, 'up')">▲</div>
+                    <div class="vote-count positive" data-score="1">1</div>
+                    <div class="vote-btn" onclick="vote(this, ${Date.now()}, 'down')">▼</div>
+                </div>
+                <div class="post-content">
+                    <div class="post-header">
+                        <div class="subreddit-icon" style="background: linear-gradient(135deg, #ff4500, #ff8717); width: 20px; height: 20px; font-size: 0.7rem;">👽</div>
+                        <span class="subreddit">r/HeartOS</span>
+                        <span>•</span>
+                        <span class="post-author">${t('posted_by')} u/you</span>
+                        <span>•</span>
+                        <span class="post-time">just now</span>
                     </div>
-                    <div class="post-content">
-                        <div class="post-header">
-                            <div class="subreddit-icon" style="background: linear-gradient(135deg, #ff4d6d, #ff8fa3);">💕</div>
-                            <span class="subreddit">r/HeartOS</span>
-                            <span>•</span>
-                            <span class="post-author">Posted by u/you</span>
-                            <span>•</span>
-                            <span class="post-time">just now</span>
-                        </div>
-                        <div class="post-title">${title}</div>
-                        <div class="post-text">${content}</div>
-                        <div class="post-actions">
-                            <div class="action-btn">💬 0 Comments</div>
-                            <div class="action-btn">↗️ Share</div>
-                            <div class="action-btn">🔖 Save</div>
-                            <div class="action-btn" onclick="giveAward(this)">🎁 Award</div>
-                        </div>
+                    <div class="post-title">${title}</div>
+                    <div class="post-text">${content}</div>
+                    <div class="post-actions">
+                        <div class="action-btn">💬 0 ${t('comments')}</div>
+                        <div class="action-btn">↗️ ${t('share')}</div>
+                        <div class="action-btn">🔖 ${t('save')}</div>
+                        <div class="action-btn" onclick="giveAward(this)">🎁 ${t('award')}</div>
                     </div>
                 </div>
             `;
             
             userVotes[Date.now()] = 1;
-            feed.insertBefore(newPost, feed.children[1]);
+            container.insertBefore(newPost, container.firstChild);
             cancelPost();
         }
     </script>

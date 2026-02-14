@@ -60,16 +60,16 @@
 
         <div id="icon-grid">
             <div class="desktop-icon" onclick="SYSTEM.openApp('win-timeline')">
-                <span class="icon-img">📜</span>
-                <div>History</div>
+                <span class="icon-img">🏆</span>
+                <div>Achievements</div>
             </div>
             <div class="desktop-icon" onclick="SYSTEM.openApp('win-gallery')">
                 <span class="icon-img">📂</span>
                 <div>Photos</div>
             </div>
-            <div class="desktop-icon" onclick="SYSTEM.openApp('win-letters')">
+            <div class="desktop-icon" id="icon-secrets" onclick="SYSTEM.openApp('win-letters')">
                 <span class="icon-img">💌</span>
-                <div>Secrets</div>
+                <div>Secrets <span id="secrets-lock-badge">🔒</span></div>
             </div>
             <div class="desktop-icon" onclick="SYSTEM.openApp('win-map')">
                 <span class="icon-img">🌍</span>
@@ -87,10 +87,14 @@
                 <span class="icon-img">🌐</span>
                 <div>Browser</div>
             </div>
+            <div class="desktop-icon" onclick="SYSTEM.openApp('win-videoplayer')">
+                <span class="icon-img">🎬</span>
+                <div>Message</div>
+            </div>
         </div>
 
         <div id="win-timeline" class="os-window-box app-window hidden" style="top: 5%; left: 5%;">
-            <div class="window-bar"><span>History.exe</span><div class="win-controls"><button onclick="SYSTEM.closeApp('win-timeline')">X</button></div></div>
+            <div class="window-bar"><span>Achievements.exe</span><div class="win-controls"><button onclick="SYSTEM.closeApp('win-timeline')">X</button></div></div>
             <div class="window-content-scroll" id="timeline-content"></div>
         </div>
 
@@ -134,6 +138,16 @@
             <div class="window-content" id="streamer-content" style="padding: 0; background: #000; height: 100%;"></div>
         </div>
 
+        <div id="win-videoplayer" class="os-window-box app-window hidden" style="top: 8%; left: 12%; width: 720px; height: 480px;">
+            <div class="window-bar">
+                <span>🎬 Message</span>
+                <div class="win-controls">
+                    <button onclick="SYSTEM.closeApp('win-videoplayer')">X</button>
+                </div>
+            </div>
+            <div class="window-content" id="videoplayer-content" style="padding: 0; background: #000; overflow: hidden; height: calc(100% - 30px);"></div>
+        </div>
+
         <div id="win-amp" class="os-window-box app-window hidden" style="top: 30%; left: 60%; width: 300px; height: auto;">
             <div class="window-bar" style="background: #2b0a12; color: #ff4d6d;"><span>HeartAmp</span><div class="win-controls"><button onclick="SYSTEM.closeApp('win-amp')">X</button></div></div>
             <div class="window-content" id="amp-interface" style="padding: 0; background: transparent;"></div>
@@ -159,10 +173,13 @@
     <script src="js/i18n.js"></script>
     <script src="js/lore.js"></script>
     <script src="js/system.js"></script>
+    <script src="js/bios-complete-final.js"></script>
     <script src="js/apps/gallery.js"></script>
     <script src="js/apps/music.js"></script>
     <script src="js/apps/terminal.js"></script>
     <script src="js/apps/tools.js"></script>
+    <script src="js/apps/secrets.js"></script>
+    <script src="js/apps/videoplayer.js"></script>
     <script src="js/apps/streamer.js"></script>
     <script src="js/apps/map.js"></script>
     <script src="js/apps/browser.js"></script>

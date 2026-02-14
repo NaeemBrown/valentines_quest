@@ -22,6 +22,31 @@ const MAP = {
     tooltipEl: null,
     distanceEl: null,
 
+    t: function(key, fallback) {
+    if (typeof I18N !== 'undefined' && I18N.t) return I18N.t(key);
+    return fallback || key;
+},
+
+onLanguageChanged: function() {
+    // Update overlay distance text
+    if (this.distanceEl) {
+        this.distanceEl.textContent = this.t('map_distance', this.distanceEl.textContent);
+    }
+
+    // Rebuild current view so canvas sprites + back button text update
+    const view = this.currentView;
+    const camPos = this.camera ? this.camera.position.clone() : null;
+    const pivotRot = this.pivot ? this.pivot.rotation.clone() : null;
+
+    if (view === 'world') this.showWorldView();
+    else if (view === 'czechia') this.showCzechiaView();
+    else if (view === 'capetown') this.showCapeTownView();
+
+    // Optional: restore camera + rotation so it doesn’t “jump” after language switch
+    if (camPos && this.camera) this.camera.position.copy(camPos);
+    if (pivotRot && this.pivot) this.pivot.rotation.copy(pivotRot);
+},
+
     // ═══════════════════════════════════════════════════════════════
     // INIT
     // ═══════════════════════════════════════════════════════════════
@@ -87,9 +112,19 @@ const MAP = {
             color:rgba(255,77,109,0.6); font-family:VT323,monospace; font-size:1rem;
             pointer-events:none; letter-spacing:1px;
         `;
-        this.distanceEl.textContent = '📡  9,678 km apart — but who\'s counting';
+        this.distanceEl.textContent = this.t(
+    'map_distance',
+    '📡  9,678 km apart — but who\'s counting'
+);
+
         container.appendChild(this.distanceEl);
+        if (!this._langListenerAdded) {
+    window.addEventListener('languageChanged', () => this.onLanguageChanged());
+    this._langListenerAdded = true;
+}
     },
+
+    
 
     showTooltip: function(text, x, y) {
         if (!this.tooltipEl) return;
@@ -137,14 +172,16 @@ const MAP = {
         this.arcPoints = [];
 
         const titleBar = document.querySelector('#win-map .window-bar span');
-        if (titleBar) titleBar.innerText = '💕 LOVE MAP';
+        if (titleBar) titleBar.innerText = this.t('map_love_title', '💕 LOVE MAP');
+
 
         this.camera.position.x = 0;
         this.camera.position.y = 0;
 
         this.addRetroGlobe();
-        this.addCityMarker(-33.9249, 18.4241, 0x00ff88, 'Cape Town 🇿🇦', 'capetown');
-        this.addCityMarker( 50.0755, 14.4378, 0xff4d6d, 'Prague 🇨🇿',    'czechia');
+        this.addCityMarker(-33.9249, 18.4241, 0x00ff88, this.t('map_city_capetown', 'Cape Town 🇿🇦'), 'capetown');
+this.addCityMarker( 50.0755, 14.4378, 0xff4d6d, this.t('map_city_prague',   'Prague 🇨🇿'),    'czechia');
+
         this.addFloatingHearts();
 
         if (this.distanceEl) this.distanceEl.style.display = 'block';
@@ -411,7 +448,8 @@ const MAP = {
         this.clearScene();
         this.camera.position.set(0, 0, 10);
         const titleBar = document.querySelector('#win-map .window-bar span');
-        if (titleBar) titleBar.innerText = '🇨🇿 CZECHIA';
+        if (titleBar) titleBar.innerText = this.t('map_view_czechia_title', '🇨🇿 CZECHIA');
+
         if (this.distanceEl) this.distanceEl.style.display = 'none';
 
         this.addGridBackground(0x1a0510, 0xff4d6d);
@@ -449,7 +487,8 @@ const MAP = {
         this.clearScene();
         this.camera.position.set(0, 0, 10);
         const titleBar = document.querySelector('#win-map .window-bar span');
-        if (titleBar) titleBar.innerText = '🇿🇦 CAPE TOWN';
+        if (titleBar) titleBar.innerText = this.t('map_view_capetown_title', '🇿🇦 CAPE TOWN');
+
         if (this.distanceEl) this.distanceEl.style.display = 'none';
 
         this.addGridBackground(0x001a10, 0x00ff88);
@@ -601,7 +640,8 @@ const MAP = {
         ctx.fillStyle = '#fff';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText('← WORLD MAP', 128, 32);
+        ctx.fillText(this.t('map_back_world', '← WORLD MAP'), 128, 32);
+
         const btn = new THREE.Mesh(
             new THREE.PlaneGeometry(2.4, 0.6),
             new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(c), transparent: true })
@@ -616,49 +656,56 @@ const MAP = {
     // POPUP — slide-in panel
     // ═══════════════════════════════════════════════════════════════
     showLocationPopup: function(locationData) {
-        const win = document.getElementById('win-map');
-        let panel = document.getElementById('map-side-panel');
-        if (!panel) {
-            panel = document.createElement('div');
-            panel.id = 'map-side-panel';
-            panel.style.cssText = `
-                position:absolute; top:32px; right:0; bottom:0;
-                width:260px; background:rgba(10,2,8,0.97);
-                border-left:2px solid #ff4d6d;
-                font-family:VT323,monospace; color:#fff;
-                overflow-y:auto; z-index:20;
-                transform:translateX(100%); transition:transform 0.3s ease; display:none;
-            `;
-            if (win) { win.style.overflow = 'hidden'; win.appendChild(panel); }
-        }
-
-        panel.innerHTML = `
-            <div style="position:relative;">
-                <img src="${locationData.image}" alt="${locationData.title}"
-                    style="width:100%;height:150px;object-fit:cover;display:block;"
-                    onerror="this.style.display='none'">
-                <button onclick="MAP.closePopup()"
-                    style="position:absolute;top:6px;right:8px;background:rgba(0,0,0,0.7);
-                    border:1px solid #ff4d6d;color:#ff4d6d;font-family:VT323,monospace;
-                    font-size:1.1rem;padding:2px 8px;cursor:pointer;">✕</button>
-            </div>
-            <div style="padding:14px 16px;">
-                <div style="font-size:1.4rem;color:#ff4d6d;margin-bottom:6px;">${locationData.title}</div>
-                <div style="font-size:1rem;color:#ccc;line-height:1.5;margin-bottom:12px;">${locationData.description}</div>
-                <div style="font-size:0.85rem;color:#555;border-top:1px solid #2a0a14;padding-top:8px;">
-                    📍 ${locationData.lat.toFixed(4)}°, ${locationData.lon.toFixed(4)}°
-                </div>
-                <div style="margin-top:10px;">
-                    <span style="display:inline-block;border:1px solid #ff4d6d;color:#ff4d6d;
-                        font-size:0.9rem;padding:3px 10px;letter-spacing:1px;">✓ YOU WERE HERE</span>
-                </div>
-            </div>
+    const win = document.getElementById('win-map');
+    let panel = document.getElementById('map-side-panel');
+    if (!panel) {
+        panel = document.createElement('div');
+        panel.id = 'map-side-panel';
+        panel.style.cssText = `
+            position:absolute; top:32px; right:0; bottom:0;
+            width:260px; background:rgba(10,2,8,0.97);
+            border-left:2px solid #ff4d6d;
+            font-family:VT323,monospace; color:#fff;
+            overflow-y:auto; z-index:20;
+            transform:translateX(100%); transition:transform 0.3s ease; display:none;
         `;
+        if (win) { win.style.overflow = 'hidden'; win.appendChild(panel); }
+    }
 
-        panel.style.transform = 'translateX(100%)';
-        panel.style.display = 'block';
-        requestAnimationFrame(() => requestAnimationFrame(() => { panel.style.transform = 'translateX(0)'; }));
-    },
+    // --- TRANSLATION LOGIC ---
+    // We look for a key like 'map_loc_prague_title' or fall back to the default
+    const locId = locationData.id || locationData.title.toLowerCase().replace(/\s+/g, '_');
+    const displayTitle = this.t(`map_loc_${locId}_title`, locationData.title);
+    const displayDesc = this.t(`map_loc_${locId}_desc`, locationData.description);
+    const visitedText = this.t('map_visited_label', '✓ YOU WERE HERE');
+
+    panel.innerHTML = `
+        <div style="position:relative;">
+            <img src="${locationData.image}" alt="${displayTitle}"
+                style="width:100%;height:150px;object-fit:cover;display:block;"
+                onerror="this.style.display='none'">
+            <button onclick="MAP.closePopup()"
+                style="position:absolute;top:6px;right:8px;background:rgba(0,0,0,0.7);
+                border:1px solid #ff4d6d;color:#ff4d6d;font-family:VT323,monospace;
+                font-size:1.1rem;padding:2px 8px;cursor:pointer;">✕</button>
+        </div>
+        <div style="padding:14px 16px;">
+            <div style="font-size:1.4rem;color:#ff4d6d;margin-bottom:6px;">${displayTitle}</div>
+            <div style="font-size:1rem;color:#ccc;line-height:1.5;margin-bottom:12px;">${displayDesc}</div>
+            <div style="font-size:0.85rem;color:#555;border-top:1px solid #2a0a14;padding-top:8px;">
+                📍 ${locationData.lat.toFixed(4)}°, ${locationData.lon.toFixed(4)}°
+            </div>
+            <div style="margin-top:10px;">
+                <span style="display:inline-block;border:1px solid #ff4d6d;color:#ff4d6d;
+                    font-size:0.9rem;padding:3px 10px;letter-spacing:1px;">${visitedText}</span>
+            </div>
+        </div>
+    `;
+
+    panel.style.transform = 'translateX(100%)';
+    panel.style.display = 'block';
+    requestAnimationFrame(() => requestAnimationFrame(() => { panel.style.transform = 'translateX(0)'; }));
+},
 
     closePopup: function() {
         const panel = document.getElementById('map-side-panel');

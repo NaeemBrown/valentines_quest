@@ -6,6 +6,36 @@ const DESKTOP_MANAGER = {
     activeWindow: null,
     zIndex: 100,
     minimizedWindows: new Set(),
+
+    ensureResizeHandles(win) {
+        // If handles already exist, don't duplicate
+        if (win.querySelector('.resize-handle')) return;
+
+         const handles = ['se','e','s','sw','ne','nw','w','n'];
+        handles.forEach(pos => {
+            const h = document.createElement('div');
+            h.className = `resize-handle resize-${pos}`;
+            win.appendChild(h);
+        });
+
+        // Inject minimal positioning styles if not already present
+        if (!document.getElementById('resize-handle-style')) {
+            const style = document.createElement('style');
+            style.id = 'resize-handle-style';
+            style.textContent = `
+                .resize-handle { position:absolute; width:14px; height:14px; z-index:10001; }
+                .resize-w  { left:-6px; top:50%; transform:translateY(-50%); height:40px; }
+                .resize-n  { top:-6px; left:50%; transform:translateX(-50%); width:40px; }
+                .resize-se { right:-6px; bottom:-6px; }
+                .resize-e  { right:-6px; top:50%; transform:translateY(-50%); height:40px; }
+                .resize-s  { bottom:-6px; left:50%; transform:translateX(-50%); width:40px; }
+                .resize-sw { left:-6px; bottom:-6px; }
+                .resize-ne { right:-6px; top:-6px; }
+                .resize-nw { left:-6px; top:-6px; }
+            `;
+            document.head.appendChild(style);
+        }
+    },
     
     // Dragging state
     dragState: {
@@ -54,6 +84,7 @@ const DESKTOP_MANAGER = {
             // Setup window controls
             this.setupWindowControls(win);
             this.setupWindowDragging(win);
+            this.ensureResizeHandles(win);
             this.setupWindowResize(win);
             this.setupWindowFocus(win);
             this.setupWindowTitlebar(win);
@@ -199,9 +230,17 @@ const DESKTOP_MANAGER = {
             
             let isResizing = false;
             let startX, startY, startWidth, startHeight, startLeft, startTop;
-            const handleClass = handle.className.split(' ').find(c => c.startsWith('resize-'));
+            const handleClass = handle.className.split(' ').find(c => c.startsWith('resize-') && c !== 'resize-handle');
             const position = handleClass ? handleClass.replace('resize-', '') : '';
-            
+
+            const cursorMap = {
+                se: 'nwse-resize', nw: 'nwse-resize',
+                ne: 'nesw-resize', sw: 'nesw-resize',
+                e: 'ew-resize', w: 'ew-resize',
+                n: 'ns-resize', s: 'ns-resize'
+            };
+            if (cursorMap[position]) handle.style.cursor = cursorMap[position];
+
             handle.addEventListener('mousedown', (e) => {
                 e.preventDefault();
                 e.stopPropagation();

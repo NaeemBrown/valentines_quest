@@ -550,6 +550,85 @@
         }
 
     </style>
+
+<!-- HeartOS i18n -->
+<script>
+window.__translations = {
+    en: {
+        search: "Search songs, artists...", home: "Home", search_nav: "Search",
+        library: "Your Library", create_playlist: "Create Playlist",
+        liked_songs: "Liked Songs", recently_played: "Recently Played",
+        made_for_you: "Made For You", good_morning: "Good Morning, Agi",
+        play: "PLAY", shuffle: "SHUFFLE", queue: "Queue",
+        now_playing: "Now Playing", playlists: "Playlists"
+    },
+    cs: {
+        search: "Hledat p\u00edsni\u010dky, um\u011blce...", home: "Dom\u016f", search_nav: "Hledat",
+        library: "Tvoje knihovna", create_playlist: "Vytvo\u0159it playlist",
+        liked_songs: "Obl\u00edben\u00e9 p\u00edsni\u010dky", recently_played: "Ned\u00e1vno p\u0159ehr\u00e1van\u00e9",
+        made_for_you: "Jen pro tebe", good_morning: "Dobr\u00e9 r\u00e1no, Agi",
+        play: "P\u0158EHR\u00c1T", shuffle: "N\u00c1HODN\u011a", queue: "Fronta",
+        now_playing: "Pr\u00e1v\u011b hraje", playlists: "Playlisty"
+    }
+};
+</script>
+
+<script>
+// i18n bridge - reads language from parent localStorage
+(function() {
+    const LANG = localStorage.getItem('heartosLang') || 'en';
+    window.__lang = LANG;
+    window.__t = function(key) {
+        const dict = window.__translations;
+        if (!dict) return key;
+        const lang = dict[LANG] || dict['en'];
+        return (lang && lang[key]) || (dict['en'] && dict['en'][key]) || key;
+    };
+    // Auto-translate elements with data-i18n after DOM loads
+    window.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('[data-i18n]').forEach(function(el) {
+            var key = el.getAttribute('data-i18n');
+            var translated = window.__t(key);
+            if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                el.placeholder = translated;
+            } else {
+                el.textContent = translated;
+            }
+        });
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+            el.placeholder = window.__t(el.getAttribute('data-i18n-placeholder'));
+        });
+        // Call site-specific translate function if defined
+        if (typeof window.__translateSite === 'function') {
+            window.__translateSite();
+        }
+    });
+})();
+</script>
+
+<script>
+
+    window.__translateSite = function() {
+        var t = window.__t;
+        var si = document.querySelector('input[placeholder*="Search"]');
+        if(si) si.placeholder = t('search');
+        document.querySelectorAll('.nav-item span, .sidebar-item span').forEach(function(el){
+            var txt = el.textContent.trim();
+            if(txt === 'Home') el.textContent = t('home');
+            if(txt === 'Search') el.textContent = t('search_nav');
+            if(txt === 'Your Library') el.textContent = t('library');
+        });
+        document.querySelectorAll('.section-title, h2, h1').forEach(function(el){
+            var txt = el.textContent.trim();
+            if(txt.includes('Good Morning') || txt.includes('Good Afternoon') || txt.includes('Good Evening')) el.textContent = t('good_morning');
+            if(txt.includes('Recently Played')) el.textContent = t('recently_played');
+            if(txt.includes('Made For')) el.textContent = t('made_for_you');
+        });
+    };
+
+</script>
+<!-- /HeartOS i18n -->
+
 </head>
 <body>
     <div class="main">

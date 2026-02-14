@@ -15,14 +15,91 @@ const TOOLS = {
         }
     },
 
-    renderTimeline: function() {
-        const c = document.getElementById('timeline-content');
-        if(!c) return;
-        c.innerHTML = "";
-        LORE.timeline.forEach(i => {
-            c.innerHTML += `<div class="timeline-item"><h3>${i.date}: ${i.title}</h3><p>${i.desc}</p></div>`;
-        });
-    },
+    // REPLACE the entire renderTimeline() function with this:
+
+renderTimeline: function() {
+    const c = document.getElementById('timeline-content');
+    if(!c) return;
+
+    // One-time CSS for achievements look + "greyed out till clicked"
+    if (!document.getElementById('achievements-style')) {
+        const style = document.createElement('style');
+        style.id = 'achievements-style';
+        style.textContent = `
+            .achv-wrap { padding: 10px; }
+            .achv-title { font-size: 1.6rem; margin-bottom: 10px; color: var(--accent, #ff4d6d); }
+            .achv-item {
+                border: 2px solid rgba(255,77,109,0.35);
+                background: rgba(0,0,0,0.25);
+                padding: 10px 12px;
+                margin: 10px 0;
+                cursor: pointer;
+                user-select: none;
+                transition: filter 0.15s ease, opacity 0.15s ease, transform 0.08s ease;
+            }
+            .achv-item:active { transform: scale(0.99); }
+            .achv-item.locked { opacity: 0.55; filter: grayscale(1); }
+            .achv-row { display:flex; align-items:center; gap: 10px; }
+            .achv-check { width: 28px; height: 28px; display:flex; align-items:center; justify-content:center;
+                border: 2px solid rgba(255,77,109,0.6); font-size: 1.1rem; }
+            .achv-name { font-size: 1.35rem; }
+            .achv-desc { margin-top: 6px; opacity: 0.9; }
+        `;
+        document.head.appendChild(style);
+    }
+
+    // Use LORE.achievements if you add it later; otherwise reuse LORE.timeline as the source list
+    const source = (LORE.achievements && Array.isArray(LORE.achievements) && LORE.achievements.length)
+        ? LORE.achievements
+        : (LORE.timeline || []).map((t, idx) => ({
+            id: `timeline_${idx}`,
+            title: t.title,
+            desc: t.desc,
+            date: t.date
+        }));
+
+    // Load saved completion state
+    let saved = {};
+    try { saved = JSON.parse(localStorage.getItem('heartosAchievements') || '{}'); } catch(e) {}
+
+    c.innerHTML = `<div class="achv-wrap">
+        <div class="achv-title">Achievements</div>
+        <div id="achv-list"></div>
+    </div>`;
+
+    const list = c.querySelector('#achv-list');
+    if (!list) return;
+
+    source.forEach((a, idx) => {
+        const id = a.id || `achv_${idx}`;
+        const done = !!saved[id];
+
+        const item = document.createElement('div');
+        item.className = `achv-item ${done ? '' : 'locked'}`;
+        item.innerHTML = `
+            <div class="achv-row">
+                <div class="achv-check">${done ? '✓' : ''}</div>
+                <div>
+                    <div class="achv-name">${a.title || 'Achievement'}</div>
+                    <div class="achv-desc">${a.desc || ''}${a.date ? ` <span style="opacity:.7">(${a.date})</span>` : ''}</div>
+                </div>
+            </div>
+        `;
+
+        item.onclick = () => {
+            const next = !saved[id];
+            saved[id] = next;
+            localStorage.setItem('heartosAchievements', JSON.stringify(saved));
+
+            item.classList.toggle('locked', !next);
+            const check = item.querySelector('.achv-check');
+            if (check) check.textContent = next ? '✓' : '';
+        };
+
+        list.appendChild(item);
+    });
+},
+
 
     renderLetters: function() {
         const c = document.getElementById('letters-content');

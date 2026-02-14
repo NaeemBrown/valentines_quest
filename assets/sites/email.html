@@ -385,8 +385,311 @@
         .attachment:hover {
             background: #e5e5e5;
         }
-
     </style>
+
+<!-- HeartOS i18n -->
+<script>
+window.__translations = {
+    en: {
+        compose: "✨ Compose", inbox: "💖 Inbox", starred: "⭐ Starred",
+        sent: "💅 Sent", drafts: "📝 Drafts", important: "🔥 Important",
+        trash: "🗑️ Trash", labels: "Labels",
+        personal: "Personal", work: "Work", hobby: "Hobby", shopping: "Shopping",
+        search_mail: "Search mail...", select_all: "Select All",
+        delete: "🗑️ Delete", mark_read: "✓ Mark Read",
+        star_btn: "⭐ Star", reply: "↩️ Reply", forward: "➡️ Forward",
+        reply_placeholder: "Type your reply...", cancel: "Cancel",
+        send_reply: "Send Reply ✨", new_message: "✨ New Message",
+        to_placeholder: "To: (e.g., Babe, Mom, Coach)",
+        subject_placeholder: "Subject:",
+        message_placeholder: "Type your message here...",
+        save_draft: "Save Draft", send: "Send ✨",
+        nothing_here: "Nothing here!",
+        no_match: "No emails match your search.",
+        folder_empty: "Your folder is empty.",
+        trash_empty: "Trash is empty! You are sustainable! ♻️",
+
+        toast_no_selected: "No emails selected!",
+        toast_deleted_n: "Deleted {n} email(s)!",
+        toast_mark_read: "Marked as read!",
+        toast_delete_confirm: "Delete {n} email(s)?",
+        toast_delete_one_confirm: "Delete this email?",
+        toast_write_first: "Write something first!",
+        toast_reply_sent: "Reply sent!",
+        toast_recipient_subject: "Add a recipient and subject!",
+        toast_sent_manifest: "Sent! Manifesting a reply.",
+        toast_nothing_save: "Nothing to save!",
+        toast_draft_saved: "Draft saved!",
+        toast_star_added: "Added to starred!",
+        toast_star_removed: "Removed from starred",
+
+        soon_attach: "Attachment feature coming soon!",
+        soon_emoji: "Emoji picker coming soon!",
+        soon_schedule: "Schedule send coming soon!",
+
+        // ── INBOX EMAILS ──
+
+        email1_subject: "🐾 Whippet Litter — 1 Puppy Left",
+        email1_body: "Hi there!<br><br>Great news — our latest whippet litter is almost fully reserved, but there's <b>one blue fawn girl</b> still looking for her person. She's got the longest ears you've ever seen and she already does the classic whippet loaf on the couch.<br><br>Photos attached. She won't last long.<br><br>– Paws & Noses Kennel",
+
+        email2_subject: "🏑 Practice Moved to 19:30",
+        email2_body: "Hey team!<br><br>Hall is double-booked (again 🙄). Practice tonight is pushed to <b>7:30 PM</b>.<br><br>Bring your sticks, bring your A-game, bring snacks if you're feeling generous.<br><br>See you on the court! 💪<br>– Coach K",
+
+        email3_subject: "Your streak is in danger 🔥",
+        email3_body: "Hey,<br><br>You've been learning Czech for <b>47 days straight</b>. Don't break it now. That's longer than most New Year's resolutions last.<br><br>Today's lesson: Food vocabulary. Finally learn what you've been ordering at restaurants.<br><br>🦉 Duo",
+
+        email4_subject: "✨ Why You Don't Need That New Serum",
+        email4_body: "New video is UP:<br><br><b>'My Low-Buy Year: How I Saved €400 & Cleared My Skin'</b><br><br>Spoiler: the secret ingredient was literally just water and leaving your face alone. Revolutionary, I know.<br><br>Stay glowing (naturally),<br>– The Daily Glow",
+
+        email5_subject: "🐼 Red Panda Feeding Experience — You're Invited!",
+        email5_body: "Dear friend,<br><br>Thank you for your recent donation to the Red Panda Conservation Fund! 🎉<br><br>As a thank you, we'd love to invite you to an <b>exclusive behind-the-scenes feeding session</b> next month. You'll get to meet Bamboo and Mochi — our two resident red pandas who are basically professional snack thieves.<br><br>Please reply to confirm your spot.<br><br>– Prague Zoo Conservation Team",
+
+        email6_subject: "Fourth Wing is Trending Again 🐉",
+        email6_body: "Your weekly Goodreads update:<br><br>Everyone you know is reading <b>Fourth Wing</b>. You marked it as 'Want to Read' 4 months ago. The book is staring at you. Judgingly.<br><br>Rating: ⭐⭐⭐⭐⭐ (5.0)<br>Top review: <i>'Literally spicy Hunger Games with dragons. I read it in one sitting and forgot to eat.'</i><br><br>No pressure though.",
+
+        email7_subject: "Pins You Might Love 📌",
+        email7_body: "Based on your board <b>'Future Home'</b> we found some pins for you:<br><br>• Minimalist beige living rooms that cost more than your rent<br>• Whippet puppy photography (you're welcome)<br>• Vegan meal prep that actually looks edible<br>• Cozy reading nooks you'll screenshot but never build<br><br>– Pinterest",
+
+        email8_subject: "New 2026 Templates Are Here",
+        email8_body: "Organize your entire existence with our new template pack:<br><br>📋 Gym Tracker (for that membership you're definitely using)<br>🧴 Skincare Routine Log (3 steps max, we promise)<br>📚 Reading List (so you stop buying books you already own)<br>🐕 Pet Care Dashboard (yes, this exists now)<br><br>All free. No excuses.<br>– Notion",
+
+        email9_subject: "20% Off Seamless Leggings 🏃‍♀️",
+        email9_body: "Look, we know you said you're doing a low-buy year.<br><br>But these leggings have <b>pockets</b>. REAL pockets. Phone-sized pockets.<br><br>20% off this weekend only. Use code: POCKETS20<br><br>We support you either way. 💪<br>– GymShark",
+
+        email10_subject: "Your February Wrapped 🎵",
+        email10_body: "You listened to <b>12,458 minutes</b> of music this month. That's... a lot.<br><br>Your Top Artists:<br>1. Taylor Swift (surprised? no one is)<br>2. Olivia Rodrigo<br>3. Sabrina Carpenter<br><br>Your Vibe: <b>Main Character Energy</b> ✨<br>Your most-played time: 2 AM (are you okay?)<br><br>– Spotify",
+
+        email11_subject: "3 Jobs That Match Your Profile 💼",
+        email11_body: "Based on your skills and experience, we found these roles:<br><br>• <b>Senior Bed Tester</b> @ Google — Remote, great benefits<br>• <b>Professional Nap Coordinator</b> @ Figma — Flexible hours<br>• <b>Chief Sleep Officer</b> @ Notion — Unlimited PTO<br><br>These won't last long. (Neither will your patience with LinkedIn emails.)<br><br>– LinkedIn",
+
+        email12_subject: "⚡ FLASH SALE: Apple Chips",
+        email12_body: "ATTENTION LOYAL CUSTOMER,<br><br>This weekend ONLY: <b>Apple chips at 15% off</b> at Lidl Ostrava.<br><br>Show this email at checkout. Or screenshot it. Or just show up and hope for the best, honestly the cashiers don't check.<br><br>🍎 Lidl — Big on quality, small on prices, medium on email marketing.",
+
+        email13_subject: "Time for a Haircut? 💇‍♀️",
+        email13_body: "Hi!<br><br>It's been 3 months since your last visit. Your hair called — it misses us. (Just kidding. That would be creepy.)<br><br>Book your next appointment and get <b>15% off</b> any Redken treatment.<br><br>Use code: FRESHCUT<br><br>– Studio R, Prague",
+
+        email14_subject: "You Left Something in Your Cart 👀",
+        email14_body: "Hey,<br><br>That <b>cozy oversized blanket hoodie</b> is still in your cart. It's been there for 3 days. It's getting cold. It's lonely.<br><br>Just saying — free shipping ends tonight.<br><br>No pressure. (A little pressure.)<br><br>– ASOS",
+
+        email15_subject: "🧘 Your Weekly Wellness Summary",
+        email15_body: "Here's your week in review:<br><br>🏃 Steps: 48,291 (nice!)<br>😴 Avg Sleep: 6.2 hours (not nice)<br>💧 Water intake: Who knows, you stopped logging on Tuesday<br>🧘 Meditation: 0 minutes (the app is right there)<br><br>Keep going! Or start going. Either works.<br><br>– Fitbit",
+
+        // ── SENT EMAILS ──
+
+        email_sent1_subject: "Re: Whippet Litter",
+        email_sent1_body: "OH MY GOD. 😭<br><br>Yes please! I absolutely want to meet her. Is Saturday morning okay? I'm already emotionally attached from the photos alone.<br><br>Please don't let anyone else have her.",
+
+        email_sent2_subject: "Re: Red Panda Experience",
+        email_sent2_body: "YES. I am literally free every single day next month for this. Name the time and I'll be there.<br><br>Quick question: am I allowed to cry when I meet them? Asking for myself.",
+
+        email_sent3_subject: "Re: Flash Sale",
+        email_sent3_body: "Do you ship to addresses that aren't stores? Asking because I need approximately 40 bags of those apple chips.<br><br>Thanks."
+    },
+
+    cs: {
+        compose: "✨ Napsat", inbox: "💖 Příchozí", starred: "⭐ S hvězdou",
+        sent: "💅 Odeslané", drafts: "📝 Koncepty", important: "🔥 Důležité",
+        trash: "🗑️ Koš", labels: "Štítky",
+        personal: "Osobní", work: "Práce", hobby: "Koníčky", shopping: "Nákupy",
+        search_mail: "Hledat v poště...", select_all: "Vybrat vše",
+        delete: "🗑️ Smazat", mark_read: "✓ Označit jako přečtené",
+        star_btn: "⭐ Hvězda", reply: "↩️ Odpovědět", forward: "➡️ Přeposlat",
+        reply_placeholder: "Napiš odpověď...", cancel: "Zrušit",
+        send_reply: "Odeslat odpověď ✨", new_message: "✨ Nová zpráva",
+        to_placeholder: "Komu:",
+        subject_placeholder: "Předmět:",
+        message_placeholder: "Napiš zprávu...",
+        save_draft: "Uložit koncept", send: "Odeslat ✨",
+        nothing_here: "Nic tu není!",
+        no_match: "Žádné emaily neodpovídají hledání.",
+        folder_empty: "Složka je prázdná.",
+        trash_empty: "Koš je prázdný! Jsi eko! ♻️",
+
+        toast_no_selected: "Nemáš vybrané žádné emaily!",
+        toast_deleted_n: "Smazáno: {n} email(ů)!",
+        toast_mark_read: "Označeno jako přečtené!",
+        toast_delete_confirm: "Smazat {n} email(ů)?",
+        toast_delete_one_confirm: "Smazat tenhle email?",
+        toast_write_first: "Nejdřív něco napiš!",
+        toast_reply_sent: "Odpověď odeslána!",
+        toast_recipient_subject: "Doplň příjemce a předmět!",
+        toast_sent_manifest: "Odesláno! Manifestujeme odpověď.",
+        toast_nothing_save: "Není co ukládat!",
+        toast_draft_saved: "Koncept uložen!",
+        toast_star_added: "Přidáno do hvězd!",
+        toast_star_removed: "Odebráno z hvězd",
+
+        soon_attach: "Přílohy budou brzy!",
+        soon_emoji: "Výběr emoji bude brzy!",
+        soon_schedule: "Naplánované odeslání bude brzy!",
+
+        // ── PŘÍCHOZÍ EMAILY ──
+
+        email1_subject: "🐾 Whippet štěňata — zbývá 1",
+        email1_body: "Ahoj!<br><br>Skvělá zpráva — náš nejnovější vrh whippetů je skoro celý zarezervovaný, ale <b>jedna blue fawn holčička</b> ještě hledá svého člověka. Má nejdelší uši, jaký jste kdy viděli, a už perfektně ovládá klasický whippetí bochník na gauči.<br><br>Fotky v příloze. Dlouho tu nebude.<br><br>– Chovatelská stanice Paws & Noses",
+
+        email2_subject: "🏑 Trénink přesunut na 19:30",
+        email2_body: "Čau tým!<br><br>Hala je zase dvakrát zarezervovaná (překvapení 🙄). Trénink se posouvá na <b>19:30</b>.<br><br>Vemte hokejky, vemte formu, vemte svačiny jestli jste štědří.<br><br>Vidíme se! 💪<br>– Trenér K",
+
+        email3_subject: "Tvůj streak je v ohrožení 🔥",
+        email3_body: "Hej,<br><br>Učíš se česky už <b>47 dní v kuse</b>. Teď to nezkazit. To je delší než většina novoročních předsevzetí.<br><br>Dnešní lekce: Slovíčka o jídle. Konečně se nauč, co si vlastně objednáváš v restauracích.<br><br>🦉 Duo",
+
+        email4_subject: "✨ Proč nepotřebuješ další sérum",
+        email4_body: "Nové video je venku:<br><br><b>&bdquo;Můj Low-Buy rok: Jak jsem ušetřila 10 000 Kč a zlepšila pleť&ldquo;</b><br><br>Spoiler: tajná ingredience je doslova jen voda a nechat obličej na pokoji. Revoluční, já vím.<br><br>Měj se krásně (přirozeně),<br>– The Daily Glow",
+
+        email5_subject: "🐼 Krmení pand červených — jsi pozvaná!",
+        email5_body: "Milá přítelkyně,<br><br>Děkujeme za tvůj nedávný příspěvek do Fondu na ochranu pandy červené! 🎉<br><br>Jako poděkování tě zveme na <b>exkluzivní zákulisní krmení</b> příští měsíc. Potkáš Bambuska a Mochi — naše dvě rezidentní pandy, které jsou v podstatě profesionální zloději svačin.<br><br>Odpověz prosím pro potvrzení místa.<br><br>– Tým ochrany přírody, Zoo Praha",
+
+        email6_subject: "Fourth Wing zase trenduje 🐉",
+        email6_body: "Tvoje týdenní Goodreads novinky:<br><br>Všichni co znáš čtou <b>Fourth Wing</b>. Ty to máš jako &bdquo;Chci přečíst&ldquo; už 4 měsíce. Knížka na tebe zírá. Soudí tě.<br><br>Hodnocení: ⭐⭐⭐⭐⭐ (5,0)<br>Nejlepší recenze: <i>&bdquo;Doslova pikantní Hunger Games s drakama. Přečetla jsem to najednou a zapomněla jsem jíst.&ldquo;</i><br><br>Ale žádný tlak.",
+
+        email7_subject: "Piny, co by se ti mohly líbit 📌",
+        email7_body: "Podle tvé nástěnky <b>&bdquo;Budoucí domov&ldquo;</b> jsme ti našli:<br><br>• Minimalistické béžové obýváky, co stojí víc než nájem<br>• Fotky whippet štěňat (nemáš zač)<br>• Veganský meal prep, co fakt vypadá jedlě<br>• Útulné čtecí koutky, co si screenshotneš, ale nikdy nepostavíš<br><br>– Pinterest",
+
+        email8_subject: "Nové šablony pro 2026 jsou tu",
+        email8_body: "Zorganizuj si celou svou existenci s novým balíčkem šablon:<br><br>📋 Gym Tracker (na tu permanentku, co určitě používáš)<br>🧴 Skincare Log (max 3 kroky, slibujeme)<br>📚 Seznam knih (ať přestaneš kupovat knížky, co už máš)<br>🐕 Péče o mazlíčka Dashboard (ano, tohle teď existuje)<br><br>Všechno zdarma. Žádné výmluvy.<br>– Notion",
+
+        email9_subject: "20 % sleva na seamless legíny 🏃‍♀️",
+        email9_body: "Hele, víme, že máš low-buy rok.<br><br>Ale tyhle legíny mají <b>kapsy</b>. OPRAVDOVÉ kapsy. Na celý telefon.<br><br>20 % sleva jen tento víkend. Kód: POCKETS20<br><br>Podporujeme tě tak jako tak. 💪<br>– GymShark",
+
+        email10_subject: "Tvoje únorové Wrapped 🎵",
+        email10_body: "Tento měsíc jsi poslouchala <b>12 458 minut</b> hudby. To je... hodně.<br><br>Tvoji top interpreti:<br>1. Taylor Swift (překvapení? nikoho)<br>2. Olivia Rodrigo<br>3. Sabrina Carpenter<br><br>Tvoje nálada: <b>Main Character Energy</b> ✨<br>Nejvíc hraješ ve: 2:00 v noci (jsi v pohodě?)<br><br>– Spotify",
+
+        email11_subject: "3 pozice, co sedí na tvůj profil 💼",
+        email11_body: "Podle tvých skills jsme našli tyhle role:<br><br>• <b>Senior Testovačka Postelí</b> @ Google — Remote, skvělé benefity<br>• <b>Profesionální Koordinátorka Šlofíků</b> @ Figma — Flexibilní hodiny<br>• <b>Chief Sleep Officer</b> @ Notion — Neomezené volno<br><br>Dlouho tu nebudou. (Stejně jako tvoje trpělivost s LinkedIn emaily.)<br><br>– LinkedIn",
+
+        email12_subject: "⚡ FLASH VÝPRODEJ: Jablečné chipsy",
+        email12_body: "POZOR VĚRNÝ ZÁKAZNÍKU,<br><br>Jen tento víkend: <b>Jablečné chipsy s 15% slevou</b> v Lidlu Ostrava.<br><br>Ukaž tenhle email u pokladny. Nebo si ho screenshotni. Nebo prostě přijď a doufej — upřímně, pokladní to nekontrolují.<br><br>🍎 Lidl — Velký na kvalitu, malý na ceny, střední na email marketing.",
+
+        email13_subject: "Čas na střih? 💇‍♀️",
+        email13_body: "Ahoj!<br><br>Už jsou 3 měsíce od tvé poslední návštěvy. Tvoje vlasy volaly — chybíme jim. (Dělám si srandu. To by bylo creepy.)<br><br>Objednej se a dostaneš <b>15 % slevu</b> na jakékoliv Redken ošetření.<br><br>Kód: FRESHCUT<br><br>– Studio R, Praha",
+
+        email14_subject: "Něco jsi nechala v košíku 👀",
+        email14_body: "Hej,<br><br>Ta <b>oversized deka-mikina</b> je pořád v tvém košíku. Už 3 dny. Je jí zima. Je osamělá.<br><br>Jen říkáme — doprava zdarma končí dnes v noci.<br><br>Žádný tlak. (Trochu tlak.)<br><br>– ASOS",
+
+        email15_subject: "🧘 Tvůj týdenní wellness souhrn",
+        email15_body: "Tady je tvůj týden v přehledu:<br><br>🏃 Kroky: 48 291 (pěkný!)<br>😴 Průměr spánku: 6,2 hodiny (nepěkný)<br>💧 Příjem vody: Kdo ví, přestala jsi logovat v úterý<br>🧘 Meditace: 0 minut (ta appka tam pořád je)<br><br>Pokračuj! Nebo začni. Obojí funguje.<br><br>– Fitbit",
+
+        // ── ODESLANÉ EMAILY ──
+
+        email_sent1_subject: "Re: Whippet štěňata",
+        email_sent1_body: "PROBOHA. 😭<br><br>Ano prosím! Strašně moc ji chci vidět. Jde sobota ráno? Už jsem citově připoutaná jen z fotek.<br><br>Prosím nedejte ji nikomu jinému.",
+
+        email_sent2_subject: "Re: Krmení pand",
+        email_sent2_body: "ANO. Doslova mám celý příští měsíc volný kvůli tomuhle. Řekněte kdy a budu tam.<br><br>Rychlá otázka: můžu brečet, když je potkám? Ptám se sama za sebe.",
+
+        email_sent3_subject: "Re: Flash výprodej",
+        email_sent3_body: "Doručujete i na adresy, co nejsou prodejny? Ptám se, protože potřebuju asi 40 balíčků těch jablečných chipsů.<br><br>Díky."
+    }
+};
+</script>
+
+<script>
+// i18n bridge - reads language from parent localStorage
+(function() {
+    const LANG = localStorage.getItem('heartosLang') || 'en';
+    window.__lang = LANG;
+    window.__t = function(key, vars) {
+        const dict = window.__translations;
+        if (!dict) return key;
+        const lang = dict[LANG] || dict['en'];
+        let out = (lang && lang[key]) || (dict['en'] && dict['en'][key]) || key;
+        if (vars && typeof out === 'string') {
+            Object.keys(vars).forEach(k => {
+                out = out.replaceAll(`{${k}}`, String(vars[k]));
+            });
+        }
+        return out;
+    };
+    window.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('[data-i18n]').forEach(function(el) {
+            var key = el.getAttribute('data-i18n');
+            var translated = window.__t(key);
+            if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                el.placeholder = translated;
+            } else {
+                el.textContent = translated;
+            }
+        });
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+            el.placeholder = window.__t(el.getAttribute('data-i18n-placeholder'));
+        });
+        if (typeof window.__translateSite === 'function') {
+            window.__translateSite();
+        }
+    });
+
+    window.addEventListener('storage', function(e){
+        if(e.key === 'heartosLang'){
+            location.reload();
+        }
+    });
+})();
+</script>
+
+<script>
+    window.__translateSite = function() {
+        var t = window.__t;
+
+        var cb = document.querySelector('.compose-btn');
+        if(cb) cb.textContent = t('compose');
+
+        var navs = document.querySelectorAll('.nav-section:first-of-type .nav-item span:first-child');
+        var navKeys = ['inbox','starred','sent','drafts','important','trash'];
+        navs.forEach(function(el,i){ if(navKeys[i]) el.textContent = t(navKeys[i]); });
+
+        var lt = document.querySelector('.nav-section:nth-of-type(2) .nav-section-title');
+        if(lt) lt.textContent = t('labels');
+
+        var labels = document.querySelectorAll('.label-item span:last-child');
+        var labelKeys = ['personal','work','hobby','shopping'];
+        labels.forEach(function(el,i){ if(labelKeys[i]) el.textContent = t(labelKeys[i]); });
+
+        var si = document.getElementById('search-input');
+        if(si) si.placeholder = t('search_mail');
+
+        var tbs = document.querySelectorAll('.toolbar-btn');
+        if(tbs[0]) tbs[0].textContent = t('select_all');
+        if(tbs[1]) tbs[1].textContent = t('delete');
+        if(tbs[2]) tbs[2].textContent = t('mark_read');
+
+        var vas = document.querySelectorAll('.view-actions .action-btn');
+        if(vas[0]) vas[0].textContent = t('star_btn');
+        if(vas[1]) vas[1].textContent = t('delete');
+
+        var rp = document.getElementById('reply-text');
+        if(rp) rp.placeholder = t('reply_placeholder');
+
+        var rc = document.querySelector('.reply-actions .btn-cancel');
+        if(rc) rc.textContent = t('cancel');
+
+        var rs = document.querySelector('.reply-actions .btn-send');
+        if(rs) rs.textContent = t('send_reply');
+
+        var bottomBtns = document.querySelectorAll('#view > div:last-child .action-btn');
+        if(bottomBtns[0]) bottomBtns[0].textContent = t('reply');
+        if(bottomBtns[1]) bottomBtns[1].textContent = t('forward');
+
+        var ch = document.querySelector('.compose-header span:first-child');
+        if(ch) ch.textContent = t('new_message');
+
+        var cto = document.getElementById('c-to');
+        if(cto) cto.placeholder = t('to_placeholder');
+
+        var csub = document.getElementById('c-sub');
+        if(csub) csub.placeholder = t('subject_placeholder');
+
+        var cmsg = document.getElementById('c-msg');
+        if(cmsg) cmsg.placeholder = t('message_placeholder');
+
+        var sd = document.querySelector('.c-footer-right .btn-cancel');
+        if(sd) sd.textContent = t('save_draft');
+
+        var se = document.querySelector('.c-footer-right .btn-send');
+        if(se) se.textContent = t('send');
+    };
+</script>
+
 </head>
 <body>
     <div class="app-container">
@@ -410,7 +713,7 @@
                 <div class="nav-item" onclick="switchFolder('important', this)">
                     <span>🔥 Important</span> <span id="count-important"></span>
                 </div>
-                <div class="nav-item" onclick="alert('Trash is empty! You are sustainable! ♻️')">
+                <div class="nav-item" onclick="alert(window.__t('trash_empty'))">
                     <span>🗑️ Trash</span>
                 </div>
             </div>
@@ -498,9 +801,9 @@
                 <textarea id="c-msg" class="c-input c-body" placeholder="Type your message here..."></textarea>
                 <div class="c-footer">
                     <div class="c-footer-left">
-                        <button class="icon-btn" title="Attach file" onclick="showToast('Attachment feature coming soon! 📎')">📎</button>
-                        <button class="icon-btn" title="Add emoji" onclick="showToast('Emoji picker coming soon! 😊')">😊</button>
-                        <button class="icon-btn" title="Schedule send" onclick="showToast('Schedule send coming soon! ⏰')">⏰</button>
+                        <button class="icon-btn" title="Attach file" onclick="showToast(window.__t('soon_attach'), '📎')">📎</button>
+                        <button class="icon-btn" title="Add emoji" onclick="showToast(window.__t('soon_emoji'), '😊')">😊</button>
+                        <button class="icon-btn" title="Schedule send" onclick="showToast(window.__t('soon_schedule'), '⏰')">⏰</button>
                     </div>
                     <div class="c-footer-right">
                         <button class="btn-cancel" onclick="saveDraft()">Save Draft</button>
@@ -517,26 +820,61 @@
     </div>
 
     <script>
-        // --- ENHANCED DATA ---
         let emailData = [
-            { id: 1, folder: 'inbox', starred: true, read: false, sender: "Naeem ❤️", subject: "Dinner tonight?", date: "10:42 AM", label: "personal", body: "Hey beautiful,<br><br>Thinking about getting some sushi tonight after you get back from the gym. Or we could make that pasta recipe you sent me on TikTok?<br><br>Let me know! Love you.<br>- N" },
-            { id: 2, folder: 'inbox', starred: false, read: false, sender: "Cape Floorball", subject: "🏑 Practice Moved!", date: "10:15 AM", label: "hobby", body: "Hi Agi!<br><br>Quick update: The hall is double-booked. Practice is moved to <b>7:30 PM</b> tonight.<br><br>Bring your stick and see you on the court! Let's get that cardio in! 💪<br><br>- Coach K", attachment: "practice_schedule.pdf" },
-            { id: 3, folder: 'inbox', starred: true, read: true, sender: "Paws & Noses", subject: "🐾 Whippet Litter Update", date: "Yesterday", label: "personal", body: "Hello Agi,<br><br>We saw you were on the waitlist for a Whippet! A beautiful litter was just born. There is one little girl who looks just like a tiny deer. 🦌<br><br>She is blue fawn. Do you want to come meet her next weekend?" },
-            { id: 4, folder: 'inbox', starred: false, read: true, sender: "The Daily Glow", subject: "✨ Stop buying skincare (Watch this)", date: "Feb 8", label: "hobby", body: "Hey girl,<br><br>New video is UP: <b>'My Low-Buy Year: How I saved money & cleared my skin.'</b><br><br>We discuss minimalism, semi-annual goals, and why you don't need that new serum. 🧴❌<br><br>Stay glowing,<br>Jess" },
-            { id: 5, folder: 'inbox', starred: false, read: true, sender: "Duolingo", subject: "🇨🇿 Time for Czech!", date: "Feb 8", label: "hobby", body: "Hi Agi! Don't lose your streak! 🦉<br><br>Naeem is waiting for you in Prague (figuratively). Learn the word for 'Red Panda' in Czech today!<br><br>Hint: It's 'Panda Červená'." },
-            { id: 6, folder: 'inbox', starred: false, read: true, sender: "Goodreads", subject: "Book Club: Fourth Wing 🐉", date: "Feb 7", label: "hobby", body: "Your weekly update!<br><br>Your friends are reading <b>Fourth Wing</b>. You marked this as 'Want to Read'.<br><br>Rating: ⭐⭐⭐⭐⭐ (5.0)<br>Reviews: 'Literally spicy hunger games with dragons.'" },
-            { id: 7, folder: 'inbox', starred: false, read: true, sender: "Pinterest", subject: "Pins: 'That Girl' Aesthetic", date: "Feb 6", label: "shopping", body: "We found some pins you might love based on your board 'Future Home':<br><br>- Minimalist beige living rooms<br>- Whippet puppy photography<br>- Vegan meal prep ideas" },
-            { id: 8, folder: 'inbox', starred: true, read: true, sender: "Zoo Cape Town", subject: "🐼 Red Panda Encounter", date: "Feb 5", label: "personal", body: "Dear Agi,<br><br>Thank you for your donation to the Red Panda conservation fund! We would love to invite you for a behind-the-scenes feeding session next month.<br><br>Please reply to confirm.", important: true },
-            { id: 9, folder: 'inbox', starred: false, read: true, sender: "Notion", subject: "New 2026 Templates", date: "Feb 4", label: "work", body: "Organize your life with our new 'Girl Boss' template pack.<br><br>- Gym Tracker<br>- Skincare Routine Log<br>- Reading List<br><br>Duplicate it now for free." },
-            { id: 10, folder: 'inbox', starred: false, read: true, sender: "GymShark", subject: "Sale Ends Soon", date: "Feb 2", label: "shopping", body: "20% off seamless leggings. But hey, if you're doing a low-buy year, just delete this! We support you either way. 💪" },
-            { id: 13, folder: 'inbox', starred: false, read: true, sender: "Spotify", subject: "Your 2026 Wrapped is here!", date: "Feb 1", label: "personal", body: "You listened to 12,458 minutes of music this month! 🎵<br><br>Top Artists:<br>1. Taylor Swift<br>2. Olivia Rodrigo<br>3. Sabrina Carpenter<br><br>Your vibe: Main Character Energy ✨" },
-            { id: 14, folder: 'inbox', starred: false, read: true, sender: "LinkedIn", subject: "New job opportunities", date: "Jan 31", label: "work", body: "Agi, based on your profile we found 3 new jobs that match your skills:<br><br>- Senior Product Manager @ Google<br>- UX Lead @ Figma<br>- Marketing Director @ Notion<br><br>Check them out!" },
-            { id: 15, folder: 'inbox', starred: false, read: true, sender: "Mom", subject: "Sunday Dinner?", date: "Jan 30", label: "personal", body: "Hi sweetheart,<br><br>Are you and Naeem free for dinner this Sunday? I'm making your favorite - bobotie! 🍽️<br><br>Love you lots,<br>Mom xx" },
-            
-            // Sent Items
-            { id: 11, folder: 'sent', starred: false, read: true, sender: "Me", subject: "Re: Dinner tonight?", date: "10:45 AM", label: "personal", body: "Sushi sounds perfect! 🍣<br><br>I'm starving after floorball practice. See you at 8? Love youuuu!" },
-            { id: 12, folder: 'sent', starred: false, read: true, sender: "Me", subject: "Re: Whippet Litter", date: "Yesterday", label: "personal", body: "OH MY GOSH! 😭<br><br>Yes please! I would love to meet her. Is Saturday morning okay? I am literally crying she sounds so cute." },
-            { id: 16, folder: 'sent', starred: false, read: true, sender: "Me", subject: "Re: Sunday Dinner", date: "Jan 30", label: "personal", body: "We would love to come! 💕<br><br>Should we bring anything? Maybe wine or dessert?<br><br>Can't wait! xx" }
+            { id: 1, folder: 'inbox', starred: true, read: false, sender: "Paws & Noses", date: "11:02 AM", label: "personal",
+              i18n: { subject: "email1_subject", body: "email1_body" }, attachment: "puppy_photos.zip", important: true },
+
+            { id: 2, folder: 'inbox', starred: false, read: false, sender: "Cape Floorball", date: "10:15 AM", label: "hobby",
+              i18n: { subject: "email2_subject", body: "email2_body" }, attachment: null, important: false },
+
+            { id: 3, folder: 'inbox', starred: false, read: false, sender: "Duolingo", date: "9:30 AM", label: "hobby",
+              i18n: { subject: "email3_subject", body: "email3_body" }, attachment: null, important: false },
+
+            { id: 4, folder: 'inbox', starred: false, read: true, sender: "The Daily Glow", date: "Yesterday", label: "hobby",
+              i18n: { subject: "email4_subject", body: "email4_body" }, attachment: null, important: false },
+
+            { id: 5, folder: 'inbox', starred: true, read: true, sender: "Prague Zoo", date: "Yesterday", label: "personal",
+              i18n: { subject: "email5_subject", body: "email5_body" }, attachment: null, important: true },
+
+            { id: 6, folder: 'inbox', starred: false, read: true, sender: "Goodreads", date: "Feb 10", label: "hobby",
+              i18n: { subject: "email6_subject", body: "email6_body" }, attachment: null, important: false },
+
+            { id: 7, folder: 'inbox', starred: false, read: true, sender: "Pinterest", date: "Feb 9", label: "hobby",
+              i18n: { subject: "email7_subject", body: "email7_body" }, attachment: null, important: false },
+
+            { id: 8, folder: 'inbox', starred: false, read: true, sender: "Notion", date: "Feb 8", label: "work",
+              i18n: { subject: "email8_subject", body: "email8_body" }, attachment: null, important: false },
+
+            { id: 9, folder: 'inbox', starred: false, read: true, sender: "GymShark", date: "Feb 7", label: "shopping",
+              i18n: { subject: "email9_subject", body: "email9_body" }, attachment: null, important: false },
+
+            { id: 10, folder: 'inbox', starred: false, read: true, sender: "Spotify", date: "Feb 6", label: "personal",
+              i18n: { subject: "email10_subject", body: "email10_body" }, attachment: null, important: false },
+
+            { id: 11, folder: 'inbox', starred: false, read: true, sender: "LinkedIn", date: "Feb 5", label: "work",
+              i18n: { subject: "email11_subject", body: "email11_body" }, attachment: null, important: false },
+
+            { id: 12, folder: 'inbox', starred: false, read: true, sender: "Lidl", date: "Feb 4", label: "shopping",
+              i18n: { subject: "email12_subject", body: "email12_body" }, attachment: null, important: false },
+
+            { id: 13, folder: 'inbox', starred: false, read: true, sender: "Studio R", date: "Feb 3", label: "personal",
+              i18n: { subject: "email13_subject", body: "email13_body" }, attachment: null, important: false },
+
+            { id: 14, folder: 'inbox', starred: false, read: true, sender: "ASOS", date: "Feb 2", label: "shopping",
+              i18n: { subject: "email14_subject", body: "email14_body" }, attachment: null, important: false },
+
+            { id: 15, folder: 'inbox', starred: false, read: true, sender: "Fitbit", date: "Feb 1", label: "hobby",
+              i18n: { subject: "email15_subject", body: "email15_body" }, attachment: null, important: false },
+
+            // Sent
+            { id: 101, folder: 'sent', starred: false, read: true, sender: "Me", date: "11:15 AM", label: "personal",
+              i18n: { subject: "email_sent1_subject", body: "email_sent1_body" }, attachment: null, important: false },
+
+            { id: 102, folder: 'sent', starred: false, read: true, sender: "Me", date: "Yesterday", label: "personal",
+              i18n: { subject: "email_sent2_subject", body: "email_sent2_body" }, attachment: null, important: false },
+
+            { id: 103, folder: 'sent', starred: false, read: true, sender: "Me", date: "Feb 4", label: "shopping",
+              i18n: { subject: "email_sent3_subject", body: "email_sent3_body" }, attachment: null, important: false }
         ];
 
         let currentFolder = 'inbox';
@@ -544,17 +882,25 @@
         let selectedEmails = new Set();
         let currentLabelFilter = null;
 
-        // --- FUNCTIONS ---
+        function emailSubject(email) {
+            if (email.subject) return email.subject;
+            return window.__t(email?.i18n?.subject || '');
+        }
+        function emailBody(email) {
+            if (email.body) return email.body;
+            return window.__t(email?.i18n?.body || '');
+        }
+        function labelDisplay(labelKey) {
+            return window.__t(labelKey || '');
+        }
 
         function renderList() {
             const listEl = document.getElementById('list');
             listEl.innerHTML = "";
             selectedEmails.clear();
 
-            // Get search term
             const searchTerm = document.getElementById('search-input').value.toLowerCase();
 
-            // Filter emails
             let filtered = [];
             if (currentFolder === 'starred') {
                 filtered = emailData.filter(e => e.starred);
@@ -564,21 +910,18 @@
                 filtered = emailData.filter(e => e.folder === currentFolder);
             }
 
-            // Apply label filter
             if (currentLabelFilter) {
                 filtered = filtered.filter(e => e.label === currentLabelFilter);
             }
 
-            // Apply search filter
             if (searchTerm) {
                 filtered = filtered.filter(e => 
-                    e.sender.toLowerCase().includes(searchTerm) ||
-                    e.subject.toLowerCase().includes(searchTerm) ||
-                    stripHtml(e.body).toLowerCase().includes(searchTerm)
+                    (e.sender || '').toLowerCase().includes(searchTerm) ||
+                    emailSubject(e).toLowerCase().includes(searchTerm) ||
+                    stripHtml(emailBody(e)).toLowerCase().includes(searchTerm)
                 );
             }
 
-            // Update Counts
             const unreadInbox = emailData.filter(e => e.folder === 'inbox' && !e.read).length;
             const badgeEl = document.getElementById('count-inbox');
             if (unreadInbox > 0) {
@@ -588,19 +931,11 @@
                 badgeEl.style.display = 'none';
             }
             
-            const starredCount = emailData.filter(e => e.starred).length;
-            document.getElementById('count-starred').innerText = starredCount || "";
-            
-            const sentCount = emailData.filter(e => e.folder === 'sent').length;
-            document.getElementById('count-sent').innerText = sentCount || "";
-            
-            const draftsCount = emailData.filter(e => e.folder === 'drafts').length;
-            document.getElementById('count-drafts').innerText = draftsCount || "";
-            
-            const importantCount = emailData.filter(e => e.important).length;
-            document.getElementById('count-important').innerText = importantCount || "";
+            document.getElementById('count-starred').innerText = emailData.filter(e => e.starred).length || "";
+            document.getElementById('count-sent').innerText = emailData.filter(e => e.folder === 'sent').length || "";
+            document.getElementById('count-drafts').innerText = emailData.filter(e => e.folder === 'drafts').length || "";
+            document.getElementById('count-important').innerText = emailData.filter(e => e.important).length || "";
 
-            // Render
             filtered.forEach(email => {
                 const item = document.createElement('div');
                 item.className = `email-item ${email.read ? '' : 'unread'}`;
@@ -621,25 +956,31 @@
                         hobby: '#ffd166',
                         shopping: '#9d84b7'
                     };
-                    labelTag = `<span class="label-tag" style="background: ${labelColors[email.label]}20; color: ${labelColors[email.label]};">${email.label}</span>`;
+                    labelTag = `<span class="label-tag" style="background: ${labelColors[email.label]}20; color: ${labelColors[email.label]};">${labelDisplay(email.label)}</span>`;
                 }
+
+                const subj = emailSubject(email);
+                const bodyPlain = stripHtml(emailBody(email));
+                const previewText = bodyPlain.substring(0, 40);
 
                 item.innerHTML = `
                     <input type="checkbox" class="checkbox" onchange="toggleSelect(${email.id}, this.checked)" />
                     <div class="${starClass}" onclick="toggleStar(${email.id}, this)">${starIcon}</div>
                     <div class="sender">${email.sender}</div>
-                    <div class="subject">${email.subject} ${labelTag}<span class="preview"> - ${stripHtml(email.body).substring(0, 40)}...</span></div>
+                    <div class="subject">${escapeHtml(subj)} ${labelTag}<span class="preview"> - ${escapeHtml(previewText)}...</span></div>
                     <div class="date">${email.date}</div>
                 `;
                 listEl.appendChild(item);
             });
 
             if(filtered.length === 0) {
+                const emptyTitle = window.__t('nothing_here');
+                const emptyDesc = searchTerm ? window.__t('no_match') : window.__t('folder_empty');
                 listEl.innerHTML = `
                     <div class="empty-state">
                         <div class="empty-state-icon">📭</div>
-                        <div style="font-size: 1.2rem; margin-bottom: 10px;">Nothing here!</div>
-                        <div style="font-size: 0.9rem;">${searchTerm ? 'No emails match your search.' : 'Your folder is empty.'}</div>
+                        <div style="font-size: 1.2rem; margin-bottom: 10px;">${escapeHtml(emptyTitle)}</div>
+                        <div style="font-size: 0.9rem;">${escapeHtml(emptyDesc)}</div>
                     </div>
                 `;
             }
@@ -648,12 +989,9 @@
         function switchFolder(folder, btn) {
             currentFolder = folder;
             currentLabelFilter = null;
-            
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             btn.classList.add('active');
-
             document.querySelectorAll('.label-item').forEach(el => el.style.background = 'transparent');
-
             closeEmail();
             renderList();
         }
@@ -661,12 +999,9 @@
         function filterByLabel(label) {
             currentLabelFilter = label;
             currentFolder = 'inbox';
-            
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.label-item').forEach(el => el.style.background = 'transparent');
-            
             event.target.closest('.label-item').style.background = 'rgba(255, 255, 255, 0.5)';
-            
             closeEmail();
             renderList();
         }
@@ -678,17 +1013,13 @@
         }
 
         function toggleSelect(id, checked) {
-            if (checked) {
-                selectedEmails.add(id);
-            } else {
-                selectedEmails.delete(id);
-            }
+            if (checked) selectedEmails.add(id);
+            else selectedEmails.delete(id);
         }
 
         function toggleSelectAll() {
             const checkboxes = document.querySelectorAll('.checkbox');
             const allChecked = Array.from(checkboxes).every(cb => cb.checked);
-            
             checkboxes.forEach(cb => {
                 cb.checked = !allChecked;
                 const emailItem = cb.closest('.email-item');
@@ -698,65 +1029,42 @@
         }
 
         function deleteSelected() {
-            if (selectedEmails.size === 0) {
-                showToast('No emails selected! 💁‍♀️', '⚠️');
-                return;
-            }
-            
-            if (confirm(`Delete ${selectedEmails.size} email(s)?`)) {
+            if (selectedEmails.size === 0) { showToast(window.__t('toast_no_selected'), '⚠️'); return; }
+            const n = selectedEmails.size;
+            if (confirm(window.__t('toast_delete_confirm', { n }))) {
                 emailData = emailData.filter(e => !selectedEmails.has(e.id));
                 selectedEmails.clear();
                 renderList();
-                showToast(`Deleted ${selectedEmails.size} email(s)! 🗑️`, '✓');
+                showToast(window.__t('toast_deleted_n', { n }), '✓');
             }
         }
 
         function markAsRead() {
-            if (selectedEmails.size === 0) {
-                showToast('No emails selected! 💁‍♀️', '⚠️');
-                return;
-            }
-            
+            if (selectedEmails.size === 0) { showToast(window.__t('toast_no_selected'), '⚠️'); return; }
             selectedEmails.forEach(id => {
                 const email = emailData.find(e => e.id === id);
                 if (email) email.read = true;
             });
-            
             selectedEmails.clear();
             renderList();
-            showToast('Marked as read! ✓', '✓');
+            showToast(window.__t('toast_mark_read'), '✓');
         }
 
-        function searchEmails() {
-            renderList();
-        }
+        function searchEmails() { renderList(); }
 
         function openEmail(id) {
             const email = emailData.find(e => e.id === id);
             currentEmailId = id;
-            
-            if (!email.read && email.folder === 'inbox') {
-                email.read = true;
-                renderList();
-            }
-
+            if (!email.read && email.folder === 'inbox') { email.read = true; renderList(); }
             document.getElementById('list').style.display = 'none';
             document.getElementById('view').style.display = 'flex';
-            
-            document.getElementById('e-subject').innerText = email.subject;
+            document.getElementById('e-subject').innerText = emailSubject(email);
             document.getElementById('e-sender').innerText = email.sender;
             document.getElementById('e-date').innerText = email.date;
-            document.getElementById('e-body').innerHTML = email.body;
-            document.getElementById('e-avatar').innerText = email.sender[0];
-
-            // Show attachment if exists
+            document.getElementById('e-body').innerHTML = emailBody(email);
+            document.getElementById('e-avatar').innerText = (email.sender && email.sender[0]) ? email.sender[0] : '?';
             const attachmentEl = document.getElementById('e-attachment');
-            if (email.attachment) {
-                attachmentEl.innerHTML = `<div class="attachment">📎 ${email.attachment}</div>`;
-            } else {
-                attachmentEl.innerHTML = '';
-            }
-
+            attachmentEl.innerHTML = email.attachment ? `<div class="attachment">📎 ${escapeHtml(email.attachment)}</div>` : '';
             document.getElementById('reply-box').style.display = 'none';
         }
 
@@ -770,16 +1078,17 @@
             if (!currentEmailId) return;
             const email = emailData.find(e => e.id === currentEmailId);
             email.starred = !email.starred;
-            showToast(email.starred ? 'Added to starred! ⭐' : 'Removed from starred', email.starred ? '⭐' : 'ℹ️');
+            showToast(email.starred ? window.__t('toast_star_added') : window.__t('toast_star_removed'), email.starred ? '⭐' : 'ℹ️');
+            renderList();
         }
 
         function deleteCurrentEmail() {
             if (!currentEmailId) return;
-            if (confirm('Delete this email?')) {
+            if (confirm(window.__t('toast_delete_one_confirm'))) {
                 emailData = emailData.filter(e => e.id !== currentEmailId);
                 closeEmail();
                 renderList();
-                showToast('Email deleted! 🗑️', '✓');
+                showToast(window.__t('delete'), '✓');
             }
         }
 
@@ -795,47 +1104,30 @@
 
         function sendReply() {
             const replyText = document.getElementById('reply-text').value;
-            if (!replyText.trim()) {
-                showToast('Write something first! 💁‍♀️', '⚠️');
-                return;
-            }
-
+            if (!replyText.trim()) { showToast(window.__t('toast_write_first'), '⚠️'); return; }
             const originalEmail = emailData.find(e => e.id === currentEmailId);
-            
             const newEmail = {
-                id: Date.now(),
-                folder: 'sent',
-                starred: false,
-                read: true,
-                sender: "Me",
-                subject: `Re: ${originalEmail.subject}`,
-                date: "Just now",
-                label: originalEmail.label,
-                body: replyText.replace(/\n/g, "<br>")
+                id: Date.now(), folder: 'sent', starred: false, read: true, sender: "Me",
+                subject: `Re: ${emailSubject(originalEmail)}`, date: "Just now",
+                label: originalEmail.label, body: replyText.replace(/\n/g, "<br>"),
+                attachment: null, important: false
             };
-
             emailData.unshift(newEmail);
-            
             cancelReply();
-            showToast('Reply sent! ✨', '✓');
+            showToast(window.__t('toast_reply_sent'), '✓');
+            if (currentFolder === 'sent') renderList();
         }
 
         function forwardEmail() {
             if (!currentEmailId) return;
             const email = emailData.find(e => e.id === currentEmailId);
-            
             document.getElementById('c-to').value = '';
-            document.getElementById('c-sub').value = `Fwd: ${email.subject}`;
-            document.getElementById('c-msg').value = `\n\n--- Forwarded message ---\nFrom: ${email.sender}\nSubject: ${email.subject}\n\n${stripHtml(email.body)}`;
-            
+            document.getElementById('c-sub').value = `Fwd: ${emailSubject(email)}`;
+            document.getElementById('c-msg').value = `\n\n--- Forwarded message ---\nFrom: ${email.sender}\nSubject: ${emailSubject(email)}\n\n${stripHtml(emailBody(email))}`;
             openCompose();
         }
 
-        // --- COMPOSE LOGIC ---
-
-        function openCompose() {
-            document.getElementById('compose-modal').style.display = 'flex';
-        }
+        function openCompose() { document.getElementById('compose-modal').style.display = 'flex'; }
 
         function closeCompose() {
             document.getElementById('compose-modal').style.display = 'none';
@@ -848,29 +1140,14 @@
             const to = document.getElementById('c-to').value;
             const sub = document.getElementById('c-sub').value;
             const body = document.getElementById('c-msg').value;
-
-            if (!to || !sub) {
-                showToast('Add a recipient and subject! 💅', '⚠️');
-                return;
-            }
-
-            const newEmail = {
-                id: Date.now(),
-                folder: 'sent',
-                starred: false,
-                read: true,
-                sender: "Me",
-                subject: `To: ${to} - ${sub}`,
-                date: "Just now",
-                label: "personal",
-                body: body.replace(/\n/g, "<br>")
-            };
-
-            emailData.unshift(newEmail);
-            
+            if (!to || !sub) { showToast(window.__t('toast_recipient_subject'), '⚠️'); return; }
+            emailData.unshift({
+                id: Date.now(), folder: 'sent', starred: false, read: true, sender: "Me",
+                subject: `To: ${to} - ${sub}`, date: "Just now", label: "personal",
+                body: body.replace(/\n/g, "<br>"), attachment: null, important: false
+            });
             closeCompose();
-            showToast('Sent! ✨ Manifesting a reply.', '✓');
-            
+            showToast(window.__t('toast_sent_manifest'), '✓');
             if (currentFolder === 'sent') renderList();
         }
 
@@ -878,28 +1155,14 @@
             const to = document.getElementById('c-to').value;
             const sub = document.getElementById('c-sub').value;
             const body = document.getElementById('c-msg').value;
-
-            if (!to && !sub && !body) {
-                showToast('Nothing to save! 🤷‍♀️', '⚠️');
-                return;
-            }
-
-            const newEmail = {
-                id: Date.now(),
-                folder: 'drafts',
-                starred: false,
-                read: true,
-                sender: "Me (Draft)",
-                subject: sub || "(No subject)",
-                date: "Just now",
-                label: "personal",
-                body: body.replace(/\n/g, "<br>") || "(Empty draft)"
-            };
-
-            emailData.unshift(newEmail);
-            
+            if (!to && !sub && !body) { showToast(window.__t('toast_nothing_save'), '⚠️'); return; }
+            emailData.unshift({
+                id: Date.now(), folder: 'drafts', starred: false, read: true, sender: "Me (Draft)",
+                subject: sub || "(No subject)", date: "Just now", label: "personal",
+                body: body.replace(/\n/g, "<br>") || "(Empty draft)", attachment: null, important: false
+            });
             closeCompose();
-            showToast('Draft saved! 📝', '✓');
+            showToast(window.__t('toast_draft_saved'), '✓');
             renderList();
         }
 
@@ -907,12 +1170,8 @@
             const toast = document.getElementById('toast');
             document.getElementById('toast-message').innerText = message;
             document.getElementById('toast-icon').innerText = icon;
-            
             toast.style.display = 'flex';
-            
-            setTimeout(() => {
-                toast.style.display = 'none';
-            }, 3000);
+            setTimeout(() => { toast.style.display = 'none'; }, 3000);
         }
 
         function stripHtml(html) {
@@ -921,9 +1180,12 @@
            return tmp.textContent || tmp.innerText || "";
         }
 
-        // Init
-        renderList();
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
+        }
 
+        renderList();
     </script>
 </body>
 </html>

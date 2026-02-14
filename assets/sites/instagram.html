@@ -5,8 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HeartGram ✨</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+        /* IMPORT MODERN FONT */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         
+        :root {
+            --primary-gradient: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --border-soft: rgba(0, 0, 0, 0.05);
+            --border-color: rgba(0, 0, 0, 0.1);
+            --bg-body: #f8f9fa;
+            --card-shadow: 0 12px 40px rgba(0,0,0,0.06);
+            --text-main: #262626;
+            --text-secondary: #8e8e8e;
+            --hover-bg: rgba(0, 0, 0, 0.05);
+        }
+
         * { 
             box-sizing: border-box; 
             margin: 0; 
@@ -14,121 +27,371 @@
         }
         
         body {
-            font-family: 'VT323', monospace;
-            background: #fafafa;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-body);
+            color: var(--text-main);
             height: 100vh;
             overflow: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
         .app {
             display: flex;
             height: 100vh;
+            max-width: 1600px;
+            margin: 0 auto;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(240, 148, 51, 0.15), transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(188, 24, 136, 0.15), transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(220, 39, 67, 0.08), transparent 60%),
+                linear-gradient(135deg, #fef9f3 0%, #fff 30%, #fdf5ff 70%, #fff 100%);
+            box-shadow: 0 0 50px rgba(0,0,0,0.05);
+            overflow: hidden;
+            position: relative;
         }
 
-        /* SIDEBAR */
+        /* Add animated gradient orbs in background */
+        .app::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 30% 30%, rgba(240, 148, 51, 0.12), transparent 30%),
+                radial-gradient(circle at 70% 70%, rgba(188, 24, 136, 0.12), transparent 30%);
+            animation: slowRotate 30s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes slowRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* --- SIDEBAR WITH DRAMATIC GLASSMORPHISM --- */
         .sidebar {
-            width: 260px;
-            background: #fff;
-            border-right: 1px solid #dbdbdb;
-            padding: 8px 12px 20px;
+            width: 280px;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.25) 0%,
+                rgba(255, 255, 255, 0.15) 50%,
+                rgba(255, 255, 255, 0.2) 100%
+            );
+            backdrop-filter: blur(60px) saturate(200%) brightness(1.2);
+            -webkit-backdrop-filter: blur(60px) saturate(200%) brightness(1.2);
+            border-right: 2px solid rgba(255, 255, 255, 0.5);
+            padding: 30px 20px;
             display: flex;
             flex-direction: column;
             height: 100vh;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1000;
+            box-shadow: 
+                inset 2px 2px 5px rgba(255, 255, 255, 0.7),
+                inset -1px -1px 3px rgba(188, 24, 136, 0.1),
+                8px 0 40px rgba(0, 0, 0, 0.12),
+                0 0 80px rgba(240, 148, 51, 0.1);
+        }
+
+        /* Animated gradient overlay */
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(240, 148, 51, 0.15), transparent 60%),
+                radial-gradient(circle at 80% 80%, rgba(188, 24, 136, 0.15), transparent 60%),
+                linear-gradient(135deg, 
+                    rgba(255, 255, 255, 0.4) 0%, 
+                    rgba(255, 255, 255, 0) 40%,
+                    rgba(188, 24, 136, 0.08) 70%,
+                    rgba(240, 148, 51, 0.08) 100%
+                );
+            pointer-events: none;
+            z-index: -1;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Glossy top shine */
+        .sidebar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
+            background: linear-gradient(
+                to bottom,
+                rgba(255, 255, 255, 0.5) 0%,
+                rgba(255, 255, 255, 0.2) 50%,
+                transparent 100%
+            );
+            pointer-events: none;
+            z-index: -1;
+            border-radius: 0;
         }
 
         .logo {
-            padding: 25px 12px 16px;
+            font-family: 'Inter', sans-serif;
+            padding: 0 12px 35px;
             font-size: 2rem;
-            font-weight: bold;
-            background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+            font-weight: 900;
+            background: linear-gradient(
+                135deg,
+                #f09433 0%,
+                #e6683c 20%,
+                #dc2743 40%,
+                #cc2366 60%,
+                #bc1888 80%,
+                #f09433 100%
+            );
+            background-size: 200% 200%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
             cursor: pointer;
+            letter-spacing: -0.8px;
+            transition: transform 0.3s ease;
+            animation: gradientFlow 8s ease infinite;
+            filter: drop-shadow(0 2px 8px rgba(188, 24, 136, 0.3));
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .logo:hover {
+            animation: heartbeat 1.5s ease-in-out infinite, gradientFlow 8s ease infinite;
+            transform: scale(1.05);
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1.05); }
+            14% { transform: scale(1.1); }
+            28% { transform: scale(1.05); }
+            42% { transform: scale(1.1); }
+            70% { transform: scale(1.05); }
         }
 
         .nav-item {
             display: flex;
             align-items: center;
             gap: 16px;
-            padding: 12px;
+            padding: 14px 16px;
             margin: 4px 0;
-            border-radius: 8px;
+            border-radius: 16px;
             cursor: pointer;
-            transition: all 0.2s;
-            font-size: 1.4rem;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-main);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Hover glow effect */
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(188, 24, 136, 0.2), transparent 70%);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+            z-index: -1;
+        }
+
+        .nav-item:hover::before {
+            width: 200px;
+            height: 200px;
         }
 
         .nav-item:hover {
-            background: #f2f2f2;
-            transform: translateX(5px);
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.4) 0%,
+                rgba(188, 24, 136, 0.08) 100%
+            );
+            transform: translateX(8px) scale(1.02);
+            box-shadow: 
+                0 4px 20px rgba(188, 24, 136, 0.15),
+                inset 0 1px 2px rgba(255, 255, 255, 0.6);
         }
 
         .nav-item.active {
-            font-weight: bold;
-            background: linear-gradient(90deg, rgba(240,148,51,0.1) 0%, rgba(188,24,136,0.1) 100%);
+            background: linear-gradient(
+                135deg,
+                rgba(240, 148, 51, 0.15) 0%,
+                rgba(188, 24, 136, 0.15) 100%
+            );
+            color: #bc1888;
+            box-shadow: 
+                0 4px 20px rgba(188, 24, 136, 0.2),
+                inset 0 2px 4px rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(188, 24, 136, 0.2);
+        }
+        
+        .nav-item.active .nav-icon {
+            transform: scale(1.15);
+            animation: iconPulse 0.5s ease;
+            filter: drop-shadow(0 2px 8px rgba(188, 24, 136, 0.4));
+        }
+
+        @keyframes iconPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3) rotate(-5deg); }
+            100% { transform: scale(1.15); }
         }
 
         .nav-icon {
-            font-size: 1.8rem;
-            width: 30px;
+            font-size: 1.5rem;
+            width: 28px;
             text-align: center;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .nav-item:hover .nav-icon {
+            transform: scale(1.2) rotate(-5deg);
+            filter: drop-shadow(0 2px 6px rgba(188, 24, 136, 0.3));
         }
 
         .profile-section {
             margin-top: auto;
-            padding: 12px;
+            padding: 14px 18px;
             display: flex;
             align-items: center;
             gap: 12px;
             cursor: pointer;
-            border-radius: 8px;
+            border-radius: 20px;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.2) 0%,
+                rgba(255, 255, 255, 0.05) 100%
+            );
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         .profile-section:hover {
-            background: #f2f2f2;
+            background: linear-gradient(
+                135deg,
+                rgba(240, 148, 51, 0.15) 0%,
+                rgba(188, 24, 136, 0.15) 100%
+            );
+            transform: translateX(6px) scale(1.03);
+            box-shadow: 
+                0 6px 24px rgba(188, 24, 136, 0.2),
+                inset 0 1px 3px rgba(255, 255, 255, 0.5);
+            border-color: rgba(188, 24, 136, 0.3);
         }
 
         .profile-pic-small {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #f09433 0%, #bc1888 100%);
+            background: var(--primary-gradient);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 1rem;
+            box-shadow: 
+                0 4px 12px rgba(188, 24, 136, 0.3),
+                inset 0 1px 2px rgba(255, 255, 255, 0.3);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        /* MAIN CONTENT */
+        .profile-section:hover .profile-pic-small {
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 
+                0 6px 20px rgba(188, 24, 136, 0.5),
+                inset 0 1px 2px rgba(255, 255, 255, 0.5);
+        }
+
+        /* --- MAIN CONTENT AREA --- */
         .main-content {
             flex: 1;
             overflow-y: auto;
-            background: #fafafa;
+            background: transparent;
+            position: relative;
+            padding-bottom: 100px;
         }
 
         .view {
             display: none;
-            padding: 20px;
-            max-width: 1200px;
+            padding: 40px;
+            max-width: 900px;
             margin: 0 auto;
+            animation: fadeIn 0.4s ease;
         }
 
         .view.active {
             display: block;
         }
 
-        /* HOME FEED */
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0);
+            }
+        }
+
+        /* --- HOME FEED --- */
         .stories {
-            background: #fff;
-            border: 1px solid #dbdbdb;
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 20px;
             display: flex;
-            gap: 15px;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 25px;
+            padding: 20px 30px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(40px) saturate(200%) brightness(1.1);
+            -webkit-backdrop-filter: blur(40px) saturate(200%) brightness(1.1);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 
+                0 8px 32px 0 rgba(31, 38, 135, 0.06),
+                inset 0 1px 3px rgba(255, 255, 255, 0.6);
+            margin-bottom: 30px;
             overflow-x: auto;
+            position: relative;
+        }
+
+        /* Subtle gradient shine on stories bar */
+        .stories::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), transparent);
+            pointer-events: none;
+            border-radius: 24px 24px 0 0;
+        }
+        
+        .stories::-webkit-scrollbar { 
+            display: none; 
         }
 
         .story {
@@ -137,47 +400,71 @@
             align-items: center;
             gap: 8px;
             cursor: pointer;
+            flex-shrink: 0;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .story:hover { 
+            transform: translateY(-5px);
         }
 
         .story-ring {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #f09433, #dc2743, #bc1888);
+            width: 76px;
+            height: 76px;
             padding: 3px;
+            background: var(--primary-gradient);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .story:hover .story-ring { 
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 8px 20px rgba(188, 24, 136, 0.3);
         }
 
         .story-pic {
-            width: 100%;
-            height: 100%;
+            background: white;
+            border: 3px solid white;
             border-radius: 50%;
-            background: #fff;
+            width: 64px;
+            height: 64px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 1.8rem;
         }
 
         .story-name {
-            font-size: 1.1rem;
+            font-size: 0.75rem;
             max-width: 70px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            color: var(--text-main);
+            font-weight: 500;
         }
 
+        /* --- POSTS --- */
         .post {
-            background: #fff;
-            border: 1px solid #dbdbdb;
-            border-radius: 8px;
-            margin-bottom: 20px;
+            background: white;
+            border: none;
+            border-radius: 24px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 48px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        .post:hover { 
+            transform: translateY(-6px);
+            box-shadow: 0 16px 50px rgba(0,0,0,0.1);
         }
 
         .post-header {
-            padding: 14px 16px;
+            padding: 16px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -190,70 +477,134 @@
         }
 
         .post-user-pic {
-            width: 40px;
-            height: 40px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #eee, #ddd);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-weight: bold;
+            font-size: 1.2rem;
+            border: 2px solid #f5f5f5;
+            transition: transform 0.3s ease;
+        }
+
+        .post-user:hover .post-user-pic {
+            transform: scale(1.1);
+        }
+
+        .post-username {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            line-height: 1.2;
+        }
+        
+        .post-location {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
         }
 
         .post-image {
             width: 100%;
-            aspect-ratio: 1;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-            color: white;
-            cursor: pointer;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .post:hover .post-image {
+            transform: scale(1.02);
         }
 
         .post-actions {
-            padding: 12px 16px;
+            padding: 12px 16px 8px;
             display: flex;
             gap: 16px;
+            align-items: center;
         }
 
         .action-btn {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: #262626;
         }
 
         .action-btn:hover {
             transform: scale(1.2);
         }
 
+        .action-btn:active {
+            transform: scale(0.9);
+        }
+
         .action-btn.liked {
             color: #ed4956;
+            animation: likeHeart 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes likeHeart {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.3) rotate(-10deg); }
+            50% { transform: scale(1.1) rotate(10deg); }
+            75% { transform: scale(1.2); }
+            100% { transform: scale(1); }
         }
 
         .post-likes {
             padding: 0 16px 8px;
-            font-weight: bold;
-            font-size: 1.2rem;
+            font-weight: 600;
+            font-size: 0.9rem;
         }
 
         .post-caption {
-            padding: 0 16px 12px;
-            font-size: 1.2rem;
+            padding: 0 16px 16px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .post-caption strong {
+            margin-right: 6px;
         }
 
-        /* SEARCH VIEW */
+        #home::before {
+            content: "HeartGram";
+            position: sticky;
+            top: 0;
+            left: 0;
+            display: block;
+            width: 100%;
+            padding: 25px 0;
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(35px) saturate(180%);
+            -webkit-backdrop-filter: blur(35px) saturate(180%);
+            z-index: 100;
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.02);
+        }
+
+        /* --- SEARCH --- */
         .search-bar {
             background: #efefef;
-            border: 1px solid #dbdbdb;
-            border-radius: 8px;
-            padding: 12px 16px;
-            font-size: 1.3rem;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 20px;
+            font-size: 1rem;
             width: 100%;
-            margin-bottom: 20px;
-            font-family: 'VT323', monospace;
+            margin-bottom: 24px;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .search-bar:focus {
+            box-shadow: 0 0 0 3px rgba(188, 24, 136, 0.1);
+            background: #fff;
+            transform: translateY(-2px);
         }
 
         .search-results {
@@ -264,317 +615,610 @@
 
         .search-item {
             aspect-ratio: 1;
-            background: linear-gradient(135deg, #f093fb, #f5576c);
+            background: #eee;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 3rem;
             color: white;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .search-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0);
+            transition: background 0.3s ease;
+        }
+
+        .search-item:hover::before {
+            background: rgba(0, 0, 0, 0.2);
         }
 
         .search-item:hover {
-            transform: scale(0.95);
-            opacity: 0.8;
+            transform: scale(1.05);
+            z-index: 1;
         }
 
-        /* MESSAGES VIEW */
+        /* --- MESSAGES --- */
         .messages-container {
             background: #fff;
-            border: 1px solid #dbdbdb;
-            border-radius: 8px;
-            height: calc(100vh - 100px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            height: calc(100vh - 80px);
             display: flex;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
         }
 
         .conversations {
-            width: 350px;
-            border-right: 1px solid #dbdbdb;
+            width: 320px;
+            border-right: 1px solid var(--border-color);
             overflow-y: auto;
+            background: #fff;
         }
 
         .conversation-item {
-            padding: 12px 16px;
+            padding: 14px 20px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
         }
 
-        .conversation-item:hover {
-            background: #f2f2f2;
+        .conversation-item:hover { 
+            background: #fafafa;
+            transform: translateX(4px);
         }
-
+        
         .conversation-item.active {
-            background: #efefef;
+            background: #fdfdfd;
+            border-left-color: #bc1888;
+        }
+        
+        .dm-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #f0f0f0;
+            background: #f8f8f8;
+            transition: transform 0.3s ease;
+        }
+
+        .conversation-item:hover .dm-avatar {
+            transform: scale(1.1);
         }
 
         .chat-area {
             flex: 1;
             display: flex;
             flex-direction: column;
+            background: #fff;
         }
 
         .chat-header {
-            padding: 16px;
-            border-bottom: 1px solid #dbdbdb;
-            font-weight: bold;
-            font-size: 1.3rem;
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px) saturate(150%);
+            -webkit-backdrop-filter: blur(20px) saturate(150%);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
         }
 
         .chat-messages {
             flex: 1;
-            padding: 20px;
+            padding: 24px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 8px;
+            background: #fafafa;
+        }
+
+        .message-row {
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            max-width: 75%;
+            animation: messageSlideIn 0.3s ease;
+        }
+
+        @keyframes messageSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .message {
-            max-width: 70%;
-            padding: 12px 16px;
-            border-radius: 20px;
-            font-size: 1.2rem;
+            padding: 10px 16px;
+            border-radius: 18px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            position: relative;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease;
+        }
+
+        .message:hover {
+            transform: translateY(-1px);
         }
 
         .message.sent {
             align-self: flex-end;
-            background: #efefef;
+            background: var(--primary-gradient);
+            color: white;
+            border-bottom-right-radius: 4px;
         }
 
         .message.received {
             align-self: flex-start;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
+            background: #fff;
+            color: #262626;
+            border: 1px solid #efefef;
+            border-bottom-left-radius: 4px;
         }
 
         .chat-input-container {
-            padding: 16px;
-            border-top: 1px solid #dbdbdb;
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
             display: flex;
             gap: 12px;
+            background: #fff;
         }
 
         .chat-input {
             flex: 1;
-            padding: 12px 16px;
+            padding: 12px 20px;
             border: 1px solid #dbdbdb;
-            border-radius: 20px;
-            font-size: 1.2rem;
-            font-family: 'VT323', monospace;
+            border-radius: 24px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .chat-input:focus { 
+            border-color: #bc1888;
+            box-shadow: 0 0 0 3px rgba(188, 24, 136, 0.1);
         }
 
         .send-btn {
-            background: linear-gradient(45deg, #f09433, #bc1888);
-            color: white;
+            background: transparent;
+            color: #bc1888;
             border: none;
-            padding: 12px 24px;
-            border-radius: 20px;
+            padding: 0 12px;
             cursor: pointer;
-            font-weight: bold;
-            font-size: 1.2rem;
-            font-family: 'VT323', monospace;
+            font-weight: 600;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+        
+        .send-btn:hover { 
+            opacity: 0.7;
+            transform: scale(1.1);
         }
 
-        /* NOTIFICATIONS VIEW */
+        .send-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* --- NOTIFICATIONS --- */
         .notification-item {
             background: #fff;
-            border: 1px solid #dbdbdb;
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 16px;
             margin-bottom: 12px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            border: 1px solid transparent;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        .notification-item:hover {
+            transform: translateX(6px);
+            border-color: #efefef;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
         .notif-pic {
-            width: 50px;
-            height: 50px;
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #43e97b, #38f9d7);
+            background: var(--primary-gradient);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-        }
-
-        .notif-content {
-            flex: 1;
-        }
-
-        .notif-text {
             font-size: 1.2rem;
-            margin-bottom: 4px;
+            color: white;
+            transition: transform 0.3s ease;
         }
 
-        .notif-time {
-            font-size: 1rem;
-            color: #8e8e8e;
+        .notification-item:hover .notif-pic {
+            transform: scale(1.1) rotate(5deg);
         }
+        
+        .notif-text { font-size: 0.95rem; line-height: 1.4; }
+        .notif-time { font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px; }
 
-        /* CREATE VIEW */
+        /* --- CREATE --- */
         .create-container {
             background: #fff;
-            border: 1px solid #dbdbdb;
-            border-radius: 8px;
-            padding: 40px;
+            border-radius: 16px;
+            padding: 60px;
             max-width: 600px;
-            margin: 0 auto;
+            margin: 40px auto;
+            box-shadow: var(--card-shadow);
+            text-align: center;
         }
 
         .create-title {
-            font-size: 2rem;
-            font-weight: bold;
-            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
             margin-bottom: 30px;
-            background: linear-gradient(45deg, #f09433, #bc1888);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--text-main);
         }
 
         .upload-area {
-            border: 2px dashed #dbdbdb;
-            border-radius: 8px;
-            padding: 60px;
-            text-align: center;
+            border: 2px dashed #e0e0e0;
+            border-radius: 12px;
+            padding: 80px 40px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            background: #fafafa;
         }
 
         .upload-area:hover {
-            background: #fafafa;
+            background: #fff;
             border-color: #bc1888;
+            transform: scale(1.03);
+            box-shadow: 0 8px 20px rgba(188, 24, 136, 0.1);
         }
 
         .upload-icon {
             font-size: 4rem;
             margin-bottom: 16px;
+            animation: float 3s ease-in-out infinite;
         }
 
-        /* PROFILE VIEW */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* --- PROFILE --- */
         .profile-header {
-            background: #fff;
-            border: 1px solid #dbdbdb;
-            border-radius: 8px;
-            padding: 40px;
+            background: transparent;
+            padding: 0 0 40px;
             margin-bottom: 20px;
             display: flex;
-            gap: 40px;
-            align-items: center;
+            gap: 60px;
+            align-items: flex-start;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .profile-pic-large {
-            width: 150px;
-            height: 150px;
+            width: 160px;
+            height: 160px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #f09433 0%, #bc1888 100%);
+            background: var(--primary-gradient);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 4rem;
             color: white;
-            font-weight: bold;
+            box-shadow: 0 10px 25px rgba(188, 24, 136, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .profile-pic-large:hover {
+            transform: scale(1.05) rotate(5deg);
+        }
+
+        .profile-info { flex: 1; margin-top: 10px; }
+        
+        .profile-username {
+            font-size: 1.8rem;
+            font-weight: 300;
+            margin-bottom: 24px;
+            color: var(--text-main);
         }
 
         .profile-stats {
             display: flex;
             gap: 40px;
-            margin: 20px 0;
+            margin-bottom: 24px;
+            font-size: 1rem;
         }
 
-        .stat {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 1.6rem;
-            font-weight: bold;
-        }
-
-        .stat-label {
-            font-size: 1.2rem;
-            color: #8e8e8e;
-        }
+        .stat-number { font-weight: 700; margin-right: 4px; }
+        .stat-label { color: var(--text-main); }
 
         .profile-bio {
-            margin-top: 20px;
-            font-size: 1.2rem;
+            font-size: 1rem;
+            line-height: 1.6;
         }
 
         .posts-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 4px;
+            gap: 20px;
         }
 
         .grid-item {
             aspect-ratio: 1;
             cursor: pointer;
+            border-radius: 8px;
             overflow: hidden;
             position: relative;
+            background: #eee;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        .grid-item:hover { 
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            z-index: 1;
         }
 
         .grid-item img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.3s ease;
         }
+
+        .grid-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        /* Titles */
+        h2 { 
+            font-weight: 700; 
+            letter-spacing: -0.5px;
+            animation: fadeIn 0.4s ease;
+        }
+        
     </style>
+
+<script>
+window.__translations = {
+    en: {
+        home: "Home", search: "Search", explore: "Explore", reels: "Reels",
+        messages: "Messages", notifications: "Notifications", create: "Create",
+        your_profile: "Profile", search_placeholder: "Search",
+        likes: "likes", comments: "comments", like: "Like", comment: "Comment",
+        share: "Share", save: "Save", follow: "Follow", following: "Following",
+        posts: "posts", followers: "followers",
+        bio_line: "Living my best life",
+        add_comment: "Add a comment...", post_btn: "Post",
+
+        explore_title: "Explore",
+        reels_title: "Reels",
+        notifications_title: "Notifications",
+        create_title: "Create New Post",
+        messages_title: "Messages",
+        drag_photos: "Drag photos here",
+        or_click: "or click to select from computer",
+        message_placeholder: "Message...",
+        send: "Send",
+
+        dm_msg1: "Hello Agi! DM marketing team here — quick collab question.",
+        dm_msg2: "We'd love to sponsor 2 skincare posts + 1 story set. Interested?",
+        dm_msg3: "Reply YES to proceed. Reply STOP to stop. Reply MAYBE to get 17 more emails.",
+
+        post1_caption: "Living my best life in this beautiful city 🏰✨ #Prague #CityOfLove",
+        post2_caption: "Beautiful blooms in the heart of the city 🌹💕",
+        post3_caption: "Cutest visitor at Prague Zoo today! 🐼❤️ #RedPanda #PragueZoo",
+        post4_caption: "Hiking through the beautiful Czech mountains! 🏔️✨",
+        post5_caption: "This little cutie stole my heart! 🐕💕 #WhippetLove",
+        post6_caption: "My current skincare routine ✨💆‍♀️ #Skincare #SelfCare",
+        post7_caption: "Game day! 🏒💪 #Floorball #Sports",
+        post8_caption: "Currently reading and OBSESSED! 📚🐉 #FourthWing #BookTok",
+
+        notif_like: "liked your post",
+        notif_follow: "started following you",
+        notif_comment: "commented on your post",
+
+        reels_copy: "Short video clips coming soon! 🎬✨"
+    },
+    cs: {
+        home: "Domů", search: "Hledat", explore: "Prohlížet", reels: "Reels",
+        messages: "Zprávy", notifications: "Oznámení", create: "Vytvořit",
+        your_profile: "Tvůj profil", search_placeholder: "Hledat...",
+        likes: "to se líbí", comments: "komentáře", like: "To se mi líbí",
+        comment: "Komentář", share: "Sdílet", save: "Uložit",
+        follow: "Sledovat", following: "Sledujete",
+        posts: "příspěvků", followers: "sledujících",
+        bio_line: "Žiju svůj nejlepší život",
+        add_comment: "Přidej komentář...", post_btn: "Zveřejnit",
+
+        dm_msg1: "Ahoj Agi! Tady DM marketing — rychlý dotaz ke spolupráci.",
+        dm_msg2: "Rádi bychom sponzorovali 2 skincare posty + 1 set stories. Máš zájem?",
+        dm_msg3: "Odpověz ANO pro pokračování. STOP pro konec. MOŽNÁ pro… dalších 17 zpráv.",
+
+        explore_title: "Prohlížet",
+        reels_title: "Reels",
+        notifications_title: "Oznámení",
+        create_title: "Vytvořit nový příspěvek",
+        messages_title: "Zprávy",
+        drag_photos: "Přetáhni sem fotky",
+        or_click: "nebo klikni a vyber z počítače",
+        message_placeholder: "Zpráva...",
+        send: "Odeslat",
+
+        post1_caption: "Žiju si svůj nejlepší život v tomhle krásném městě 🏰✨ #Praha #MěstoLásky",
+        post2_caption: "Krásné květy přímo v srdci města 🌹💕",
+        post3_caption: "Dneska nejroztomilejší návštěvník v Zoo Praha 🐼❤️ #PandaČervená #ZooPraha",
+        post4_caption: "Turistika v českých horách je top 🏔️✨",
+        post5_caption: "Tenhle prcek mi ukradl srdce 🐕💕 #WhippetLove",
+        post6_caption: "Moje aktuální skincare rutina ✨💆‍♀️ #Skincare #SelfCare",
+        post7_caption: "Zápasový den! 🏒💪 #Florbal #Sport",
+        post8_caption: "Čtu a jsem TOTÁLNĚ posedlá 📚🐉 #FourthWing #BookTok",
+
+        notif_like: "lajknul/a tvůj příspěvek",
+        notif_follow: "tě začal/a sledovat",
+        notif_comment: "okomentoval/a tvůj příspěvek",
+
+        reels_copy: "Krátké klipy už brzy! 🎬✨"
+    }
+};
+</script>
+
+<script>
+(function() {
+    const LANG = localStorage.getItem('heartosLang') || 'en';
+    window.__lang = LANG;
+    window.__t = function(key) {
+        const dict = window.__translations;
+        if (!dict) return key;
+        const lang = dict[LANG] || dict['en'];
+        return (lang && lang[key]) || (dict['en'] && dict['en'][key]) || key;
+    };
+    
+    window.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('[data-i18n]').forEach(function(el) {
+            var key = el.getAttribute('data-i18n');
+            var translated = window.__t(key);
+            if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                el.placeholder = translated;
+            } else {
+                el.textContent = translated;
+            }
+        });
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+            el.placeholder = window.__t(el.getAttribute('data-i18n-placeholder'));
+        });
+        if (typeof window.__translateSite === 'function') {
+            window.__translateSite();
+        }
+    });
+
+    window.addEventListener('storage', function(e){
+        if(e.key === 'heartosLang'){
+            location.reload();
+        }
+    });
+})();
+</script>
+
+<script>
+    window.__translateSite = function() {
+        var t = window.__t;
+
+        var navSpans = document.querySelectorAll('.sidebar .nav-item span:last-child');
+        var navKeys = ['home','search','explore','reels','messages','notifications','create'];
+        navSpans.forEach(function(el,i){ if(navKeys[i]) el.textContent = t(navKeys[i]); });
+
+        var profSpan = document.querySelector('.profile-section span');
+        if(profSpan) profSpan.textContent = t('your_profile');
+
+        document.querySelectorAll('.search-input, .comment-input, .search-bar').forEach(function(el){
+            if(el.classList.contains('search-bar')) el.placeholder = t('search_placeholder');
+        });
+
+        var msgInput = document.getElementById('messageInput');
+        if(msgInput) msgInput.placeholder = t('message_placeholder');
+
+        var msgTitle = document.querySelector('#messages .conversations > div');
+        if(msgTitle) msgTitle.textContent = t('messages_title');
+
+        var exploreH2 = document.querySelector('#explore h2');
+        if(exploreH2) exploreH2.textContent = t('explore_title');
+
+        var reelsH2 = document.querySelector('#reels h2');
+        if(reelsH2) reelsH2.textContent = t('reels_title');
+
+        var notifH2 = document.querySelector('#notifications h2');
+        if(notifH2) notifH2.textContent = t('notifications_title');
+
+        var createTitle = document.querySelector('#create .create-title');
+        if(createTitle) createTitle.textContent = t('create_title');
+
+        var dragLine = document.querySelector('#create .upload-area div:nth-child(2)');
+        if(dragLine) dragLine.textContent = t('drag_photos');
+
+        var orClick = document.querySelector('#create .upload-area div:nth-child(3)');
+        if(orClick) orClick.textContent = t('or_click');
+
+        var sendBtn = document.querySelector('#messages .send-btn');
+        if(sendBtn) sendBtn.textContent = t('send');
+
+        var reelsCopy = document.querySelector('#reels .post-caption');
+        if(reelsCopy) reelsCopy.textContent = t('reels_copy');
+    };
+</script>
 </head>
 <body>
     <div class="app">
-        <!-- SIDEBAR -->
         <div class="sidebar">
-            <div class="logo">💕 HeartGram</div>
+            <div class="logo">HeartGram</div>
             
-            <div class="nav-item active" onclick="switchView('home')">
+            <div class="nav-item active" onclick="switchView(event,'home')">
                 <span class="nav-icon">🏠</span>
                 <span>Home</span>
             </div>
             
-            <div class="nav-item" onclick="switchView('search')">
+            <div class="nav-item" onclick="switchView(event,'search')">
                 <span class="nav-icon">🔍</span>
                 <span>Search</span>
             </div>
             
-            <div class="nav-item" onclick="switchView('explore')">
+            <div class="nav-item" onclick="switchView(event,'explore')">
                 <span class="nav-icon">🧭</span>
                 <span>Explore</span>
             </div>
             
-            <div class="nav-item" onclick="switchView('reels')">
+            <div class="nav-item" onclick="switchView(event,'reels')">
                 <span class="nav-icon">🎬</span>
                 <span>Reels</span>
             </div>
             
-            <div class="nav-item" onclick="switchView('messages')">
+            <div class="nav-item" onclick="switchView(event,'messages')">
                 <span class="nav-icon">💬</span>
                 <span>Messages</span>
             </div>
             
-            <div class="nav-item" onclick="switchView('notifications')">
+            <div class="nav-item" onclick="switchView(event,'notifications')">
                 <span class="nav-icon">❤️</span>
                 <span>Notifications</span>
             </div>
             
-            <div class="nav-item" onclick="switchView('create')">
+            <div class="nav-item" onclick="switchView(event,'create')">
                 <span class="nav-icon">➕</span>
                 <span>Create</span>
             </div>
             
-            <div class="profile-section" onclick="switchView('profile')">
+            <div class="profile-section" onclick="switchView(event,'profile')">
                 <div class="profile-pic-small">💕</div>
                 <span>Your Profile</span>
             </div>
         </div>
 
-        <!-- MAIN CONTENT -->
         <div class="main-content">
-            <!-- HOME VIEW -->
             <div id="home" class="view active">
                 <div class="stories">
                     <div class="story">
@@ -603,17 +1247,16 @@
                     </div>
                 </div>
 
-                <!-- Post 1 - Naeem Prague -->
                 <div class="post">
                     <div class="post-header">
                         <div class="post-user">
                             <div class="post-user-pic">💕</div>
                             <div>
-                                <div style="font-weight: bold; font-size: 1.2rem;">naeem_prague</div>
-                                <div style="font-size: 1rem; color: #8e8e8e;">Prague, Czechia</div>
+                                <div class="post-username">naeem_prague</div>
+                                <div class="post-location">Prague, Czechia</div>
                             </div>
                         </div>
-                        <div style="font-size: 1.5rem; cursor: pointer;">⋯</div>
+                        <div style="font-size: 1.5rem; cursor: pointer; color: #8e8e8e;">⋯</div>
                     </div>
                     <img src="../images/posts/naeem_prague.jpg" class="post-image" style="object-fit: cover;">
                     <div class="post-actions">
@@ -624,21 +1267,21 @@
                     </div>
                     <div class="post-likes">1,247 likes</div>
                     <div class="post-caption">
-                        <strong>naeem_prague</strong> Living my best life in this beautiful city 🏰✨ #Prague #CityOfLove
+                        <strong>naeem_prague</strong>
+                        <span data-i18n="post1_caption">Living my best life in this beautiful city 🏰✨ #Prague #CityOfLove</span>
                     </div>
                 </div>
 
-                <!-- Post 2 - Roses Garden -->
                 <div class="post">
                     <div class="post-header">
                         <div class="post-user">
                             <div class="post-user-pic">🌹</div>
                             <div>
-                                <div style="font-weight: bold; font-size: 1.2rem;">roses_garden_cz</div>
-                                <div style="font-size: 1rem; color: #8e8e8e;">Gardens of Prague</div>
+                                <div class="post-username">roses_garden_cz</div>
+                                <div class="post-location">Gardens of Prague</div>
                             </div>
                         </div>
-                        <div style="font-size: 1.5rem; cursor: pointer;">⋯</div>
+                        <div style="font-size: 1.5rem; cursor: pointer; color: #8e8e8e;">⋯</div>
                     </div>
                     <img src="../images/posts/roses_garden.jpg" class="post-image" style="object-fit: cover;">
                     <div class="post-actions">
@@ -649,21 +1292,21 @@
                     </div>
                     <div class="post-likes">892 likes</div>
                     <div class="post-caption">
-                        <strong>roses_garden_cz</strong> Beautiful blooms in the heart of the city 🌹💕
+                        <strong>roses_garden_cz</strong>
+                        <span data-i18n="post2_caption">Beautiful blooms in the heart of the city 🌹💕</span>
                     </div>
                 </div>
 
-                <!-- Post 3 - Red Panda -->
                 <div class="post">
                     <div class="post-header">
                         <div class="post-user">
                             <div class="post-user-pic">🐼</div>
                             <div>
-                                <div style="font-weight: bold; font-size: 1.2rem;">redpanda_baby</div>
-                                <div style="font-size: 1rem; color: #8e8e8e;">Prague Zoo</div>
+                                <div class="post-username">redpanda_baby</div>
+                                <div class="post-location">Prague Zoo</div>
                             </div>
                         </div>
-                        <div style="font-size: 1.5rem; cursor: pointer;">⋯</div>
+                        <div style="font-size: 1.5rem; cursor: pointer; color: #8e8e8e;">⋯</div>
                     </div>
                     <img src="../images/posts/redpanda_baby.jpg" class="post-image" style="object-fit: cover;">
                     <div class="post-actions">
@@ -674,21 +1317,21 @@
                     </div>
                     <div class="post-likes">2,134 likes</div>
                     <div class="post-caption">
-                        <strong>redpanda_baby</strong> Cutest visitor at Prague Zoo today! 🐼❤️ #RedPanda #PragueZoo
+                        <strong>redpanda_baby</strong>
+                        <span data-i18n="post3_caption">Cutest visitor at Prague Zoo today! 🐼❤️ #RedPanda #PragueZoo</span>
                     </div>
                 </div>
 
-                <!-- Post 4 - Viky Hike -->
                 <div class="post">
                     <div class="post-header">
                         <div class="post-user">
                             <div class="post-user-pic">🏔️</div>
                             <div>
-                                <div style="font-weight: bold; font-size: 1.2rem;">viky_adventures</div>
-                                <div style="font-size: 1rem; color: #8e8e8e;">Beskydy Mountains</div>
+                                <div class="post-username">viky_adventures</div>
+                                <div class="post-location">Beskydy Mountains</div>
                             </div>
                         </div>
-                        <div style="font-size: 1.5rem; cursor: pointer;">⋯</div>
+                        <div style="font-size: 1.5rem; cursor: pointer; color: #8e8e8e;">⋯</div>
                     </div>
                     <img src="../images/posts/viky_hike.jpg" class="post-image" style="object-fit: cover;">
                     <div class="post-actions">
@@ -699,21 +1342,21 @@
                     </div>
                     <div class="post-likes">567 likes</div>
                     <div class="post-caption">
-                        <strong>viky_adventures</strong> Hiking through the beautiful Czech mountains! 🏔️✨
+                        <strong>viky_adventures</strong>
+                        <span data-i18n="post4_caption">Hiking through the beautiful Czech mountains! 🏔️✨</span>
                     </div>
                 </div>
 
-                <!-- Post 5 - Whippet Puppy -->
                 <div class="post">
                     <div class="post-header">
                         <div class="post-user">
                             <div class="post-user-pic">🐕</div>
                             <div>
-                                <div style="font-weight: bold; font-size: 1.2rem;">whippet_pup</div>
-                                <div style="font-size: 1rem; color: #8e8e8e;">Prague</div>
+                                <div class="post-username">whippet_pup</div>
+                                <div class="post-location">Prague</div>
                             </div>
                         </div>
-                        <div style="font-size: 1.5rem; cursor: pointer;">⋯</div>
+                        <div style="font-size: 1.5rem; cursor: pointer; color: #8e8e8e;">⋯</div>
                     </div>
                     <img src="../images/posts/whippet_puppy.jpg" class="post-image" style="object-fit: cover;">
                     <div class="post-actions">
@@ -724,21 +1367,21 @@
                     </div>
                     <div class="post-likes">1,456 likes</div>
                     <div class="post-caption">
-                        <strong>whippet_pup</strong> This little cutie stole my heart! 🐕💕 #WhippetLove
+                        <strong>whippet_pup</strong>
+                        <span data-i18n="post5_caption">This little cutie stole my heart! 🐕💕 #WhippetLove</span>
                     </div>
                 </div>
 
-                <!-- Post 6 - Skincare Flatlay -->
                 <div class="post">
                     <div class="post-header">
                         <div class="post-user">
                             <div class="post-user-pic">✨</div>
                             <div>
-                                <div style="font-weight: bold; font-size: 1.2rem;">skincare_daily</div>
-                                <div style="font-size: 1rem; color: #8e8e8e;">Prague</div>
+                                <div class="post-username">skincare_daily</div>
+                                <div class="post-location">Prague</div>
                             </div>
                         </div>
-                        <div style="font-size: 1.5rem; cursor: pointer;">⋯</div>
+                        <div style="font-size: 1.5rem; cursor: pointer; color: #8e8e8e;">⋯</div>
                     </div>
                     <img src="../images/posts/skincare_flatlay.jpg" class="post-image" style="object-fit: cover;">
                     <div class="post-actions">
@@ -749,21 +1392,21 @@
                     </div>
                     <div class="post-likes">734 likes</div>
                     <div class="post-caption">
-                        <strong>skincare_daily</strong> My current skincare routine ✨💆‍♀️ #Skincare #SelfCare
+                        <strong>skincare_daily</strong>
+                        <span data-i18n="post6_caption">My current skincare routine ✨💆‍♀️ #Skincare #SelfCare</span>
                     </div>
                 </div>
 
-                <!-- Post 7 - Floorball Action -->
                 <div class="post">
                     <div class="post-header">
                         <div class="post-user">
                             <div class="post-user-pic">🏒</div>
                             <div>
-                                <div style="font-weight: bold; font-size: 1.2rem;">floorball_cz</div>
-                                <div style="font-size: 1rem; color: #8e8e8e;">Sports Hall, Prague</div>
+                                <div class="post-username">floorball_cz</div>
+                                <div class="post-location">Sports Hall, Prague</div>
                             </div>
                         </div>
-                        <div style="font-size: 1.5rem; cursor: pointer;">⋯</div>
+                        <div style="font-size: 1.5rem; cursor: pointer; color: #8e8e8e;">⋯</div>
                     </div>
                     <img src="../images/posts/floorball_action.jpg" class="post-image" style="object-fit: cover;">
                     <div class="post-actions">
@@ -774,21 +1417,21 @@
                     </div>
                     <div class="post-likes">423 likes</div>
                     <div class="post-caption">
-                        <strong>floorball_cz</strong> Game day! 🏒💪 #Floorball #Sports
+                        <strong>floorball_cz</strong>
+                        <span data-i18n="post7_caption">Game day! 🏒💪 #Floorball #Sports</span>
                     </div>
                 </div>
 
-                <!-- Post 8 - Fourth Wing Book -->
                 <div class="post">
                     <div class="post-header">
                         <div class="post-user">
                             <div class="post-user-pic">📚</div>
                             <div>
-                                <div style="font-weight: bold; font-size: 1.2rem;">bookworm_viky</div>
-                                <div style="font-size: 1rem; color: #8e8e8e;">Cozy Corner</div>
+                                <div class="post-username">bookworm_viky</div>
+                                <div class="post-location">Cozy Corner</div>
                             </div>
                         </div>
-                        <div style="font-size: 1.5rem; cursor: pointer;">⋯</div>
+                        <div style="font-size: 1.5rem; cursor: pointer; color: #8e8e8e;">⋯</div>
                     </div>
                     <img src="../images/posts/fourthwing_book.jpeg" class="post-image" style="object-fit: cover;">
                     <div class="post-actions">
@@ -799,12 +1442,12 @@
                     </div>
                     <div class="post-likes">1,892 likes</div>
                     <div class="post-caption">
-                        <strong>bookworm_viky</strong> Currently reading and OBSESSED! 📚🐉 #FourthWing #BookTok
+                        <strong>bookworm_viky</strong>
+                        <span data-i18n="post8_caption">Currently reading and OBSESSED! 📚🐉 #FourthWing #BookTok</span>
                     </div>
                 </div>
             </div>
 
-            <!-- SEARCH VIEW -->
             <div id="search" class="view">
                 <input type="text" class="search-bar" placeholder="Search...">
                 <div class="search-results">
@@ -820,23 +1463,21 @@
                 </div>
             </div>
 
-            <!-- EXPLORE VIEW -->
             <div id="explore" class="view">
                 <h2 style="margin-bottom: 20px; font-size: 2rem;">Explore</h2>
                 <div class="search-results">
-                    <div class="search-item">✈️</div>
-                    <div class="search-item">🎭</div>
-                    <div class="search-item">🍕</div>
-                    <div class="search-item">🎸</div>
-                    <div class="search-item">📚</div>
-                    <div class="search-item">🎮</div>
-                    <div class="search-item">🎨</div>
-                    <div class="search-item">🏃</div>
-                    <div class="search-item">🍰</div>
+                    <div class="search-item" style="background: linear-gradient(135deg, #667eea, #764ba2);">✈️</div>
+                    <div class="search-item" style="background: linear-gradient(135deg, #f093fb, #f5576c);">🎭</div>
+                    <div class="search-item" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">🍕</div>
+                    <div class="search-item" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">🎸</div>
+                    <div class="search-item" style="background: linear-gradient(135deg, #fa709a, #fee140);">📚</div>
+                    <div class="search-item" style="background: linear-gradient(135deg, #30cfd0, #330867);">🎮</div>
+                    <div class="search-item" style="background: linear-gradient(135deg, #a8edea, #fed6e3);">🎨</div>
+                    <div class="search-item" style="background: linear-gradient(135deg, #ff9a9e, #fecfef);">🏃</div>
+                    <div class="search-item" style="background: linear-gradient(135deg, #ffecd2, #fcb69f);">🍰</div>
                 </div>
             </div>
 
-            <!-- REELS VIEW -->
             <div id="reels" class="view">
                 <h2 style="margin-bottom: 20px; font-size: 2rem;">Reels</h2>
                 <div class="post">
@@ -844,44 +1485,66 @@
                         <div class="post-user">
                             <div class="post-user-pic">🎬</div>
                             <div>
-                                <div style="font-weight: bold; font-size: 1.2rem;">Travel Reels</div>
+                                <div class="post-username">Travel Reels</div>
                             </div>
                         </div>
                     </div>
-                    <div class="post-image" style="background: linear-gradient(135deg, #667eea, #764ba2);">▶️</div>
+                    <div class="post-image" style="background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; font-size: 5rem;">▶️</div>
                     <div class="post-caption">
                         Short video clips coming soon! 🎬✨
                     </div>
                 </div>
             </div>
 
-            <!-- MESSAGES VIEW -->
             <div id="messages" class="view">
                 <div class="messages-container">
                     <div class="conversations">
-                        <div style="padding: 20px; font-weight: bold; font-size: 1.5rem; border-bottom: 1px solid #dbdbdb;">Messages</div>
-                        <div class="conversation-item active" onclick="loadChat('prague')">
-                            <div class="post-user-pic">🇨🇿</div>
+                        <div style="padding: 20px; font-weight: 700; font-size: 1.2rem; border-bottom: 1px solid var(--border-color);">Messages</div>
+
+                        <div class="conversation-item active" onclick="loadChat(event,'dm')">
+                            <img class="dm-avatar" src="../images/insta-profiles/dm.png">
                             <div>
-                                <div style="font-weight: bold; font-size: 1.2rem;">Prague Memories</div>
-                                <div style="font-size: 1rem; color: #8e8e8e;">Active now</div>
+                                <div style="font-weight: 600; font-size: 1rem;">DM Drogerie</div>
+                                <div style="font-size: 0.9rem; color: #8e8e8e;">New sponsorship offer</div>
                             </div>
                         </div>
-                        <div class="conversation-item" onclick="loadChat('capetown')">
-                            <div class="post-user-pic">🇿🇦</div>
+
+                        <div class="conversation-item" onclick="loadChat(event, 'rossmann')">
+                            <img class="dm-avatar" src="../images/insta-profiles/rossmann.png">
                             <div>
-                                <div style="font-weight: bold; font-size: 1.2rem;">Cape Town Vibes</div>
-                                <div style="font-size: 1rem; color: #8e8e8e;">2h ago</div>
+                                <div style="font-weight: 600; font-size: 1rem;">Rossmann</div>
+                                <div style="font-size: 0.9rem; color: #8e8e8e;">PR team messaged you</div>
+                            </div>
+                        </div>
+
+                        <div class="conversation-item" onclick="loadChat(event, 'lidl')">
+                            <img class="dm-avatar" src="../images/insta-profiles/lidl.png">
+                            <div>
+                                <div style="font-weight: 600; font-size: 1rem;">Lidl</div>
+                                <div style="font-size: 0.9rem; color: #8e8e8e;">Collab proposal</div>
+                            </div>
+                        </div>
+
+                        <div class="conversation-item" onclick="loadChat(event, 'tesco')">
+                            <img class="dm-avatar" src="../images/insta-profiles/tesco.png">
+                            <div>
+                                <div style="font-weight: 600; font-size: 1rem;">Tesco</div>
+                                <div style="font-size: 0.9rem; color: #8e8e8e;">Influencer outreach</div>
+                            </div>
+                        </div>
+
+                        <div class="conversation-item" onclick="loadChat(event, 'penny')">
+                            <img class="dm-avatar" src="../images/insta-profiles/penny.png">
+                            <div>
+                                <div style="font-weight: 600; font-size: 1rem;">Penny Market</div>
+                                <div style="font-size: 0.9rem; color: #8e8e8e;">Marketing campaign invite</div>
                             </div>
                         </div>
                     </div>
+
                     <div class="chat-area">
-                        <div class="chat-header" id="chatHeader">Prague Memories</div>
-                        <div class="chat-messages" id="chatMessages">
-                            <div class="message received">Hey! How's Prague treating you? 🏰</div>
-                            <div class="message sent">Amazing! The city is beautiful 💕</div>
-                            <div class="message received">Can't wait to visit! Send me pics! 📸</div>
-                        </div>
+                        <div class="chat-header" id="chatHeader">DM Drogerie</div>
+                        <div class="chat-messages" id="chatMessages"></div>
                         <div class="chat-input-container">
                             <input type="text" class="chat-input" id="messageInput" placeholder="Message...">
                             <button class="send-btn" onclick="sendMessage()">Send</button>
@@ -890,62 +1553,59 @@
                 </div>
             </div>
 
-            <!-- NOTIFICATIONS VIEW -->
             <div id="notifications" class="view">
                 <h2 style="margin-bottom: 20px; font-size: 2rem;">Notifications</h2>
                 <div class="notification-item">
                     <div class="notif-pic">🇨🇿</div>
                     <div class="notif-content">
-                        <div class="notif-text"><strong>Prague Adventures</strong> liked your post</div>
+                        <div class="notif-text"><strong>Prague Adventures</strong> <span data-i18n="notif_like">liked your post</span></div>
                         <div class="notif-time">2 hours ago</div>
                     </div>
                 </div>
                 <div class="notification-item">
                     <div class="notif-pic">🇿🇦</div>
                     <div class="notif-content">
-                        <div class="notif-text"><strong>Cape Town Vibes</strong> started following you</div>
+                        <div class="notif-text"><strong>Cape Town Vibes</strong> <span data-i18n="notif_follow">started following you</span></div>
                         <div class="notif-time">5 hours ago</div>
                     </div>
                 </div>
                 <div class="notification-item">
                     <div class="notif-pic">💕</div>
                     <div class="notif-content">
-                        <div class="notif-text"><strong>Travel Couple</strong> commented on your post</div>
+                        <div class="notif-text"><strong>Travel Couple</strong> <span data-i18n="notif_comment">commented on your post</span></div>
                         <div class="notif-time">1 day ago</div>
                     </div>
                 </div>
             </div>
 
-            <!-- CREATE VIEW -->
             <div id="create" class="view">
                 <div class="create-container">
                     <div class="create-title">Create New Post</div>
                     <div class="upload-area">
                         <div class="upload-icon">📷</div>
-                        <div style="font-size: 1.4rem; margin-bottom: 8px;">Drag photos here</div>
-                        <div style="font-size: 1.1rem; color: #8e8e8e;">or click to select from computer</div>
+                        <div style="font-size: 1.2rem; margin-bottom: 8px; font-weight: 600;">Drag photos here</div>
+                        <div style="font-size: 1rem; color: #8e8e8e;">or click to select from computer</div>
                     </div>
                 </div>
             </div>
 
-            <!-- PROFILE VIEW -->
             <div id="profile" class="view">
                 <div class="profile-header">
                     <div class="profile-pic-large">💕</div>
-                    <div style="flex: 1;">
-                        <div style="font-size: 2rem; font-weight: bold; margin-bottom: 10px;">your_journey</div>
+                    <div class="profile-info">
+                        <div class="profile-username">your_journey</div>
                         <div class="profile-stats">
                             <div class="stat">
-                                <div class="stat-number">8</div>
-                                <div class="stat-label">posts</div>
+                                <span class="stat-number">8</span>
+                                <span class="stat-label" data-i18n="posts">posts</span>
                             </div>
                             <div class="stat">
-                                <div class="stat-number">892</div>
-                                <div class="stat-label">followers</div>
+                                <span class="stat-number">892</span>
+                                <span class="stat-label" data-i18n="followers">followers</span>
                             </div>
                             <div class="stat">
-                                <div class="stat-number">234</div>
-                                <div class="stat-label">following</div>
+                                <span class="stat-number">234</span>
+                                <span class="stat-label">following</span>
                             </div>
                         </div>
                         <div class="profile-bio">
@@ -971,15 +1631,11 @@
     </div>
 
     <script>
-        function switchView(viewName) {
-            // Remove active class from all nav items and views
+        function switchView(e, viewName) {
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
-            
-            // Add active class to clicked nav item
-            event.target.closest('.nav-item').classList.add('active');
-            
-            // Show the selected view
+
+            e.target.closest('.nav-item').classList.add('active');
             document.getElementById(viewName).classList.add('active');
         }
 
@@ -993,51 +1649,210 @@
             }
         }
 
-        function loadChat(chatName) {
-            // Remove active from all conversations
-            document.querySelectorAll('.conversation-item').forEach(item => item.classList.remove('active'));
-            event.target.closest('.conversation-item').classList.add('active');
-            
-            const chatHeader = document.getElementById('chatHeader');
-            const chatMessages = document.getElementById('chatMessages');
-            
-            if (chatName === 'prague') {
-                chatHeader.textContent = 'Prague Memories';
-                chatMessages.innerHTML = `
-                    <div class="message received">Hey! How's Prague treating you? 🏰</div>
-                    <div class="message sent">Amazing! The city is beautiful 💕</div>
-                    <div class="message received">Can't wait to visit! Send me pics! 📸</div>
-                `;
-            } else if (chatName === 'capetown') {
-                chatHeader.textContent = 'Cape Town Vibes';
-                chatMessages.innerHTML = `
-                    <div class="message received">The penguins were so cute today! 🐧</div>
-                    <div class="message sent">I saw your story! Looks amazing! 😍</div>
-                    <div class="message received">You should come visit! 🌊</div>
-                `;
+        const DM_CHATS = {
+            dm: {
+                name: "DM Drogerie",
+                avatar: "../images/insta-profiles/dm.png",
+                messages: [
+                    { from: "brand", i18n: "dm_msg1", ts: Date.now() - 600000 },
+                    { from: "brand", i18n: "dm_msg2", ts: Date.now() - 590000 },
+                    { from: "brand", i18n: "dm_msg3", ts: Date.now() - 580000 }
+                ],
+                replies: [
+                    "Thanks for the reply! Could you share your rate card + media kit?",
+                    "Amazing — do you prefer product only or paid partnership?",
+                    "Quick follow-up: are you available for a campaign launch next week?",
+                    "Our legal team needs a shipping address and tax info. (Sorry. We know.)",
+                    "Noted! We'll escalate this to our 'Urgent Influencer Pipeline' spreadsheet."
+                ]
+            },
+            rossmann: {
+                name: "Rossmann",
+                avatar: "../images/insta-profiles/rossmann.png",
+                messages: [
+                    { from: "brand", text: "Rossmann influencer outreach here — love your aesthetic.", ts: Date.now() - 400000 },
+                    { from: "brand", text: "We can offer a monthly box + featured repost if you post twice.", ts: Date.now() - 390000 }
+                ],
+                replies: [
+                    "Thanks! Can you confirm your audience demographics?",
+                    "Nice! What's your preferred content format: reels, stories, or static posts?",
+                    "We can send a contract. Please confirm your email address.",
+                    "We have a limited budget but unlimited enthusiasm. Thoughts?"
+                ]
+            },
+            lidl: {
+                name: "Lidl",
+                avatar: "../images/insta-profiles/lidl.png",
+                messages: [
+                    { from: "brand", text: "Lidl Social Team: sponsorship inquiry for a 'weekly haul' series.", ts: Date.now() - 300000 },
+                    { from: "brand", text: "We can offer vouchers + a cameo from our mascot (kidding… unless?)", ts: Date.now() - 295000 }
+                ],
+                replies: [
+                    "Sounds good — do you want in-store or home delivery content?",
+                    "Thanks for confirming! We'll send campaign details shortly.",
+                    "One more thing: can you include #LidlFinds in the caption?",
+                    "Following up again because our calendar reminder yelled at us."
+                ]
+            },
+            penny: {
+                name: "Penny Market",
+                avatar: "../images/insta-profiles/penny.png",
+                messages: [
+                    { from: "brand", text: "Penny Market marketing: collab for seasonal promos.", ts: Date.now() - 250000 },
+                    { from: "brand", text: "We saw your engagement — we'd like 1 post + 2 stories.", ts: Date.now() - 245000 }
+                ],
+                replies: [
+                    "Great! What's your posting schedule like this month?",
+                    "Thanks — we can increase the voucher amount if you add a reel.",
+                    "Can you confirm your location for shipping?",
+                    "Understood. We'll circle back (we love circling back)."
+                ]
+            },
+            tesco: {
+                name: "Tesco",
+                avatar: "../images/insta-profiles/tesco.png",
+                messages: [
+                    { from: "brand", text: "Tesco influencer relations: potential partnership.", ts: Date.now() - 200000 },
+                    { from: "brand", text: "We'd like a grocery haul + meal prep post.", ts: Date.now() - 195000 }
+                ],
+                replies: [
+                    "Thanks! Are you open to featuring Clubcard offers?",
+                    "Perfect — can you share your rates for a 2-week campaign?",
+                    "We have guidelines. They are… a lot. We'll send them anyway.",
+                    "Quick follow up: did you see our previous quick follow up?"
+                ]
             }
+        };
+
+        let CURRENT_CHAT = "dm";
+
+        function renderChat(chatKey) {
+            const chat = DM_CHATS[chatKey];
+            if (!chat) return;
+
+            document.getElementById("chatHeader").textContent = chat.name;
+            const chatMessages = document.getElementById("chatMessages");
+            chatMessages.innerHTML = "";
+
+            chat.messages.forEach(msg => {
+                const text = msg.i18n ? window.__t(msg.i18n) : msg.text;
+
+                if (msg.from === "brand") {
+                    const row = document.createElement("div");
+                    row.className = "message-row";
+                    row.innerHTML = `
+                        <img class="dm-avatar" src="${chat.avatar}">
+                        <div class="message received">${escapeHtml(text)}</div>
+                    `;
+                    chatMessages.appendChild(row);
+                } else {
+                    const div = document.createElement("div");
+                    div.className = "message sent";
+                    div.textContent = text;
+                    chatMessages.appendChild(div);
+                }
+            });
+
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function escapeHtml(str) {
+            if (!str) return "";
+            return String(str)
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;");
+        }
+
+        function scheduleBrandReply(chatKey) {
+            const chat = DM_CHATS[chatKey];
+            if (!chat) return;
+
+            const chatMessages = document.getElementById("chatMessages");
+            const typing = document.createElement("div");
+            typing.className = "message-row";
+            typing.innerHTML = `
+                <img class="dm-avatar" src="${chat.avatar}">
+                <div class="message received" style="opacity:.8">typing…</div>
+            `;
+            chatMessages.appendChild(typing);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            const delay = 800 + Math.floor(Math.random() * 1400);
+
+            setTimeout(() => {
+                typing.remove();
+                const replyText = chat.replies[Math.floor(Math.random() * chat.replies.length)];
+                chat.messages.push({ from: "brand", text: replyText, ts: Date.now() });
+                renderChat(chatKey);
+
+                if (Math.random() < 0.35) {
+                    setTimeout(() => {
+                        const followUps = [
+                            "Just checking if you saw this 🙏",
+                            "Gentle reminder — we'd love your confirmation today.",
+                            "Looping in my colleague who is also excited about this.",
+                            "Last ping before I get chased by our marketing manager."
+                        ];
+                        chat.messages.push({ from: "brand", text: followUps[Math.floor(Math.random() * followUps.length)], ts: Date.now() });
+                        renderChat(chatKey);
+                    }, 1200 + Math.floor(Math.random() * 1600));
+                }
+            }, delay);
+        }
+
+        function loadChat(e, chatKey) {
+            document.querySelectorAll(".conversation-item").forEach(item => item.classList.remove("active"));
+            e.target.closest(".conversation-item")?.classList.add("active");
+            CURRENT_CHAT = chatKey;
+            renderChat(CURRENT_CHAT);
         }
 
         function sendMessage() {
-            const input = document.getElementById('messageInput');
-            const messagesContainer = document.getElementById('chatMessages');
-            
-            if (input.value.trim()) {
-                const newMessage = document.createElement('div');
-                newMessage.className = 'message sent';
-                newMessage.textContent = input.value;
-                messagesContainer.appendChild(newMessage);
-                
-                input.value = '';
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }
+            const input = document.getElementById("messageInput");
+            const text = (input?.value || "").trim();
+            if (!text) return;
+
+            const chat = DM_CHATS[CURRENT_CHAT];
+            if (!chat) return;
+
+            chat.messages.push({ from: "you", text, ts: Date.now() });
+            input.value = "";
+            renderChat(CURRENT_CHAT);
+            scheduleBrandReply(CURRENT_CHAT);
         }
 
-        // Allow Enter key to send message
         document.getElementById('messageInput')?.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        window.addEventListener("DOMContentLoaded", () => {
+            renderChat(CURRENT_CHAT);
+        });
+
+        document.querySelectorAll('.post-image').forEach(img => {
+            img.addEventListener('dblclick', function(e) {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.style.position = 'absolute';
+                heart.style.left = '50%';
+                heart.style.top = '50%';
+                heart.style.transform = 'translate(-50%, -50%) scale(0)';
+                heart.style.fontSize = '8rem';
+                heart.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                heart.style.pointerEvents = 'none';
+                heart.style.zIndex = '10';
+                
+                this.parentElement.style.position = 'relative';
+                this.parentElement.appendChild(heart);
+                
+                setTimeout(() => heart.style.transform = 'translate(-50%, -50%) scale(1.2)', 10);
+                setTimeout(() => heart.style.opacity = '0', 400);
+                setTimeout(() => heart.remove(), 800);
+                
+                const likeBtn = this.closest('.post').querySelector('.action-btn');
+                if (!likeBtn.classList.contains('liked')) toggleLike(likeBtn);
+            });
         });
     </script>
 </body>

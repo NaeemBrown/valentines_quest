@@ -286,6 +286,81 @@
         }
 
     </style>
+
+<!-- HeartOS i18n -->
+<script>
+window.__translations = {
+    en: {
+        play: "\u25B6 Play", more_info: "\u24D8 More Info", my_list: "My List",
+        trending: "Trending Now", continue_watching: "Continue Watching for Agi",
+        top_picks: "Top Picks for You", because_watched: "Because You Watched",
+        new_releases: "New Releases", romantic: "Romantic Movies"
+    },
+    cs: {
+        play: "\u25B6 P\u0159ehr\u00e1t", more_info: "\u24D8 V\u00edce info", my_list: "M\u016fj seznam",
+        trending: "Trendy", continue_watching: "Pokra\u010dovat v sledov\u00e1n\u00ed",
+        top_picks: "Nejlep\u0161\u00ed tipy pro tebe", because_watched: "Proto\u017ee jsi sledovala",
+        new_releases: "Novinky", romantic: "Romantick\u00e9 filmy"
+    }
+};
+</script>
+
+<script>
+// i18n bridge - reads language from parent localStorage
+(function() {
+    const LANG = localStorage.getItem('heartosLang') || 'en';
+    window.__lang = LANG;
+    window.__t = function(key) {
+        const dict = window.__translations;
+        if (!dict) return key;
+        const lang = dict[LANG] || dict['en'];
+        return (lang && lang[key]) || (dict['en'] && dict['en'][key]) || key;
+    };
+    // Auto-translate elements with data-i18n after DOM loads
+    window.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('[data-i18n]').forEach(function(el) {
+            var key = el.getAttribute('data-i18n');
+            var translated = window.__t(key);
+            if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                el.placeholder = translated;
+            } else {
+                el.textContent = translated;
+            }
+        });
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+            el.placeholder = window.__t(el.getAttribute('data-i18n-placeholder'));
+        });
+        // Call site-specific translate function if defined
+        if (typeof window.__translateSite === 'function') {
+            window.__translateSite();
+        }
+    });
+})();
+</script>
+
+<script>
+
+    window.__translateSite = function() {
+        var t = window.__t;
+        document.querySelectorAll('.hero-btn').forEach(function(btn){
+            if(btn.textContent.includes('Play')) btn.textContent = t('play');
+            if(btn.textContent.includes('More Info')) btn.textContent = t('more_info');
+            if(btn.textContent.includes('My List')) btn.textContent = t('my_list');
+        });
+        document.querySelectorAll('.section-title, .row-title').forEach(function(el){
+            var txt = el.textContent.trim();
+            if(txt.includes('Trending')) el.textContent = t('trending');
+            if(txt.includes('Continue')) el.textContent = t('continue_watching');
+            if(txt.includes('Top Picks')) el.textContent = t('top_picks');
+            if(txt.includes('Because')) el.textContent = t('because_watched');
+            if(txt.includes('New Releases')) el.textContent = t('new_releases');
+            if(txt.includes('Romantic')) el.textContent = t('romantic');
+        });
+    };
+
+</script>
+<!-- /HeartOS i18n -->
+
 </head>
 <body>
     <!-- HEADER -->
