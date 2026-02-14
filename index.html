@@ -91,6 +91,10 @@
                 <span class="icon-img">🎬</span>
                 <div>Message</div>
             </div>
+            <div class="desktop-icon" onclick="SYSTEM.openApp('win-note')">
+                <span class="icon-img">📝</span>
+                <div>note.exe</div>
+            </div>
         </div>
 
         <div id="win-timeline" class="os-window-box app-window hidden" style="top: 5%; left: 5%;">
@@ -148,6 +152,18 @@
             <div class="window-content" id="videoplayer-content" style="padding: 0; background: #000; overflow: hidden; height: calc(100% - 30px);"></div>
         </div>
 
+        <div id="win-note" class="os-window-box app-window hidden" style="top: 12%; left: 18%; width: 650px; height: auto; max-height: 80vh;">
+            <div class="window-bar">
+                <span>📝 note.exe</span>
+                <div class="win-controls">
+                    <button onclick="SYSTEM.closeApp('win-note')">X</button>
+                </div>
+            </div>
+            <div class="window-content-scroll" id="note-content" style="padding: 30px; line-height: 1.8; font-size: 1.15rem;">
+                <!-- Content will be populated by JavaScript based on language -->
+            </div>
+        </div>
+
         <div id="win-amp" class="os-window-box app-window hidden" style="top: 30%; left: 60%; width: 300px; height: auto;">
             <div class="window-bar" style="background: #2b0a12; color: #ff4d6d;"><span>HeartAmp</span><div class="win-controls"><button onclick="SYSTEM.closeApp('win-amp')">X</button></div></div>
             <div class="window-content" id="amp-interface" style="padding: 0; background: transparent;"></div>
@@ -183,6 +199,7 @@
     <script src="js/apps/streamer.js"></script>
     <script src="js/apps/map.js"></script>
     <script src="js/apps/browser.js"></script>
+    <script src="js/apps/note.js"></script>
     <script src="js/desktop-enhancements.js"></script>
     <script src="js/desktop-manager.js"></script>
     <script src="js/new-features.js"></script>

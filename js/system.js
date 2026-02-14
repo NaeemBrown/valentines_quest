@@ -1,4 +1,4 @@
-/* CORE SYSTEM LOGIC */
+/* CORE SYSTEM LOGIC - Updated with note.exe support */
 
 const SYSTEM = {
     zIndex: 100,
@@ -546,7 +546,7 @@ const SYSTEM = {
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('desktop-screen').classList.remove('hidden');
             this.initDesktop();
-if (window.ACHIEVEMENTS) ACHIEVEMENTS.mark('login');
+            if (window.ACHIEVEMENTS) ACHIEVEMENTS.mark('login');
         } else {
             this.playAudio('error-sound');
             const win = document.querySelector('#login-screen .os-window-box');
@@ -575,12 +575,12 @@ if (window.ACHIEVEMENTS) ACHIEVEMENTS.mark('login');
         
         window.addEventListener('secretsUnlocked', () => {
             const badge = document.getElementById('secrets-lock-badge');
-            if (badge) badge.style.display = 'none';if (window.ACHIEVEMENTS) ACHIEVEMENTS.mark('unlock_secrets');
+            if (badge) badge.style.display = 'none';
+            if (window.ACHIEVEMENTS) ACHIEVEMENTS.mark('unlock_secrets');
         });
         
         setTimeout(() => this.openApp('win-amp'), 800);
-         this.enableAppScrolling();
-
+        this.enableAppScrolling();
     },
 
     openApp: function(id) {
@@ -622,19 +622,31 @@ if (window.ACHIEVEMENTS) ACHIEVEMENTS.mark('login');
             }
         }
 
-        if (window.ACHIEVEMENTS) {
-    const map = {
-        'win-amp': 'open_heartamp',
-        'win-quiz': 'open_terminal',
-        'win-map': 'open_map',
-        'win-videoplayer': 'open_message',
-        'win-browser': 'open_browser',
-        'win-gallery': 'open_photos',
-        'win-timeline': 'open_achievements'
-    };
-    if (map[id]) ACHIEVEMENTS.mark(map[id]);
-    }
+        if (id === 'win-note') {
+            if (typeof NOTE !== 'undefined') {
+                if (!NOTE._initialized) {
+                    NOTE.init();
+                    NOTE._initialized = true;
+                } else {
+                    // Re-render in case language changed
+                    NOTE.render();
+                }
+            }
+        }
 
+        if (window.ACHIEVEMENTS) {
+            const map = {
+                'win-amp': 'open_heartamp',
+                'win-quiz': 'open_terminal',
+                'win-map': 'open_map',
+                'win-videoplayer': 'open_message',
+                'win-browser': 'open_browser',
+                'win-gallery': 'open_photos',
+                'win-timeline': 'open_achievements',
+                'win-note': 'open_note'
+            };
+            if (map[id]) ACHIEVEMENTS.mark(map[id]);
+        }
     },
 
     closeApp: function(id) {
@@ -691,7 +703,6 @@ if (window.ACHIEVEMENTS) ACHIEVEMENTS.mark('login');
         }
 
         setTimeout(() => toast.remove(), 2600);
-        
     },
 
     playAudio: function(id) {
@@ -812,6 +823,4 @@ if (window.ACHIEVEMENTS) ACHIEVEMENTS.mark('login');
         document.getElementById('lightbox').classList.add('hidden');
         document.getElementById('lightbox-content-wrapper').innerHTML = "";
     }
-
-    
 };
