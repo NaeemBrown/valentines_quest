@@ -559,16 +559,66 @@ window.__translations = {
         library: "Your Library", create_playlist: "Create Playlist",
         liked_songs: "Liked Songs", recently_played: "Recently Played",
         made_for_you: "Made For You", good_morning: "Good Morning, Agi",
+        good_afternoon: "Good afternoon", good_evening: "Good evening",
         play: "PLAY", shuffle: "SHUFFLE", queue: "Queue",
-        now_playing: "Now Playing", playlists: "Playlists"
+        now_playing: "Now Playing", playlists: "Playlists",
+        public_playlist: "PUBLIC PLAYLIST", focus_playlist: "FOCUS PLAYLIST",
+        workout_playlist: "WORKOUT PLAYLIST", sports_playlist: "SPORTS PLAYLIST",
+        chill_playlist: "CHILL PLAYLIST", romantic_playlist: "ROMANTIC PLAYLIST",
+        travel_playlist: "TRAVEL PLAYLIST",
+        songs: "songs", select_song: "Select a song",
+        agis_playlist: "Agi's Playlist",
+        
+        // Playlist titles
+        hotgirlwalk_title: "Hot Girl Walk",
+        hotgirlwalk_desc: "Manifesting goals, feeling powerful, and being your best self. ✨",
+        yoga_title: "Yoga Flow",
+        yoga_desc: "Peaceful vibes for morning stretches and meditation. 🧘‍♀️",
+        reading_title: "Reading Vibes",
+        reading_desc: "Instrumental background for Fourth Wing and cozy reading sessions. 📖",
+        gym_title: "Gym Hype",
+        gym_desc: "High energy beats to crush your PR and stay motivated. 💪",
+        floorball_title: "Floorball Energy",
+        floorball_desc: "Upbeat tracks for practice with Viky and the gym girlies. 🏑",
+        skincare_title: "Skincare Routine",
+        skincare_desc: "Relaxing tunes for your 10-step glow-up routine. ✨",
+        datenight_title: "Date Night",
+        datenight_desc: "Romantic vibes for dinner with Naeem. 🌹",
+        roadtrip_title: "Road Trip to Prague",
+        roadtrip_desc: "Czech adventure soundtrack for exploring with Naeem. 🚗"
     },
     cs: {
-        search: "Hledat p\u00edsni\u010dky, um\u011blce...", home: "Dom\u016f", search_nav: "Hledat",
-        library: "Tvoje knihovna", create_playlist: "Vytvo\u0159it playlist",
-        liked_songs: "Obl\u00edben\u00e9 p\u00edsni\u010dky", recently_played: "Ned\u00e1vno p\u0159ehr\u00e1van\u00e9",
-        made_for_you: "Jen pro tebe", good_morning: "Dobr\u00e9 r\u00e1no, Agi",
-        play: "P\u0158EHR\u00c1T", shuffle: "N\u00c1HODN\u011a", queue: "Fronta",
-        now_playing: "Pr\u00e1v\u011b hraje", playlists: "Playlisty"
+        search: "Hledat písničky, umělce...", home: "Domů", search_nav: "Hledat",
+        library: "Tvoje knihovna", create_playlist: "Vytvořit playlist",
+        liked_songs: "Oblíbené písničky", recently_played: "Nedávno přehrávané",
+        made_for_you: "Jen pro tebe", good_morning: "Dobré ráno, Agi",
+        good_afternoon: "Dobré odpoledne", good_evening: "Dobrý večer",
+        play: "PŘEHRÁT", shuffle: "NÁHODNĚ", queue: "Fronta",
+        now_playing: "Právě hraje", playlists: "Playlisty",
+        public_playlist: "VEŘEJNÝ PLAYLIST", focus_playlist: "FOCUS PLAYLIST",
+        workout_playlist: "CVIČENÍ PLAYLIST", sports_playlist: "SPORTOVNÍ PLAYLIST",
+        chill_playlist: "CHILL PLAYLIST", romantic_playlist: "ROMANTICKÝ PLAYLIST",
+        travel_playlist: "CESTOVNÍ PLAYLIST",
+        songs: "písniček", select_song: "Vyber písničku",
+        agis_playlist: "Aginy Playlisty",
+        
+        // Playlist titles
+        hotgirlwalk_title: "Hot Girl Walk",
+        hotgirlwalk_desc: "Manifestuju cíle, cítím se silná a jsem ta nejlepší verze sebe. ✨",
+        yoga_title: "Yoga Flow",
+        yoga_desc: "Klidné vibes na ranní protažení a meditaci. 🧘‍♀️",
+        reading_title: "Reading Vibes",
+        reading_desc: "Instrumentální pozadí pro Fourth Wing a útulné čtení. 📖",
+        gym_title: "Gym Hype",
+        gym_desc: "Energická hudba na překonání PR a zůstat motivovaná. 💪",
+        floorball_title: "Floorball Energy",
+        floorball_desc: "Veselé tracky na trénink s Viky a holkama z posilovny. 🏑",
+        skincare_title: "Skincare Rutina",
+        skincare_desc: "Relaxační melodie pro tvou 10-krokovou glow-up rutinu. ✨",
+        datenight_title: "Date Night",
+        datenight_desc: "Romantické vibes na večeři s Naeemem. 🌹",
+        roadtrip_title: "Road Trip do Prahy",
+        roadtrip_desc: "Český dobrodružný soundtrack na prozkoumávání s Naeemem. 🚗"
     }
 };
 </script>
@@ -614,15 +664,11 @@ window.__translations = {
         if(si) si.placeholder = t('search');
         document.querySelectorAll('.nav-item span, .sidebar-item span').forEach(function(el){
             var txt = el.textContent.trim();
-            if(txt === 'Home') el.textContent = t('home');
-            if(txt === 'Search') el.textContent = t('search_nav');
-            if(txt === 'Your Library') el.textContent = t('library');
-        });
-        document.querySelectorAll('.section-title, h2, h1').forEach(function(el){
-            var txt = el.textContent.trim();
-            if(txt.includes('Good Morning') || txt.includes('Good Afternoon') || txt.includes('Good Evening')) el.textContent = t('good_morning');
-            if(txt.includes('Recently Played')) el.textContent = t('recently_played');
-            if(txt.includes('Made For')) el.textContent = t('made_for_you');
+            if(txt === 'Home' || txt === 'Domů') el.textContent = t('home');
+            if(txt === 'Search' || txt === 'Hledat') el.textContent = t('search_nav');
+            if(txt === 'Your Library' || txt === 'Tvoje knihovna') el.textContent = t('library');
+            if(txt === 'Create Playlist' || txt === 'Vytvořit playlist') el.textContent = t('create_playlist');
+            if(txt === 'Liked Songs' || txt === 'Oblíbené písničky') el.textContent = t('liked_songs');
         });
     };
 
@@ -723,12 +769,15 @@ window.__translations = {
         let audioContext = null;
         let currentOscillator = null;
 
+        // Get translation function
+        const t = window.__t;
+
         // PLAYLIST DATA
         const playlists = {
             hotgirlwalk: {
-                title: "Hot Girl Walk",
-                type: "PUBLIC PLAYLIST",
-                description: "Manifesting goals, feeling powerful, and being your best self. ✨",
+                get title() { return t('hotgirlwalk_title'); },
+                get type() { return t('public_playlist'); },
+                get description() { return t('hotgirlwalk_desc'); },
                 cover: "linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)",
                 emoji: "✨",
                 tracks: [
@@ -745,9 +794,9 @@ window.__translations = {
                 ]
             },
             yoga: {
-                title: "Yoga Flow",
-                type: "FOCUS PLAYLIST",
-                description: "Peaceful vibes for morning stretches and meditation. 🧘‍♀️",
+                get title() { return t('yoga_title'); },
+                get type() { return t('focus_playlist'); },
+                get description() { return t('yoga_desc'); },
                 cover: "linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)",
                 emoji: "🧘‍♀️",
                 tracks: [
@@ -759,9 +808,9 @@ window.__translations = {
                 ]
             },
             reading: {
-                title: "Reading Vibes",
-                type: "FOCUS PLAYLIST",
-                description: "Instrumental background for Fourth Wing and cozy reading sessions. 📖",
+                get title() { return t('reading_title'); },
+                get type() { return t('focus_playlist'); },
+                get description() { return t('reading_desc'); },
                 cover: "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)",
                 emoji: "📖",
                 tracks: [
@@ -773,9 +822,9 @@ window.__translations = {
                 ]
             },
             gym: {
-                title: "Gym Hype",
-                type: "WORKOUT PLAYLIST",
-                description: "High energy beats to crush your PR and stay motivated. 💪",
+                get title() { return t('gym_title'); },
+                get type() { return t('workout_playlist'); },
+                get description() { return t('gym_desc'); },
                 cover: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
                 emoji: "💪",
                 tracks: [
@@ -788,9 +837,9 @@ window.__translations = {
                 ]
             },
             floorball: {
-                title: "Floorball Energy",
-                type: "SPORTS PLAYLIST",
-                description: "Upbeat tracks for practice with Viky and the gym girlies. 🏑",
+                get title() { return t('floorball_title'); },
+                get type() { return t('sports_playlist'); },
+                get description() { return t('floorball_desc'); },
                 cover: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
                 emoji: "🏑",
                 tracks: [
@@ -802,9 +851,9 @@ window.__translations = {
                 ]
             },
             skincare: {
-                title: "Skincare Routine",
-                type: "CHILL PLAYLIST",
-                description: "Relaxing tunes for your 10-step glow-up routine. ✨",
+                get title() { return t('skincare_title'); },
+                get type() { return t('chill_playlist'); },
+                get description() { return t('skincare_desc'); },
                 cover: "linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)",
                 emoji: "✨",
                 tracks: [
@@ -816,9 +865,9 @@ window.__translations = {
                 ]
             },
             datenight: {
-                title: "Date Night",
-                type: "ROMANTIC PLAYLIST",
-                description: "Romantic vibes for dinner with Naeem. 🌹",
+                get title() { return t('datenight_title'); },
+                get type() { return t('romantic_playlist'); },
+                get description() { return t('datenight_desc'); },
                 cover: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
                 emoji: "🌹",
                 tracks: [
@@ -830,9 +879,9 @@ window.__translations = {
                 ]
             },
             roadtrip: {
-                title: "Road Trip to Prague",
-                type: "TRAVEL PLAYLIST",
-                description: "Czech adventure soundtrack for exploring with Naeem. 🚗",
+                get title() { return t('roadtrip_title'); },
+                get type() { return t('travel_playlist'); },
+                get description() { return t('roadtrip_desc'); },
                 cover: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
                 emoji: "🚗",
                 tracks: [
@@ -858,7 +907,7 @@ window.__translations = {
             const content = document.getElementById('content-area');
             content.innerHTML = `
                 <div class="home-view">
-                    <h1 class="section-title">Good afternoon</h1>
+                    <h1 class="section-title">${t('good_afternoon')}</h1>
                     <div class="playlist-grid">
                         ${Object.keys(playlists).map(key => {
                             const playlist = playlists[key];
@@ -874,7 +923,7 @@ window.__translations = {
                         }).join('')}
                     </div>
                     
-                    <h2 class="section-title">Recently Played</h2>
+                    <h2 class="section-title">${t('recently_played')}</h2>
                     <div class="playlist-grid">
                         <div class="playlist-card" onclick="loadPlaylist('hotgirlwalk')">
                             <div class="playlist-card-cover" style="background: ${playlists.hotgirlwalk.cover};">
@@ -903,6 +952,10 @@ window.__translations = {
             
             // Update gradient
             content.style.background = 'linear-gradient(180deg, #535353 0%, #121212 40%)';
+            
+            // Update player defaults
+            document.getElementById('player-title').innerText = t('select_song');
+            document.getElementById('player-artist').innerText = t('agis_playlist');
         }
 
         function loadPlaylist(playlistId) {
@@ -921,7 +974,7 @@ window.__translations = {
                         <p class="playlist-type">${playlist.type}</p>
                         <h1 class="playlist-title">${playlist.title}</h1>
                         <p class="playlist-meta">
-                            <strong>Agi</strong> • ${playlist.tracks.length} songs
+                            <strong>Agi</strong> • ${playlist.tracks.length} ${t('songs')}
                         </p>
                     </div>
                 </div>

@@ -1007,11 +1007,12 @@ ${this.t('welcome_begin', {cmd:`<span style="color:#0f0;">help</span>`})}
         this.scroll();
     },
 
-    /* ══════════════════════════════════════════════════════════════════
-       STEP 8 — REVEAL
+   /* ══════════════════════════════════════════════════════════════════
+       STEP 8 — REVEAL (UPDATED FOR VIDEO)
     ══════════════════════════════════════════════════════════════════ */
     step_reveal: function() {
-        const path = '/secure/vault/memories/photo5.jpg';
+        // Aesthetic change: path updated to look like a video file
+        const path = '/secure/vault/memories/message_final.mp4'; 
         this.print(`\n<span style="color:#0ff;">${this.t('reveal_title', {path})}</span>\n`);
 
         const stages = [
@@ -1067,17 +1068,28 @@ ${this.t('welcome_begin', {cmd:`<span style="color:#0f0;">help</span>`})}
             const wrap = document.createElement('div');
             wrap.style.cssText='text-align:center;padding:24px 0;';
 
-            const img = document.createElement('img');
-            img.src='assets/images/photo5.jpg';
-            img.className='reveal-img';
-            img.style.cssText='max-width:460px;width:100%;display:block;margin:0 auto;';
+            // ─── VIDEO SELECTION LOGIC ─────────────────────────────
+            // Checks the window.__lang we set in init()
+            // If 'cs' (Czech), use messageCz.mp4
+            // Otherwise use messageAng.mp4 (English/Default)
+            const isCzech = (window.__lang === 'cs');
+            const videoFile = isCzech ? 'messageCz.mp4' : 'messageAng.mp4';
+            
+            const vid = document.createElement('video');
+            vid.src = `assets/videos/${videoFile}`;
+            vid.className = 'reveal-img'; // Keeping your glow class!
+            vid.controls = true;          // Let them pause/replay
+            vid.autoplay = true;          // Start immediately
+            vid.playsInline = true;       // Better mobile support
+            vid.style.cssText = 'max-width:460px;width:100%;display:block;margin:0 auto;border:2px solid #0f0;';
+            // ───────────────────────────────────────────────────────
 
             const caption = document.createElement('div');
             caption.className='flicker';
             caption.style.cssText='color:#0f0;margin-top:20px;font-size:1.4rem;letter-spacing:4px;font-family:monospace;';
             caption.innerHTML='💚 &nbsp; F O R &nbsp; A G I &nbsp; 💚';
 
-            wrap.appendChild(img);
+            wrap.appendChild(vid);
             wrap.appendChild(caption);
             this.printEl(wrap);
 

@@ -1030,6 +1030,18 @@ window.__translations = {
         dm_msg2: "We'd love to sponsor 2 skincare posts + 1 story set. Interested?",
         dm_msg3: "Reply YES to proceed. Reply STOP to stop. Reply MAYBE to get 17 more emails.",
 
+        rossmann_msg1: "Rossmann influencer outreach here — love your aesthetic. (We say this to everyone)",
+        rossmann_msg2: "We can offer a monthly box + featured repost if you post twice. The box is worth €12 btw.",
+
+        lidl_msg1: "Lidl Social Team: sponsorship inquiry for a 'weekly haul' series. (We need content ASAP)",
+        lidl_msg2: "We can offer vouchers + a cameo from our mascot (kidding… unless you're into that?)",
+
+        penny_msg1: "Penny Market marketing: collab for seasonal promos. (Valentine's Day. In February. Original, right?)",
+        penny_msg2: "We saw your engagement — we'd like 1 post + 2 stories. Oh and 4 TikToks. And a billboard.",
+
+        tesco_msg1: "Tesco influencer relations: potential partnership. (Translation: we need content)",
+        tesco_msg2: "We'd like a grocery haul + meal prep post. Basically show us making you work for groceries.",
+
         post1_caption: "Living my best life in this beautiful city 🏰✨ #Prague #CityOfLove",
         post2_caption: "Beautiful blooms in the heart of the city 🌹💕",
         post3_caption: "Cutest visitor at Prague Zoo today! 🐼❤️ #RedPanda #PragueZoo",
@@ -1059,6 +1071,18 @@ window.__translations = {
         dm_msg1: "Ahoj Agi! Tady DM marketing — rychlý dotaz ke spolupráci.",
         dm_msg2: "Rádi bychom sponzorovali 2 skincare posty + 1 set stories. Máš zájem?",
         dm_msg3: "Odpověz ANO pro pokračování. STOP pro konec. MOŽNÁ pro… dalších 17 zpráv.",
+
+        rossmann_msg1: "Rossmann influencer outreach tady — máme rádi tvou estetiku. (Tohle říkáme všem)",
+        rossmann_msg2: "Můžeme nabídnout měsíční box + featured repost za 2 posty. Ten box stojí 300 Kč mimochodem.",
+
+        lidl_msg1: "Lidl Social Team: dotaz na sponzoring 'týdenní nákup' série. (Potřebujeme obsah ASAP)",
+        lidl_msg2: "Můžeme nabídnout vouchery + cameo našeho maskota (to je sranda… nebo tě to zajímá?)",
+
+        penny_msg1: "Penny Market marketing: spolupráce na sezónní promo. (Valentýn. V únoru. Originální, že?)",
+        penny_msg2: "Viděli jsme tvou engagement — chceme 1 post + 2 stories. A taky 4 TikToky. A billboard.",
+
+        tesco_msg1: "Tesco influencer relations: potenciální partnerství. (Překlad: potřebujeme obsah)",
+        tesco_msg2: "Chtěli bychom grocery haul + meal prep post. V podstatě tě necháme makat za nákup.",
 
         explore_title: "Prohlížet",
         reels_title: "Reels",
@@ -1658,69 +1682,110 @@ window.__translations = {
                     { from: "brand", i18n: "dm_msg2", ts: Date.now() - 590000 },
                     { from: "brand", i18n: "dm_msg3", ts: Date.now() - 580000 }
                 ],
-                replies: [
-                    "Thanks for the reply! Could you share your rate card + media kit?",
-                    "Amazing — do you prefer product only or paid partnership?",
-                    "Quick follow-up: are you available for a campaign launch next week?",
-                    "Our legal team needs a shipping address and tax info. (Sorry. We know.)",
-                    "Noted! We'll escalate this to our 'Urgent Influencer Pipeline' spreadsheet."
-                ]
+                replies: {
+                    en: [
+                        "Thanks for the reply! Could you share your rate card + media kit? (We'll pretend to read it)",
+                        "Amazing — do you prefer product only or actual money? JK we know which one 😅",
+                        "Quick follow-up: are you available for a campaign launch TOMORROW? (We forgot to plan ahead)",
+                        "Our legal team needs a shipping address, tax info, and your blood type. (Kidding about the last one... unless?)",
+                        "Noted! We'll escalate this to our 'Urgent Influencer Pipeline' spreadsheet that nobody checks."
+                    ],
+                    cs: [
+                        "Díky za odpověď! Můžeš poslat ceník + media kit? (Budeme předstírat, že to čteme)",
+                        "Bomba — preferuješ produkty nebo skutečné peníze? LOL víme kterou variantu 😅",
+                        "Rychlý follow-up: máš čas na kampaň ZÍT RA? (Zapomněli jsme naplánovat dopředu)",
+                        "Náš právní tým potřebuje adresu, daňové info a krevní skupinu. (Poslední je legrace... nebo ne?)",
+                        "Zapsáno! Eskalujeme to do našeho 'Urgentního Influencer Pipeline' sheetu, co nikdo nečte."
+                    ]
+                }
             },
             rossmann: {
                 name: "Rossmann",
                 avatar: "../images/insta-profiles/rossmann.png",
                 messages: [
-                    { from: "brand", text: "Rossmann influencer outreach here — love your aesthetic.", ts: Date.now() - 400000 },
-                    { from: "brand", text: "We can offer a monthly box + featured repost if you post twice.", ts: Date.now() - 390000 }
+                    { from: "brand", i18n: "rossmann_msg1", ts: Date.now() - 400000 },
+                    { from: "brand", i18n: "rossmann_msg2", ts: Date.now() - 390000 }
                 ],
-                replies: [
-                    "Thanks! Can you confirm your audience demographics?",
-                    "Nice! What's your preferred content format: reels, stories, or static posts?",
-                    "We can send a contract. Please confirm your email address.",
-                    "We have a limited budget but unlimited enthusiasm. Thoughts?"
-                ]
+                replies: {
+                    en: [
+                        "Thanks! Can you confirm your audience demographics? (We need this for a PowerPoint we'll never finish)",
+                        "Nice! What's your preferred content format: reels, stories, or static posts? (Our intern needs to know)",
+                        "We can send a contract. It's only 47 pages. Very light reading!",
+                        "We have a limited budget but unlimited enthusiasm and corporate buzzwords. Synergy?"
+                    ],
+                    cs: [
+                        "Díky! Můžeš potvrdit demografii tvého publika? (Potřebujeme to do PowerPointu, co nikdy nedokončíme)",
+                        "Super! Jaký formát preferuješ: reels, stories, nebo statické posty? (Náš stážista to musí vědět)",
+                        "Můžeme poslat smlouvu. Má jenom 47 stran. Velmi lehké čtení!",
+                        "Máme limitovaný rozpočet ale neomezené nadšení a firemní kecy. Synergie?"
+                    ]
+                }
             },
             lidl: {
                 name: "Lidl",
                 avatar: "../images/insta-profiles/lidl.png",
                 messages: [
-                    { from: "brand", text: "Lidl Social Team: sponsorship inquiry for a 'weekly haul' series.", ts: Date.now() - 300000 },
-                    { from: "brand", text: "We can offer vouchers + a cameo from our mascot (kidding… unless?)", ts: Date.now() - 295000 }
+                    { from: "brand", i18n: "lidl_msg1", ts: Date.now() - 300000 },
+                    { from: "brand", i18n: "lidl_msg2", ts: Date.now() - 295000 }
                 ],
-                replies: [
-                    "Sounds good — do you want in-store or home delivery content?",
-                    "Thanks for confirming! We'll send campaign details shortly.",
-                    "One more thing: can you include #LidlFinds in the caption?",
-                    "Following up again because our calendar reminder yelled at us."
-                ]
+                replies: {
+                    en: [
+                        "Sounds good — do you want in-store or home delivery content? (In-store means free advertising for us)",
+                        "Thanks for confirming! We'll send campaign details shortly. (Shortly = 3-6 business weeks)",
+                        "One more thing: can you include #LidlFinds in the caption? And tag us 47 times?",
+                        "Following up again because our calendar reminder yelled at us and our manager is watching."
+                    ],
+                    cs: [
+                        "Zní dobře — chceš obsah z obchodu nebo doručení domů? (V obchodě = reklama zdarma pro nás)",
+                        "Díky za potvrzení! Pošleme detaily brzy. (Brzy = 3-6 týdnů)",
+                        "Ještě jedna věc: můžeš přidat #LidlFinds do popisku? A taknout nás 47x?",
+                        "Follow-up znovu protože nám to křičela kalendářová připomínka a šéf se kouká."
+                    ]
+                }
             },
             penny: {
                 name: "Penny Market",
                 avatar: "../images/insta-profiles/penny.png",
                 messages: [
-                    { from: "brand", text: "Penny Market marketing: collab for seasonal promos.", ts: Date.now() - 250000 },
-                    { from: "brand", text: "We saw your engagement — we'd like 1 post + 2 stories.", ts: Date.now() - 245000 }
+                    { from: "brand", i18n: "penny_msg1", ts: Date.now() - 250000 },
+                    { from: "brand", i18n: "penny_msg2", ts: Date.now() - 245000 }
                 ],
-                replies: [
-                    "Great! What's your posting schedule like this month?",
-                    "Thanks — we can increase the voucher amount if you add a reel.",
-                    "Can you confirm your location for shipping?",
-                    "Understood. We'll circle back (we love circling back)."
-                ]
+                replies: {
+                    en: [
+                        "Great! What's your posting schedule? (We'll ignore it and ask you to post ASAP anyway)",
+                        "Thanks — we can increase the voucher from €5 to €7 if you add a reel. Big spender vibes!",
+                        "Can you confirm your location for shipping? (We'll send it to the wrong address anyway)",
+                        "Understood. We'll circle back (we LOVE circling back. It's literally our favorite thing)."
+                    ],
+                    cs: [
+                        "Super! Jaký máš posting plán? (Ignorujeme to a stejně tě poprosíme postovat ASAP)",
+                        "Díky — můžeme zvýšit voucher z 150 na 200 Kč, když přidáš reel. Velký spender vibes!",
+                        "Můžeš potvrdit adresu pro doručení? (Stejně to pošleme na špatnou)",
+                        "Chápeme. Vrátíme se k tomu (MILUJEME vracet se k tomu. Je to náš oblíbený sport)."
+                    ]
+                }
             },
             tesco: {
                 name: "Tesco",
                 avatar: "../images/insta-profiles/tesco.png",
                 messages: [
-                    { from: "brand", text: "Tesco influencer relations: potential partnership.", ts: Date.now() - 200000 },
-                    { from: "brand", text: "We'd like a grocery haul + meal prep post.", ts: Date.now() - 195000 }
+                    { from: "brand", i18n: "tesco_msg1", ts: Date.now() - 200000 },
+                    { from: "brand", i18n: "tesco_msg2", ts: Date.now() - 195000 }
                 ],
-                replies: [
-                    "Thanks! Are you open to featuring Clubcard offers?",
-                    "Perfect — can you share your rates for a 2-week campaign?",
-                    "We have guidelines. They are… a lot. We'll send them anyway.",
-                    "Quick follow up: did you see our previous quick follow up?"
-                ]
+                replies: {
+                    en: [
+                        "Thanks! Are you open to featuring Clubcard offers? (Please say yes, it's in our KPIs)",
+                        "Perfect — can you share your rates? (We'll act shocked no matter what you say)",
+                        "We have brand guidelines. They are… extensive. 94 pages. Single-spaced. Comic Sans.",
+                        "Quick follow up: did you see our previous 6 quick follow ups? This is follow up #7."
+                    ],
+                    cs: [
+                        "Díky! Můžeš featurnout Clubcard nabídky? (Prosím řekni ano, je to v našich KPIs)",
+                        "Perfekt — můžeš sdílet své ceny? (Budeme šokovaní bez ohledu na to, co řekneš)",
+                        "Máme brand guidelines. Jsou... rozsáhlé. 94 stran. Jeden řádek. Comic Sans.",
+                        "Rychlý follow-up: viděla jsi našich předchozích 6 follow-upů? Tohle je follow-up #7."
+                    ]
+                }
             }
         };
 
@@ -1782,13 +1847,20 @@ window.__translations = {
 
             setTimeout(() => {
                 typing.remove();
-                const replyText = chat.replies[Math.floor(Math.random() * chat.replies.length)];
+                const lang = window.__lang || 'en';
+                const replyList = chat.replies[lang] || chat.replies.en;
+                const replyText = replyList[Math.floor(Math.random() * replyList.length)];
                 chat.messages.push({ from: "brand", text: replyText, ts: Date.now() });
                 renderChat(chatKey);
 
                 if (Math.random() < 0.35) {
                     setTimeout(() => {
-                        const followUps = [
+                        const followUps = lang === 'cs' ? [
+                            "Jen kontroluji jestli jsi to viděla 🙏",
+                            "Jemná připomínka — rádi bychom tvé potvrzení dnes.",
+                            "Dávám do cc mého kolegu, který je taky nadšený.",
+                            "Poslední ping než mě začne honit náš marketing manažer."
+                        ] : [
                             "Just checking if you saw this 🙏",
                             "Gentle reminder — we'd love your confirmation today.",
                             "Looping in my colleague who is also excited about this.",
